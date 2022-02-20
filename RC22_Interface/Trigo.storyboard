@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Trigo Controller-->
+        <scene sceneID="1sN-s3-Nxt">
+            <objects>
+                <viewController id="uMs-3D-elN" customClass="rTrigoController" customModule="Robot_Interface" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="yXE-3y-76W">
+                        <rect key="frame" x="0.0" y="0.0" width="611" height="520"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </view>
+                </viewController>
+                <customObject id="GIx-AK-chj" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="89.5" y="3"/>
+        </scene>
+    </scenes>
+</document>

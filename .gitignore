@@ -1,0 +1,16 @@
+Images.*
+*Tests*
+*.lproj
+Makefile
+build/*
+*.eep
+*.elf
+*.lss
+*.lst
+*.map
+*.sym
+/H0:Interface.xcodeproj/*
+*.hex
+*.o
+.dep/
+DerivedData/
