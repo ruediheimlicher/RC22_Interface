@@ -99,8 +99,9 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       (SettingTab.selectedTabViewItem?.view?.viewWithTag(100) as! NSTextField).stringValue =  "M 0"
 
       eepromwritestatus = 0
+      Halt_Taste.toolTip = "HALT vor Aenderungen im EEPROM"
       
-      
+      var    container:NSTextContainer = EE_dataview.textContainer ?? NSTextContainer()
         
    } // end viewDidAppear
 
@@ -160,6 +161,19 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
      print("RC windowShouldClose")
      NSApplication.shared.terminate(self)
   }
+   
+   
+   
+   // MARK: TableView
+   // http://stackoverflow.com/questions/36365242/cocoa-nspopupbuttoncell-not-displaying-selected-value
+
+   func numberOfRowsInTableView(tableView: NSTableView) -> Int
+   {
+      
+      //int tabindex = [aTableView tag]%100;
+      int tabindex = [SettingTab indexOfTabViewItem:[SettingTab selectedTabViewItem]];
+
+   }// numberOfRowsInTableView
 
    // MARK: Variablen
    var                     dumpCounter:Int = 0
@@ -197,8 +211,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
    
    
    var            Math = rMath()
-   
-   
+   var            checksumme:Int = 0
    
    
     
@@ -270,7 +283,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
    @IBOutlet      weak var     EE_datalohex:NSTextField!
    @IBOutlet      weak var     EE_datahihex:NSTextField!
    @IBOutlet      weak var     EE_databin:NSTextField!
-   @IBOutlet    weak var     EE_dataview:NSTextField!
+   @IBOutlet    weak var      EE_dataview:NSTextView!
    @IBOutlet    weak var     PPM_testdatafeld:NSTextField!
     
    @IBOutlet    weak var     readsetting_mark:NSTextField!
@@ -286,6 +299,15 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
    @IBOutlet      weak var   FunktionTable:NSTableView!
    @IBOutlet      weak var   MixingTable:NSTableView!
 
-  
+   
+   @IBOutlet      weak var  FixSettingTaste:NSButton!
+   @IBOutlet      weak var  FixMixingTaste:NSButton!
+   @IBOutlet      weak var  FixFunktionTaste:NSButton!
+   @IBOutlet      weak var  FixAusagangTaste:NSButton!
+   @IBOutlet      weak var  MasterRefreshTaste:NSButton!
+   @IBOutlet      weak var  AdresseIncrement:NSButton!
+   @IBOutlet      weak var      ReadSettingTaste:NSButton!
+   @IBOutlet      weak var      ReadSenderTaste:NSButton!
+   @IBOutlet      weak var       ReadFunktionTaste:NSButton!
 }// end class rRC
 
