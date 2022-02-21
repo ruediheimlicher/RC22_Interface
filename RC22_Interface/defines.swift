@@ -47,3 +47,13 @@ let DREHKNOPF_FAKTOR:Float = 18.1 // Anpassen auf Mitte bei 3272
 //let ACHSE1_START:Double = 600
 //let ACHSE2_START:Double = 1800
 //let ACHSE2_MAX:Double = 300
+
+
+let funktion0:String = "Seite "
+let funktion1:String = "Hoehe "
+let funktion2:String = "Quer  "
+let funktion3:String = "Motor "
+let funktion4:String = "Quer L"
+let funktion5:String = "Quer R"
+let funktion6:String = "Lande "
+let funktion7:String = "Aux   "
