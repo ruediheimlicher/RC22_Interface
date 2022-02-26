@@ -29,28 +29,28 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       MixingTable.delegate = self
       
       
-       
-      var    FunktionSettingArray = [[String:UInt8]]()
-      for funktionindex:UInt8 in 0..<8
-      {
-         
-         var devicenummer:UInt8 = funktionindex
-         var funktionnummer:UInt8 = 7 - funktionindex
-        
-         var funktiondic = [String:UInt8]()
-         funktiondic["nummer"] = funktionindex
-         funktiondic["devicenummer"] = devicenummer
-         funktiondic["device"] = funktionindex // default_DeviceArray  objectAtIndex:deviceindex
-         funktiondic["funktion"] = funktionnummer         // default_FunktionArray objectAtIndex:funktionindex
-         funktiondic["device_funktion"] = ((funktionnummer & 0xFF) | ((devicenummer & 0xFF)<<4))
-         FunktionSettingArray.append(funktiondic)
-      }
-      FunktionArray.append(FunktionSettingArray)
-      FunktionTable.reloadData()
-         
-      var   SettingArray = [[String:UInt8]]()
       for model:UInt8 in 0..<3
-      {
+      { 
+         var    FunktionSettingArray = [[String:UInt8]]()
+         for funktionindex:UInt8 in 0..<8
+         {
+            
+            var devicenummer:UInt8 = funktionindex
+            var funktionnummer:UInt8 = 7 - funktionindex
+            
+            var funktiondic = [String:UInt8]()
+            funktiondic["nummer"] = funktionindex
+            funktiondic["devicenummer"] = devicenummer
+            funktiondic["device"] = funktionindex // default_DeviceArray  objectAtIndex:deviceindex
+            funktiondic["funktion"] = funktionnummer         // default_FunktionArray objectAtIndex:funktionindex
+            funktiondic["device_funktion"] = ((funktionnummer & 0xFF) | ((devicenummer & 0xFF)<<4))
+            FunktionSettingArray.append(funktiondic)
+         }
+         FunktionArray.append(FunktionSettingArray)
+         FunktionTable.reloadData()
+         
+         var   KanalSettingArray = [[String:UInt8]]()
+         
          for kanal:UInt8 in 0..<8
          {
             var kanaldic = [String:UInt8]()
@@ -67,34 +67,41 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
             kanaldic["state"]  = 0
             kanaldic["modelnummer"]  = model
             kanaldic["model"]  = model
-            SettingArray.append(kanaldic)
+            KanalSettingArray.append(kanaldic)
          }// for kanal
+         
+         KanalArray.append(KanalSettingArray)   // Daten aller Modelle
+         
+         
+         var   MixingSettingArray = [[String:UInt8]]()
+         for mixingindex:UInt8 in 0..<4
+         {
+            var mixingdic = [String:UInt8]()
+            mixingdic["mixnummer"] = mixingindex
+            mixingdic["mixart"] = 2
+            mixingdic["canala"] = 0x08
+            mixingdic["canalb"] = 0x08
+            mixingdic["mixing"] = 0 // verwendet als Mix xy
+            MixingSettingArray.append(mixingdic)
+         }
+         MixingSettingArray[0]["mixart"] = 0x01
+         MixingSettingArray[1]["mixart"] = 0x02
+         MixingSettingArray[2]["mixart"] = 0x00
+         MixingSettingArray[3]["mixart"] = 0x00
+         MixingArray.append(MixingSettingArray)
       }// for model
-      ModelArray.append(SettingArray)   // Daten aller Modelle
+      
+      KanalTable.dataSource = self
+      KanalTable.delegate = self
+      FunktionTable.reloadData()
       KanalTable.reloadData()
-      
-      var   MixingSettingArray = [[String:UInt8]]()
-      for mixingindex:UInt8 in 0..<4
-      {
-         var mixingdic = [String:UInt8]()
-         mixingdic["mixnummer"] = mixingindex
-         mixingdic["mixart"] = 0
-         mixingdic["canala"] = 0x08
-         mixingdic["canalb"] = 0x08
-         mixingdic["mixing"] = 0 // verwendet als Mix xy
-         MixingSettingArray.append(mixingdic)
-      }
-      MixingSettingArray[0]["mixart"] = 0x01
-      MixingSettingArray[1]["mixart"] = 0x02
-      MixingArray.append(MixingSettingArray)
       MixingTable.reloadData()
-      
       //Device
       var     default_DeviceArray:[String] = ["L_H","L_V","R_H","R_V","S_L","S_R","Sch","-"]
       // Funktion
       var     default_FunktionArray:[String] = ["Seite","Hoehe","Quer","Motor","Quer L","Quer R","Lande","Aux"]
 
-      var            FunktionArray = [UInt8]()
+      //var            FunktionArray = [UInt8]()
       
       (SettingTab.selectedTabViewItem?.view?.viewWithTag(100) as! NSTextField).stringValue =  "M 0"
 
@@ -102,11 +109,28 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       Halt_Taste.toolTip = "HALT vor Aenderungen im EEPROM"
       
       var    container:NSTextContainer = EE_dataview.textContainer ?? NSTextContainer()
-        
+      /*
+      var z:Int = 0
+      print("KanalArray count: \(KanalArray.count)")
+      print("KanalArray0  count: \(KanalArray[0].count)")
+      for zeile in KanalArray
+      {
+         print("zeile: \(z)")
+         var k:Int = 0
+         for element in zeile
+         {
+            print("element \(k) \(element)")
+            k += 1
+         }
+         z += 1
+      }
+       */
+      print("end viewDidAppear")  
    } // end viewDidAppear
 
    override func viewDidLoad() 
    {
+      print("viewDidLoad")
       super.viewDidLoad()
       self.view.window?.acceptsMouseMovedEvents = true
       //let view = view[0] as! NSView
@@ -134,7 +158,8 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
    
       SettingTab.selectTabViewItem(at: 0)
       
-      var views:[NSView] = SettingTab.selectedTabViewItem?.view?.subviews ?? [NSView]()
+      //var views:[NSView] = SettingTab.selectedTabViewItem?.view?.subviews ?? [NSView]()
+      /*
       var index:Int = 0
       for element in views
       {
@@ -142,8 +167,8 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          print("index: \(index) tag: \(t)")
          index += 1
       }
-   
-   
+   */
+      print("end viewDidLoad")
    
    } // end viewDidLoad
 
@@ -164,17 +189,191 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
    
    
    
+   // MARK: Actions
+   @IBAction func report_TableView(_ sender: NSPopUpButtonCell)
+   {
+      print("reportTableView clicked: \(KanalTable.clickedRow) \(KanalTable.clickedColumn)")
+      let ident = sender.identifier
+   print("sender ident \( ident)")
+   }
+   
+   
    // MARK: TableView
    // http://stackoverflow.com/questions/36365242/cocoa-nspopupbuttoncell-not-displaying-selected-value
-
-   func numberOfRowsInTableView(tableView: NSTableView) -> Int
+   
+  /* 
+   func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? 
    {
       
-      //int tabindex = [aTableView tag]%100;
-      int tabindex = [SettingTab indexOfTabViewItem:[SettingTab selectedTabViewItem]];
+       return SubView(text: items[row])
+   }
+*/
+   //func numberOfRowsInTableView(tableView: NSTableView) -> Int
+   func numberOfRows(in tableView: NSTableView) -> Int
+   {
+      
+      var tagindex:Int = (tableView.tag);
+      tagindex /= 100
+      //var tabindex:Int = SettingTab.indexOfTabViewItem(SettingTab.selectedTabViewItem ?? NSTabViewItem())
+      var ident = tableView.identifier
+      switch tagindex
+      {
+      case 4: // Kanal
+         //print("numberOfRowsInTableView: kanal \(KanalArray.count)")
+         if (KanalArray.count > 0)
+         {
+            return KanalArray[0].count
+         }
+         else
+         {
+            return 4
+         }
+      case 5: // Mixing   
+         //print("numberOfRowsInTableView: mixing")
+         if (MixingArray.count > 0)
+         {
+            //print("numberOfRowsInTableView: mixing count \(MixingArray[0].count)")
+            return MixingArray[0].count
+         }
+         else
+         {
+            //print("numberOfRowsInTableView: mixing anz 0")
+            return 1
+         }
 
+         //return MixingArray.count
+      case 6:// Device
+         //print("numberOfRowsInTableView: device")
+         
+         return DeviceArray.count
+      case 7:// Funktion
+         //print("numberOfRowsInTableView: funktion")
+         if (FunktionArray.count > 0)
+         {
+            return FunktionArray[0].count
+         }
+         else
+         {
+            return 4
+         }
+         //return FunktionArray.count
+    default:
+         break
+      }
+      
+
+     return 0 
    }// numberOfRowsInTableView
 
+   
+func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColumn?, row: Int) -> Any?
+
+   {
+      let tagindex:Int = tableView.tag/100;
+      let colident = tableColumn?.identifier.rawValue
+     
+      //print("objectValueFor colident: \(colident ??  "nada") ")
+
+      switch tagindex
+      {
+      case 4: // Kanal
+         //print("objectValueFor: kanal anz: \(KanalArray[0].count)")
+         return KanalArray[0][row][tableColumn!.identifier.rawValue]
+         if (colident == "nummer")
+         {
+            return KanalArray[0][row]["nummer"]
+         }
+         else if (colident == "richtung")
+         {
+            return KanalArray[0][row]["richtung"]
+         }
+      case 5: // Mixing   
+         //print("objectValueFor: mixing")
+         return MixingArray[0][row][tableColumn!.identifier.rawValue]
+      case 6:// Device
+         //print("objectValueFor: device")
+         return DeviceArray[0][row]
+      case 7:// Funktion
+         //print("objectValueFor: funktion")
+         return FunktionArray[0][row][tableColumn!.identifier.rawValue]
+      default:
+         break
+      } // switch tagindex
+      
+      return 0
+   } //objectValueFor
+   
+   
+   /*
+    
+    - (void)tableView:(NSTableView *)tableView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
+    {
+      [[self.data objectAtIndex:row] setValue:object forKey:tableColumn.identifier];
+    }
+
+    */
+   /*
+   func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
+     //let person = people[row]
+      let tagindex:Int = tableView.tag/100;
+      let colident = tableColumn?.identifier.rawValue
+
+   //  print("tableView viewFor ident: \(colident) tag: \(tagindex)")
+     guard let cell = tableView.makeView(withIdentifier: tableColumn!.identifier, owner: self) as? NSTableCellView else { return nil }
+     if (tagindex == 4)
+      {
+     if (tableColumn?.identifier)!.rawValue == "nummer" 
+      {
+        print("tableView viewFor nummer da")
+        
+     //    cell.textField?.stringValue = person.firstName
+     }
+     }
+      /*
+      else if (tableColumn?.identifier)!.rawValue == "lastName" {
+         cell.textField?.stringValue = person.lastName
+     } else {
+         cell.textField?.stringValue = person.mobileNumber
+     }
+     */
+     return nil
+   }
+   */
+   private func tableView(tableView: NSTableView, setObjectValue object: AnyObject?, forTableColumn tableColumn: NSTableColumn?, row: Int) 
+   {
+      let tagindex:Int = (tableView.tag/100);
+      let colident = tableColumn?.identifier.rawValue
+      print("setObjectValue colident: \(colident) object: \(object)")
+      switch tagindex
+      {
+      case 4: // Kanal
+         KanalArray[0][row][colident! ] = UInt8(object as! Int)
+         print("setObjectValueFor: kanal colident: \(colident) object: \(object)")
+         
+      case 500: // Mixing   
+         print("objectValueFor: mixing")
+         //return MixingArray[row]
+      case 600:// Device
+         print("objectValueFor: device")
+         //return DeviceArray[tagindex]
+      case 700:// Funktion
+         print("objectValueFor: funktion")
+         //return FunktionArray[row]
+      default:
+         break
+      }
+    
+     
+      KanalTable.reloadData()  
+   }//setObjectValue
+   
+  func tableViewSelectionDidChange(_ notification: Notification)
+   {
+      print("tableViewSelectionDidChange")
+   }
+   
+   
+   
    // MARK: Variablen
    var                     dumpCounter:Int = 0
    
@@ -205,11 +404,11 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
    var            DiagrammExpoDatenArray = [UInt8]()
    var            USB_EEPROMArray = [UInt8]()
    var            ChecksummenArray = [UInt8]()
-   var            ModelArray = [[[String:UInt8]]]()
+   var            KanalArray = [[[String:UInt8]]]()
    var            FunktionArray = [[[String:UInt8]]]()
    var            MixingArray = [[[String:UInt8]]]()
    
-   
+   var            DeviceArray = [[[String:UInt8]]]()
    var            Math = rMath()
    var            checksumme:Int = 0
    
@@ -298,6 +497,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
 
    @IBOutlet      weak var   FunktionTable:NSTableView!
    @IBOutlet      weak var   MixingTable:NSTableView!
+   @IBOutlet      weak var   DispatchTable:NSTableView!
 
    
    @IBOutlet      weak var  FixSettingTaste:NSButton!

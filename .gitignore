@@ -9,7 +9,6 @@ build/*
 *.lst
 *.map
 *.sym
-/H0:Interface.xcodeproj/*
 *.hex
 *.o
 .dep/

@@ -168,6 +168,11 @@ class rViewController: NSViewController, NSWindowDelegate
 {
    let notokimage :NSImage = NSImage(named:NSImage.Name(rawValue: "notok_image"))!
    let okimage :NSImage = NSImage(named:NSImage.Name(rawValue: "ok_image"))!
+   
+ //  let notokimage :NSImage = NSImage(named:NSImage.Name(rawValue: "notok_image"))!
+//   let okimage :NSImage = NSImage(named:NSImage.Name(rawValue: "ok_image"))!
+ 
+   
    // Robot
    var z0:Float = 30 // Hoehe Drehpunkt 0
    var l0:Float = 1// laenge Arm 0
