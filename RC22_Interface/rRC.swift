@@ -30,7 +30,8 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       
       dispatchkanalpop.removeAllItems()
       dispatchdevicepop.removeAllItems()
-
+      dispatchfunktionpop.removeAllItems()
+      
       default_ONArray = [okimage, notokimage]
       
       for model:UInt8 in 0..<3
@@ -96,16 +97,22 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          
          
          var   DispatchSettingArray = [[String:UInt8]]()
-         for dispatchindex:UInt8 in 0..<4
+         for dispatchindex:UInt8 in 0..<8
          {
+            let deveicedefault = Int(dispatchindex) // standardwert
             var dispatchdic = [String:UInt8]()
-            dispatchdic["dispatchnummer"] = 7-dispatchindex
-            dispatchdic["dispatchfunktion"] = 2
-            let deveicedefault = Int(dispatchindex)
+            
+            dispatchdic["dispatchnummer"] = dispatchindex
+            
+            let funktionstring = default_FunktionArray[deveicedefault]
+            dispatchfunktionpop.addItem(withTitle: funktionstring)
+            dispatchdic["dispatchfunktion"] = (dispatchindex ) & 0x07
+            
             let devicestring = default_DeviceArray[deveicedefault]
-            dispatchdic["dispatchkanal"] = dispatchindex + 2
             dispatchdevicepop.addItem(withTitle: devicestring)
-            dispatchdic["dispatchdevice"] = dispatchindex + 5
+            
+            dispatchdic["dispatchkanal"] = dispatchindex 
+            dispatchdic["dispatchdevice"] = (dispatchindex ) & 0x07
             dispatchdic["dispatchgo"] = 1 // verwendet 
             dispatchdic["dispatchonimage"] = 1 // verwendet
             
@@ -134,7 +141,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
    
       //var            FunktionArray = [UInt8]()
       
-      (SettingTab.selectedTabViewItem?.view?.viewWithTag(100) as! NSTextField).stringValue =  "M 0"
+      (SettingTab.selectedTabViewItem?.view?.viewWithTag(100) as! NSTextField).stringValue =  "Mod 0"
 
       eepromwritestatus = 0
       Halt_Taste.toolTip = "HALT vor Aenderungen im EEPROM"
@@ -221,14 +228,22 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       }
    }
    
-   @IBAction func report_dispatchPop(_ sender: NSPopUpButton) 
+   @IBAction func report_dispatchfunktionPop(_ sender: NSPopUpButton) 
    {
-      print("report_dispatchdevicepop item: \(sender.indexOfSelectedItem)")
+      print("report_dispatchfunktionPop item: \(sender.indexOfSelectedItem)")
+      if (clickeddispacharrayrow >= 0)
+      {
+      let itemstring = sender.titleOfSelectedItem
+      DispatchArray[0][clickeddispacharrayrow]["dispatchfunktion"] = UInt8(sender.indexOfSelectedItem) 
+      DispatchTable.reloadData()
+      }
+
+      
    }
 
 
  
-   var     default_DeviceArray:[String] = ["L_H","L_V","R_H","R_V","S_L","Schieber_R","Schalter","-"]
+   var     default_DeviceArray:[String] = ["Pitch_L_H","Pitch_L_V","Pitch_R_H","Pitch_R_V","Schieber_L","Schieber_R","Schalter","leer"]
    var     default_FunktionArray:[String] = ["Seite","Hoehe","Quer","Motor","Quer L","Quer R","Lande","Aux"]
 
    var default_ONArray:[NSImage] = [NSImage]()//[okimage, notokimage]
@@ -330,7 +345,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       case 6:// Dispatch
          //print("numberOfRowsInTableView: dispatch count: \(DispatchArray.count)")
          
-         return DispatchArray.count
+         return DispatchArray[0].count
          
       case 7:// Funktion
          //print("numberOfRowsInTableView: funktion")
@@ -363,16 +378,14 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       
       if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"dispatchdevice") )
       {
-         //let result = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "dispatchdevice") , owner: self) as! NSTableCellView 
          guard let result = tableView.makeView(withIdentifier: tableColumn!.identifier, owner: self) as? NSTableCellView else 
          {
             print("dispatchdevice ist nil")
             return nil 
-            
          }
          let nummer = Int(DispatchArray[0][row]["dispatchdevice"] ?? 0)
          let wert:Int = nummer
-         print("dispatchdevice device: \(nummer)")
+         //print("dispatchdevice device: \(nummer)")
          //result.textField?.intValue = Int32(nummer) 
          result.textField?.stringValue = default_DeviceArray[wert]
          return result
@@ -388,7 +401,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          }
          let nummer = Int(DispatchArray[0][row]["dispatchkanal"] ?? 0)
          let wert:Int = nummer
-         print("dispatchkanal kanal: \(nummer)")
+         //print("dispatchkanal kanal: \(nummer)")
          
          result.textField?.intValue = Int32(nummer) 
  
@@ -407,12 +420,28 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          //let result = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "dispatchnummer") , owner: self) as? NSTableCellView
          let nummer = Int(DispatchArray[0][row]["dispatchnummer"] ?? 0)
          let wert:Int = nummer
-         print("dispatchnummer nummer: \(nummer)")
+         //print("dispatchnummer nummer: \(nummer)")
          result.textField?.intValue = Int32(nummer) 
          
          return result
       }
-   
+  
+      else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"dispatchfunktion") )
+      {
+         guard let result = tableView.makeView(withIdentifier: tableColumn!.identifier, owner: self) as? NSTableCellView else 
+         {
+            print("dispatchfunktion ist nil")
+            return nil 
+            
+         }
+
+         let wert = Int(DispatchArray[0][row]["dispatchfunktion"] ?? 0)
+         //print("dispatchfunktion wert: \(wert)")
+         result.textField?.stringValue = default_FunktionArray[wert]
+         
+         return result
+      }
+
       else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"dispatchonimage") )
       {
          guard let result = tableView.makeView(withIdentifier: tableColumn!.identifier, owner: self) as? NSTableCellView else 
@@ -423,7 +452,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          }
          let nummer = Int(DispatchArray[0][row]["dispatchonimage"] ?? 0)
          let wert:Int = nummer
-         print("dispatchnummer onimage: \(wert)")
+         //print("dispatchnummer onimage: \(wert)")
          //https://stackoverflow.com/questions/37100846/osx-swift-add-image-into-nstableview
          result.imageView?.image = default_ONArray[wert]
          return result
@@ -626,7 +655,7 @@ func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColu
 
    @IBOutlet    var     dispatchkanalpop:NSPopUpButton!
    @IBOutlet    var     dispatchdevicepop:NSPopUpButton!
-   @IBOutlet    var     dispatchpop:NSPopUpButton!
+   @IBOutlet    var     dispatchfunktionpop:NSPopUpButton!
    
   
    
