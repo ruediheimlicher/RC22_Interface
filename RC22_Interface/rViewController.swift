@@ -283,53 +283,7 @@ class rViewController: NSViewController, NSWindowDelegate
       // servoPfad
       servoPfad?.setStartposition(x: 0x800, y: 0x800, z: 0)
       
-      // Pot 0
-     /* 
-      Pot0_Slider.integerValue = Int(ACHSE0_START)
-      Pot0_Feld.integerValue = Int(ACHSE0_START)
-      let intpos0 = UInt16(Float(ACHSE0_START) * FAKTOR0)
-      Pot0_Feld.integerValue = Int(UInt16(Float(ACHSE0_START) * FAKTOR0))
-      Pot0_Stepper_L.integerValue = 0
-      Pot0_Stepper_L_Feld.integerValue = 0
-      Pot0_Stepper_H.integerValue = Int(Pot0_Slider.maxValue)
-      Pot0_Stepper_H_Feld.integerValue = Int(Pot0_Slider.maxValue)
-      
-      // Pot 1
-      Pot1_Slider.integerValue = Int(ACHSE1_START)
-      //Pot1_Feld.integerValue = Int(ACHSE1_START)
-      let intpos1 = UInt16(Float(ACHSE1_START) * FAKTOR1)
-      Pot1_Feld.integerValue = Int(UInt16(Float(ACHSE1_START) * FAKTOR1))
-      //Pot1_Feld.integerValue = Int(intpos1)
-      Pot1_Stepper_L.integerValue = 0
-      Pot1_Stepper_L_Feld.integerValue = 0 
-      Pot1_Stepper_H.integerValue = Int(Pot1_Slider.maxValue)
-      Pot1_Stepper_H_Feld.integerValue = Int(Pot1_Slider.maxValue)
-      print("intpos0: \(intpos0) intpos1: \(intpos1)")
-      // Pot 2
-      Pot2_Slider.integerValue = Int(ACHSE2_START)
-      Pot2_Feld.integerValue = Int(ACHSE2_START)
-      Pot2_Stepper_L.integerValue = 0
-      Pot2_Stepper_L_Feld.integerValue = 0 
-      Pot2_Stepper_H.integerValue = Int(Pot2_Slider.maxValue)
-      Pot2_Stepper_H_Feld.integerValue = Int(Pot2_Slider.maxValue)
-      
-      // Pot 3
-      Pot3_Slider.integerValue = Int(ACHSE3_START)
-      Pot3_Feld.integerValue = Int(ACHSE3_START)
-      Pot3_Stepper_L.integerValue = 0
-      Pot3_Stepper_L_Feld.integerValue = 0 
-      Pot3_Stepper_H.integerValue = Int(Pot3_Slider.maxValue)
-      Pot3_Stepper_H_Feld.integerValue = Int(Pot3_Slider.maxValue)
-      
-        
-      teensy.write_byteArray[ACHSE0_BYTE_H] = UInt8(((ACHSE0_START) & 0xFF00) >> 8) // hb
-      teensy.write_byteArray[ACHSE0_BYTE_L] = UInt8(((ACHSE0_START) & 0x00FF) & 0xFF) // lb
 
-      teensy.write_byteArray[ACHSE1_BYTE_H] = UInt8(((ACHSE1_START) & 0xFF00) >> 8) // hb
-      teensy.write_byteArray[ACHSE1_BYTE_L] = UInt8(((ACHSE1_START) & 0x00FF) & 0xFF) // lb
-      
-      teensy.write_byteArray[0] = SET_0
-     */
    }
    
    override func viewDidAppear() 
