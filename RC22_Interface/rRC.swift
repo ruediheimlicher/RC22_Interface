@@ -23,8 +23,8 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       print ("RC viewDidAppear selectedDevice: \(selectedDevice)")
       KanalTable.dataSource = self
       KanalTable.delegate = self
-      FunktionTable.dataSource = self
-      FunktionTable.delegate = self
+ //     FunktionTable.dataSource = self
+ //     FunktionTable.delegate = self
       MixingTable.dataSource = self
       MixingTable.delegate = self
       
@@ -33,6 +33,11 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       dispatchfunktionpop.removeAllItems()
       
       default_ONArray = [okimage, notokimage]
+      // https://stackoverflow.com/questions/43510646/how-to-change-font-size-of-nstableheadercell
+      DispatchTable.tableColumns.forEach { (column) in column.headerCell.attributedStringValue = NSAttributedString(string: column.title, attributes: [NSAttributedStringKey.font: NSFont.boldSystemFont(ofSize: 12)])
+
+          // Optional: you can change title color also jsut by adding NSForegroundColorAttributeName
+      }
       
       for model:UInt8 in 0..<3
       { 
@@ -51,23 +56,23 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
             FunktionSettingArray.append(funktiondic)
          }
          FunktionArray.append(FunktionSettingArray)
-         FunktionTable.reloadData()
+         //FunktionTable.reloadData()
          
          var   KanalSettingArray = [[String:UInt8]]()
          
          for kanal:UInt8 in 0..<8
          {
             var kanaldic = [String:UInt8]()
-            kanaldic["nummer"] = kanal
-            kanaldic["art"] = 0
+            kanaldic["kanalnummer"] = kanal
+            kanaldic["art"] = kanal & 0x03
             kanaldic["richtung"] = 1
-            kanaldic["levela"]  = 2
+            kanaldic["levela"]  = kanal & 0x03
             kanaldic["levelb"]  = 3
-            kanaldic["expoa"]  = 4
-            kanaldic["expob"]  = 2
+            kanaldic["expoa"]  = 7-kanal & 0x03
+            kanaldic["expob"]  = kanal & 0x03
             kanaldic["mix"]  = 1
             kanaldic["mixkanal"]  = kanal
-            kanaldic["go"]  = 0
+            kanaldic["kanalonimage"]  = kanal%2
             kanaldic["state"]  = 0
             kanaldic["modelnummer"]  = model
             kanaldic["model"]  = model
@@ -114,7 +119,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
             dispatchdic["dispatchkanal"] = dispatchindex 
             dispatchdic["dispatchdevice"] = (dispatchindex ) & 0x07
             dispatchdic["dispatchgo"] = 1 // verwendet 
-            dispatchdic["dispatchonimage"] = 1 // verwendet
+            dispatchdic["dispatchonimage"] = dispatchindex%2 // verwendet
             
             DispatchSettingArray.append(dispatchdic)
          }
@@ -130,7 +135,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       
       KanalTable.dataSource = self
       KanalTable.delegate = self
-      FunktionTable.reloadData()
+      //FunktionTable.reloadData()
       KanalTable.reloadData()
       MixingTable.reloadData()
       DispatchTable.reloadData()
@@ -237,8 +242,17 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       DispatchArray[0][clickeddispacharrayrow]["dispatchfunktion"] = UInt8(sender.indexOfSelectedItem) 
       DispatchTable.reloadData()
       }
+   }
 
-      
+   @IBAction func report_artPop(_ sender: NSPopUpButton) 
+   {
+      print("report_artPop item: \(sender.indexOfSelectedItem)")
+      if (clickedkanalarrayrow >= 0)
+      {
+      let itemstring = sender.titleOfSelectedItem
+      KanalArray[0][clickedkanalarrayrow]["art"] = UInt8(sender.indexOfSelectedItem) 
+      KanalTable.reloadData()
+      }
    }
 
 
@@ -246,6 +260,13 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
    var     default_DeviceArray:[String] = ["Pitch_L_H","Pitch_L_V","Pitch_R_H","Pitch_R_V","Schieber_L","Schieber_R","Schalter","leer"]
    var     default_FunktionArray:[String] = ["Seite","Hoehe","Quer","Motor","Quer L","Quer R","Lande","Aux"]
 
+   var default_ArtArray = ["Stick","Schieber","Schalter","-"]
+   
+   var default_LevelArray = ["1/1","7/8","3/4","5/8","1/2"]
+   var default_ExpoArray = ["1/1","7/8","3/4","5/8","1/2"]
+ 
+   
+   
    var default_ONArray:[NSImage] = [NSImage]()//[okimage, notokimage]
    @objc func usbstatusAktion(_ notification:Notification) 
   {
@@ -280,11 +301,11 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       let zeile = (tableView.clickedRow)
       let kolonne = tableView.clickedColumn
       
-      print("row \(zeile), col \(kolonne) ident: \(ident)")
+      print("*** report_tableRowWasClicked row \(zeile), col \(kolonne) ident: \(ident)")
       switch identstring
       {
       case "dispatch":
-         print("table dispatch")
+         print("*********  ******  table dispatch clicked  zeile: \(zeile)")
          clickeddispacharrayrow = Int(zeile)
          if (kolonne == 4) // ON
          {
@@ -292,6 +313,20 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
             DispatchArray[0][zeile]["dispatchonimage"]  = 1 - wert
             DispatchTable.reloadData()
          }
+         
+      case "kanal":
+         print("*********  ******  table kanal clicked zeile: \(zeile)")
+         clickedkanalarrayrow = Int(zeile)
+         if (kolonne == 7) // ON
+         {
+            let wert = UInt8(KanalArray[0][zeile]["kanalonimage"] ?? 0 )
+            print("table kanal wert vor: \(wert)")
+            KanalArray[0][zeile]["kanalonimage"]  = 1 - wert
+            //rundeFeld.intValue = Int32(KanalArray[0][zeile]["kanalonimage"] ?? 0)
+            //print("table kanal wert nach: \(KanalArray[0][zeile]["kanalonimage"])")
+            KanalTable.reloadData()
+         }
+       
       default:
          break
       }
@@ -454,10 +489,133 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          let wert:Int = nummer
          //print("dispatchnummer onimage: \(wert)")
          //https://stackoverflow.com/questions/37100846/osx-swift-add-image-into-nstableview
+         // Image muss mit TableCellView verlinkt sein!!! S. Screenshot TableView Image
          result.imageView?.image = default_ONArray[wert]
          return result
 
       } // onimage
+      
+  // Kanal
+      if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"kanalnummer") )
+      {
+         guard let result = tableView.makeView(withIdentifier: tableColumn!.identifier, owner: self) as? NSTableCellView else 
+         {
+            print("kanal kanalnummer ist nil")
+            return nil 
+            
+         }
+         let wert = Int(KanalArray[0][row]["kanalnummer"] ?? 0)
+         //print("kanalnummer wert: \(wert)")
+         result.textField?.integerValue = wert
+         return result
+      } // kanalnummer
+     //default_ArtArray
+      else if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"art") )
+      {
+         guard let result = tableView.makeView(withIdentifier: tableColumn!.identifier, owner: self) as? NSTableCellView else 
+         {
+            print("kanal art ist nil")
+            return nil 
+            
+         }
+        var wert = Int(KanalArray[0][row]["art"] ?? 0)
+         if wert > default_ArtArray.count - 1
+         {
+            wert = 3
+         }
+         //print("kanalnummer wert: \(wert)")
+         result.textField?.stringValue = default_ArtArray[wert]
+         return result
+      } // kanalnummer
+      else if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"levela") )
+      {
+         guard let result = tableView.makeView(withIdentifier: tableColumn!.identifier, owner: self) as? NSTableCellView else 
+         {
+            print("kanal levela ist nil")
+            return nil 
+         }
+        var wert = Int(KanalArray[0][row]["levela"] ?? 0)
+         if wert > default_LevelArray.count - 1
+         {
+            wert = 4
+         }
+         //print("levela wert: \(wert)")
+         result.textField?.stringValue = default_LevelArray[wert]
+         return result
+      } // levela
+      else if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"levelb") )
+      {
+         guard let result = tableView.makeView(withIdentifier: tableColumn!.identifier, owner: self) as? NSTableCellView else 
+         {
+            print("kanal levelb ist nil")
+            return nil 
+         }
+        var wert = Int(KanalArray[0][row]["levelb"] ?? 0)
+         if wert > default_LevelArray.count - 1
+         {
+            wert = 4
+         }
+         //print("levelb wert: \(wert)")
+         result.textField?.stringValue = default_LevelArray[wert]
+         return result
+      } // levelb
+      else if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"expoa") )
+      {
+         guard let result = tableView.makeView(withIdentifier: tableColumn!.identifier, owner: self) as? NSTableCellView else 
+         {
+            print("kanal expoa ist nil")
+            return nil 
+         }
+        var wert = Int(KanalArray[0][row]["expoa"] ?? 0)
+         if wert > default_LevelArray.count - 1
+         {
+            wert = 4
+         }
+         //print("expoa wert: \(wert)")
+         result.textField?.stringValue = default_ExpoArray[wert]
+         return result
+      } // expoa
+      else if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"expob") )
+      {
+         guard let result = tableView.makeView(withIdentifier: tableColumn!.identifier, owner: self) as? NSTableCellView else 
+         {
+            print("kanal expoa ist nil")
+            return nil 
+         }
+        var wert = Int(KanalArray[0][row]["expob"] ?? 0)
+         if wert > default_LevelArray.count - 1
+         {
+            wert = 4
+         }
+         //print("expob wert: \(wert)")
+         result.textField?.stringValue = default_ExpoArray[wert]
+         return result
+      } // expoa
+      else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"kanalonimage") )
+      {
+         
+         guard let result = tableView.makeView(withIdentifier: tableColumn!.identifier, owner: self) as? NSTableCellView else 
+         {
+            print("kanalon ist nil")
+            return nil 
+         }
+         let nummer = Int(KanalArray[0][row]["kanalonimage"] ?? 0)
+         let wert:Int = nummer
+         print("kanal on row: \(row) wert: \(wert)")
+         //https://stackoverflow.com/questions/37100846/osx-swift-add-image-into-nstableview
+         let bild:NSImage = default_ONArray[wert]
+         result.imageView?.image = default_ONArray[wert]
+         
+         return result
+
+      } // onimage
+
+      
+      
+      
+      
+      
+      
       return nil
    }
    
@@ -482,7 +640,7 @@ func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColu
          }
          let nummer = Int(DispatchArray[0][row]["dispatchdevice"] ?? 0)
          let wert:Int = nummer
-         print("dispatchdevice device: \(nummer)")
+         //print("dispatchdevice device: \(nummer)")
          //result.textField?.intValue = Int32(nummer) 
          result.textField?.stringValue = default_DeviceArray[wert]
          return result
@@ -498,7 +656,7 @@ func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColu
          }
          let nummer = Int(DispatchArray[0][row]["dispatchkanal"] ?? 0)
          let wert:Int = nummer
-         print("dispatchkanal kanal: \(nummer)")
+         //print("dispatchkanal kanal: \(nummer)")
          
          result.textField?.intValue = Int32(nummer) 
  
@@ -517,12 +675,46 @@ func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColu
          //let result = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "dispatchnummer") , owner: self) as? NSTableCellView
          let nummer = Int(DispatchArray[0][row]["dispatchnummer"] ?? 0)
          let wert:Int = nummer
-         print("dispatchnummer nummer: \(nummer)")
+         //print("dispatchnummer nummer: \(nummer)")
          result.textField?.intValue = Int32(nummer) 
          
          return result
       }
      
+      // Kanal
+      if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"kanalnummer") )
+      {
+         guard let result = tableView.makeView(withIdentifier: tableColumn!.identifier, owner: self) as? NSTableCellView else 
+         {
+            print("kanalnummer ist nil")
+            return nil 
+         }
+
+         let nummer = Int(KanalArray[0][row]["kanalnummer"] ?? 0)
+         let wert:Int = nummer
+         //print("kanalnummer nummer: \(nummer)")
+         result.textField?.intValue = Int32(nummer) 
+         
+         return result
+      }
+      else if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"kanalonimage") )
+      {
+         guard let result = tableView.makeView(withIdentifier: tableColumn!.identifier, owner: self) as? NSTableCellView else 
+         {
+            print("kanalonimage ist nil")
+            return nil 
+         }
+
+         let nummer = Int(KanalArray[0][row]["kanalonimage"] ?? 0)
+         let wert:Int = nummer
+         //print("kanalonimage nummer: \(nummer)")
+         result.imageView?.image = default_ONArray[wert]
+// KanalTable.reloadData()
+         
+         return result
+      }
+
+      
       
       return nil
    } //objectValueFor
@@ -639,6 +831,7 @@ func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColu
    var            checksumme:Int = 0
    var            clickeddispacharrayrow:Int = -1 // angeklickte Zeile
 
+   var            clickedkanalarrayrow:Int = -1 // angeklickte Zeile
    
    var data: [[String: String]] = [[:]]
    
@@ -728,7 +921,7 @@ func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColu
    @IBOutlet   weak var      KanalTable:NSTableView!
   @IBOutlet      weak var   ExpoTabel:NSTableView!
 
-   @IBOutlet      weak var   FunktionTable:NSTableView!
+//   @IBOutlet      weak var   FunktionTable:NSTableView!
    @IBOutlet      weak var   MixingTable:NSTableView!
    @IBOutlet      weak var   DispatchTable:NSTableView!
 
