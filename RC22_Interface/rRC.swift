@@ -25,8 +25,10 @@ class rPopUpZelle:NSTableCellView, NSMenuDelegate,NSTableViewDataSource
       let zeile = sup.row(for: self)
       let kolonne = sup.column(for: self)
       let tabletag = sup.tag
-      //print("sup: \(sup)")
       itemindex = sender.indexOfSelectedItem
+      print("popupAction tag: \(sender.tag)  itemindex: \(sender.indexOfSelectedItem) ***    zeile: \(zeile) kolonne: \(kolonne)  tabletag: \(tabletag)")
+      //print("sup: \(sup)")
+      
       var notDic = [String:Int]()
       notDic["itemindex"] = itemindex
       notDic["zeile"] = zeile
@@ -174,11 +176,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
             
        //     let funktionstring = default_FunktionArray[deveicedefault]
       //      dispatchfunktionpop.addItem(withTitle: funktionstring)
-            dispatchdic["dispatchfunktion"] = (dispatchindex ) & 0x07
-            
-         //   let devicestring = default_DeviceArray[deveicedefault]
-        //    dispatchdevicepop.addItem(withTitle: devicestring)
-            
+            dispatchdic["dispatchfunktion"] = 1//(dispatchindex ) & 0x07 // ausgesuchte funktion
             dispatchdic["dispatchkanal"] = dispatchindex 
             dispatchdic["dispatchdevice"] = (dispatchindex ) & 0x07
             dispatchdic["dispatchgo"] = 1 // verwendet 
@@ -355,22 +353,57 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          case 4: // Kanal
          DispatchArray[0][zeile]["dispatchkanal"]  = UInt8(itemindex)
          DispatchTable.reloadData()
+         /*
          for ident in 0..<DispatchArray[0].count-1
          {
          printArray(DispatchArray[0],index: ident)
          }
-        
+        */
          
          break
       case 5: // Mixing
          break
       case 6: // Dispatch
+         switch kolonne
+         {
+         case 1: // funktion
+            DispatchArray[0][zeile]["dispatchfunktion"]  = UInt8(itemindex)
+            DispatchTable.reloadData()
+            print("dispatchfunktion")
+            
+            //printArray(DispatchArray[0],index:2)
+            /*
+            for ident in 0..<DispatchArray[0].count-1
+            {
+            printArray(DispatchArray[0],index: ident)
+            }
+             */
+            break
+
+            
+         case 5: // dispatchpopup
+            DispatchArray[0][zeile]["dispatchpopup"]  = UInt8(itemindex)
+            DispatchTable.reloadData()
+            print("dispatchpopup")
+            //printArray(DispatchArray[0],index:5)
+            /*
+            for ident in 0..<DispatchArray[0].count-1
+            {
+            printArray(DispatchArray[0],index: ident)
+            }
+             */
+            break
+
+         default: break
+         }// switch kolonne
          DispatchArray[0][zeile]["dispatchpopup"]  = UInt8(itemindex)
          DispatchTable.reloadData()
+         /*
          for ident in 0..<DispatchArray[0].count-1
          {
          printArray(DispatchArray[0],index: ident)
          }
+          */
          break
       default:
          break
@@ -490,7 +523,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          print("\t\(keys[index]) \t \t\(d)")
       }
       var z = index
-        print("Zeile: \(z)")
+        //print("Zeile: \(z)")
       
       for k in keys
       {
@@ -503,6 +536,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
    //func numberOfRowsInTableView(tableView: NSTableView) -> Int
    func numberOfRows(in tableView: NSTableView) -> Int
    {
+      // PopUp: https://www.appcoda.com/macos-programming-tableview/
       var tagindex:Int = (tableView.tag);
       tagindex /= 100
       //var tabindex:Int = SettingTab.indexOfTabViewItem(SettingTab.selectedTabViewItem ?? NSTabViewItem())
@@ -580,6 +614,9 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          //result.textField?.intValue = Int32(nummer) 
          result.textField?.stringValue = default_DeviceArray[wert]
          return result
+      
+      
+      
       }
       else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"dispatchkanal") )
       {
@@ -619,19 +656,25 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
   
       else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"dispatchfunktion") )
       {
-         guard let result = tableView.makeView(withIdentifier: tableColumn!.identifier, owner: self) as? NSTableCellView else 
+         let popident = NSUserInterfaceItemIdentifier(rawValue:"popup")
+         guard let result = tableView.makeView(withIdentifier: popident, owner: self) as? rPopUpZelle else 
          {
             print("dispatchfunktion ist nil")
             return nil 
-            
          }
-
-         let wert = Int(DispatchArray[0][row]["dispatchfunktion"] ?? 0)
-         //print("dispatchfunktion wert: \(wert)")
-         result.textField?.stringValue = default_FunktionArray[wert]
-         
+         var wert = Int(DispatchArray[0][row]["dispatchfunktion"] ?? 0)
+         if wert > default_FunktionArray.count - 1
+         {
+            wert = 4
+         }
+         result.poptag = row
+         result.tablezeile = row
+         result.tablekolonne = tableView.column(for: result)
+         result.PopUp?.removeAllItems()
+         result.PopUp?.addItems(withTitles: default_FunktionArray)
+         result.PopUp?.selectItem(at: wert)
          return result
-      }
+      } // funktion
 
       else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"dispatchonimage") )
       {
@@ -670,7 +713,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          result.PopUp?.removeAllItems()
          result.PopUp?.addItems(withTitles: default_ArtArray)
          result.PopUp?.selectItem(at: wert)
-         print("dispatchpop row: \(row) kolonne: \(tableView.column(for: result))")
+  //       print("dispatchpop row: \(row) kolonne: \(tableView.column(for: result))")
          return result
       }//
       
@@ -770,6 +813,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          result.textField?.stringValue = default_ExpoArray[wert]
          return result
       } // expoa
+      
       else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"kanalonimage") )
       {
          
@@ -780,7 +824,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          }
          let nummer = Int(KanalArray[0][row]["kanalonimage"] ?? 0)
          let wert:Int = nummer
-         print("kanal on row: \(row) wert: \(wert)")
+   //      print("kanal on row: \(row) wert: \(wert)")
          //https://stackoverflow.com/questions/37100846/osx-swift-add-image-into-nstableview
          let bild:NSImage = default_ONArray[wert]
          result.imageView?.image = default_ONArray[wert]
