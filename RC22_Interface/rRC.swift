@@ -10,12 +10,59 @@ import Darwin
 
 let SET_RC:UInt8 = 0xA2
 
+class rPopUpZelle:NSTableCellView, NSMenuDelegate,NSTableViewDataSource
+{
+   @IBOutlet weak var PopUp:NSPopUpButton?
+   var poptag:Int = 0
+   var itemindex:Int = 0
+   var tablezeile:Int = 0
+   var tablekolonne:Int = 0
+    
+   @IBAction func popupAction(_ sender: NSPopUpButton)
+   {
+     // print("popupAction tag: \(sender.tag)    itemindex: \(sender.indexOfSelectedItem) titel: \(sender.titleOfSelectedItem)")
+      let sup = self.superview?.superview as! NSTableView
+      let zeile = sup.row(for: self)
+      let kolonne = sup.column(for: self)
+      let tabletag = sup.tag
+      //print("sup: \(sup)")
+      itemindex = sender.indexOfSelectedItem
+      var notDic = [String:Int]()
+      notDic["itemindex"] = itemindex
+      notDic["zeile"] = zeile
+      notDic["kolonne"] = kolonne
+      notDic["tabletag"] = tabletag
+      let nc = NotificationCenter.default
+      nc.post(name:Notification.Name(rawValue:"tablepop"),
+              object: nil,
+              userInfo: notDic)
+
+   }
+   @objc func popUpButtonUsed(_ sender: NSPopUpButton) 
+   {
+       print("popUpButtonUsed \(sender.indexOfSelectedItem)")
+   }
+   required init?(coder  aDecoder : NSCoder) 
+   {
+      super.init(coder: aDecoder)
+      self.PopUp?.target = self
+      self.PopUp?.action = #selector(popUpButtonUsed(_:))
+    }
+   override init(frame: CGRect) 
+   {
+         super.init(frame: frame)
+        // initialize what is needed
+     }
+  
+}
+
+
 
 class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableViewDelegate,NSComboBoxDataSource,NSComboBoxDelegate
 {
 
    
-   
+   var popup:rPopUpZelle! 
    var hintergrundfarbe = NSColor()
  
    override func viewDidAppear() 
@@ -32,12 +79,20 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       dispatchdevicepop.removeAllItems()
       dispatchfunktionpop.removeAllItems()
       
+      artpop.removeAllItems()
+      levelapop.removeAllItems()
+      levelbpop.removeAllItems()
+      expoapop.removeAllItems()
+      expobpop.removeAllItems()
+      
       default_ONArray = [okimage, notokimage]
       // https://stackoverflow.com/questions/43510646/how-to-change-font-size-of-nstableheadercell
       DispatchTable.tableColumns.forEach { (column) in column.headerCell.attributedStringValue = NSAttributedString(string: column.title, attributes: [NSAttributedStringKey.font: NSFont.boldSystemFont(ofSize: 12)])
-
           // Optional: you can change title color also jsut by adding NSForegroundColorAttributeName
-      }
+      }     
+      KanalTable.tableColumns.forEach { (column) in column.headerCell.attributedStringValue = NSAttributedString(string: column.title, attributes: [NSAttributedStringKey.font: NSFont.boldSystemFont(ofSize: 12)])
+         // Optional: you can change title color also jsut by adding NSForegroundColorAttributeName
+     }
       
       for model:UInt8 in 0..<3
       { 
@@ -60,11 +115,18 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          
          var   KanalSettingArray = [[String:UInt8]]()
          
+         artpop.addItems(withTitles: default_ArtArray)
+         levelapop.addItems(withTitles: default_LevelArray)
+         levelbpop.addItems(withTitles: default_LevelArray)
+         expoapop.addItems(withTitles: default_ExpoArray)
+         expobpop.addItems(withTitles: default_ExpoArray)
+         
          for kanal:UInt8 in 0..<8
          {
             var kanaldic = [String:UInt8]()
             kanaldic["kanalnummer"] = kanal
             kanaldic["art"] = kanal & 0x03
+           
             kanaldic["richtung"] = 1
             kanaldic["levela"]  = kanal & 0x03
             kanaldic["levelb"]  = 3
@@ -99,7 +161,8 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          MixingSettingArray[3]["mixart"] = 0x00
          MixingArray.append(MixingSettingArray)
       
-         
+         dispatchdevicepop.addItems(withTitles: default_DeviceArray)
+         dispatchfunktionpop.addItems(withTitles: default_FunktionArray)
          
          var   DispatchSettingArray = [[String:UInt8]]()
          for dispatchindex:UInt8 in 0..<8
@@ -109,18 +172,18 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
             
             dispatchdic["dispatchnummer"] = dispatchindex
             
-            let funktionstring = default_FunktionArray[deveicedefault]
-            dispatchfunktionpop.addItem(withTitle: funktionstring)
+       //     let funktionstring = default_FunktionArray[deveicedefault]
+      //      dispatchfunktionpop.addItem(withTitle: funktionstring)
             dispatchdic["dispatchfunktion"] = (dispatchindex ) & 0x07
             
-            let devicestring = default_DeviceArray[deveicedefault]
-            dispatchdevicepop.addItem(withTitle: devicestring)
+         //   let devicestring = default_DeviceArray[deveicedefault]
+        //    dispatchdevicepop.addItem(withTitle: devicestring)
             
             dispatchdic["dispatchkanal"] = dispatchindex 
             dispatchdic["dispatchdevice"] = (dispatchindex ) & 0x07
             dispatchdic["dispatchgo"] = 1 // verwendet 
             dispatchdic["dispatchonimage"] = dispatchindex%2 // verwendet
-            
+            dispatchdic["dispatchpopup"] = dispatchindex & 0x03 
             DispatchSettingArray.append(dispatchdic)
          }
          DispatchArray.append(DispatchSettingArray)
@@ -141,7 +204,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       DispatchTable.reloadData()
       
 
-      
+
       
    
       //var            FunktionArray = [UInt8]()
@@ -197,6 +260,8 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       NotificationCenter.default.addObserver(self, selector:#selector(usbstatusAktion(_:)),name:NSNotification.Name(rawValue: "usb_status"),object:nil)
 //      NotificationCenter.default.addObserver(self, selector:#selector(drehknopfAktion(_:)),name:NSNotification.Name(rawValue: "drehknopf"),object:nil)
    
+      NotificationCenter.default.addObserver(self, selector:#selector(tablePopAktion(_:)),name:NSNotification.Name(rawValue: "tablepop"),object:nil)
+
       teensy.write_byteArray[0] = SET_RC // Code
    
       SettingTab.selectTabViewItem(at: 0)
@@ -276,6 +341,42 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
      usbstatus = Int32(status)
   }
 
+   @objc func  tablePopAktion(_ notification:Notification) 
+   {
+      let info = notification.userInfo
+      let itemindex = info?["itemindex"] as! Int // 
+      let zeile = info?["zeile"] as! Int 
+      let kolonne = info?["kolonne"] as! Int 
+      var tabletag = info?["tabletag"] as! Int 
+      tabletag/=100
+      print("RC tablePopAktion itemindex:\t \(itemindex) zeile: \(zeile) kolonne: \(kolonne) tabletag: \(tabletag)")
+      switch tabletag
+      {
+         case 4: // Kanal
+         DispatchArray[0][zeile]["dispatchkanal"]  = UInt8(itemindex)
+         DispatchTable.reloadData()
+         for ident in 0..<DispatchArray[0].count-1
+         {
+         printArray(DispatchArray[0],index: ident)
+         }
+        
+         
+         break
+      case 5: // Mixing
+         break
+      case 6: // Dispatch
+         DispatchArray[0][zeile]["dispatchpopup"]  = UInt8(itemindex)
+         DispatchTable.reloadData()
+         for ident in 0..<DispatchArray[0].count-1
+         {
+         printArray(DispatchArray[0],index: ident)
+         }
+         break
+      default:
+         break
+      }// switch tabletag
+      
+   }
 
   @nonobjc override func windowShouldClose(_ sender: Any) 
   {
@@ -292,6 +393,8 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       let ident = sender.identifier
    print("sender ident \( ident)")
    }
+   
+   
    
    @IBAction private func report_tableRowWasClicked(_ tableView: NSTableView)
    {
@@ -313,6 +416,20 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
             DispatchArray[0][zeile]["dispatchonimage"]  = 1 - wert
             DispatchTable.reloadData()
          }
+         let row = DispatchTable.rowView(atRow: kolonne, makeIfNecessary: false)
+         let popident = NSUserInterfaceItemIdentifier(rawValue:"popup")
+         guard let pop = row?.view(atColumn: 5) as? rPopUpZelle else 
+         {
+            print("dispatchpop ist nil")
+            return 
+            
+         }
+        // let pop = row?.view(atColumn: 5) as? rPopUpZelle
+         let popindex = pop.PopUp?.indexOfSelectedItem
+         let titel = pop.PopUp?.titleOfSelectedItem
+         let ind = pop.itemindex
+         print("dispatch popindex: \(popindex) titel: \(titel) itemindex: \(ind)")
+         
          
       case "kanal":
          print("*********  ******  table kanal clicked zeile: \(zeile)")
@@ -343,10 +460,49 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
        return SubView(text: items[row])
    }
 */
+   func printTable(_ tableview:NSTableView)
+   {
+      let identarray = tableview.tableColumns
+      let zeilen = tableview.numberOfRows
+      for z in 0..<zeilen-1
+      {
+         for k in 0..<identarray.count-1
+         {
+         let ident = identarray[k].title
+         print("z: \(z) col: \(ident) ")
+         }
+      }
+      
+   }
+   func printArray(_ data:[[String:UInt8]] , index:Int)
+   {
+   
+      let zeilen = data.count
+      //let keys = Array(data.keys)
+      //var arr = [String]()
+
+      let keys = data[0].map {$0.key}
+      
+      for z in 0..<data[0].count-1
+      {
+         
+         let d:Int = Int(data[z][keys[index]] ?? 0)
+         print("\t\(keys[index]) \t \t\(d)")
+      }
+      var z = index
+        print("Zeile: \(z)")
+      
+      for k in keys
+      {
+         let d:Int = Int(data[z][k] ?? 0)
+ //        print("\t\(k) \t \t\(d)")
+      }
+ //     }
+   }
+   
    //func numberOfRowsInTableView(tableView: NSTableView) -> Int
    func numberOfRows(in tableView: NSTableView) -> Int
    {
-      
       var tagindex:Int = (tableView.tag);
       tagindex /= 100
       //var tabindex:Int = SettingTab.indexOfTabViewItem(SettingTab.selectedTabViewItem ?? NSTabViewItem())
@@ -494,6 +650,29 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          return result
 
       } // onimage
+      else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"dispatchpopup") )
+      {
+         let popident = NSUserInterfaceItemIdentifier(rawValue:"popup")
+         guard let result = tableView.makeView(withIdentifier: popident, owner: self) as? rPopUpZelle else 
+         {
+            print("dispatchpop ist nil")
+            return nil 
+            
+         }
+         var wert = Int(DispatchArray[0][row]["dispatchpopup"] ?? 0)
+          if wert > default_ArtArray.count - 1
+          {
+             wert = 4
+          }
+         result.poptag = row
+         result.tablezeile = row
+         result.tablekolonne = tableView.column(for: result)
+         result.PopUp?.removeAllItems()
+         result.PopUp?.addItems(withTitles: default_ArtArray)
+         result.PopUp?.selectItem(at: wert)
+         print("dispatchpop row: \(row) kolonne: \(tableView.column(for: result))")
+         return result
+      }//
       
   // Kanal
       if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"kanalnummer") )
@@ -850,6 +1029,12 @@ func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColu
    @IBOutlet    var     dispatchdevicepop:NSPopUpButton!
    @IBOutlet    var     dispatchfunktionpop:NSPopUpButton!
    
+   @IBOutlet    var     richtungpoppop:NSPopUpButton!
+   @IBOutlet    var     artpop:NSPopUpButton!
+   @IBOutlet    var     levelapop:NSPopUpButton!
+   @IBOutlet    var     levelbpop:NSPopUpButton!
+   @IBOutlet    var     expoapop:NSPopUpButton!
+   @IBOutlet    var     expobpop:NSPopUpButton!
   
    
    @IBOutlet     weak var      AdressPop:NSPopUpButton!
