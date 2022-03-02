@@ -621,8 +621,8 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          result.PopUp?.removeAllItems()
          result.PopUp?.addItems(withTitles: default_DeviceArray)
          result.PopUp?.selectItem(at: wert)
-         let popupCell = result.PopUp?.cell as! NSPopUpButtonCell
-         popupCell.arrowPosition = NSPopUpButton.ArrowPosition.noArrow
+ //        let popupCell = result.PopUp?.cell as! NSPopUpButtonCell
+  //       popupCell.arrowPosition = NSPopUpButton.ArrowPosition.noArrow
          
          return result
 
