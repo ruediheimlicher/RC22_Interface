@@ -621,8 +621,8 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          result.PopUp?.removeAllItems()
          result.PopUp?.addItems(withTitles: default_DeviceArray)
          result.PopUp?.selectItem(at: wert)
-         let popupCell = result.PopUp?.cell as! NSPopUpButtonCell
-         popupCell.arrowPosition = NSPopUpButton.ArrowPosition.noArrow
+  //       let popupCell = result.PopUp?.cell as! NSPopUpButtonCell
+  //       popupCell.arrowPosition = NSPopUpButton.ArrowPosition.noArrow
          
          return result
 
@@ -711,6 +711,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          return result
 
       } // onimage
+      
       else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"dispatchrichtung") )
       {
          let popident = NSUserInterfaceItemIdentifier(rawValue:"popup")
@@ -737,8 +738,8 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          }
          result.PopUp?.selectItem(at: wert)
   //       print("dispatchpop row: \(row) kolonne: \(tableView.column(for: result))")
-         let popupCell = result.PopUp?.cell as! NSPopUpButtonCell
-         popupCell.arrowPosition = NSPopUpButton.ArrowPosition.noArrow
+   //      let popupCell = result.PopUp?.cell as! NSPopUpButtonCell
+  //       popupCell.arrowPosition = NSPopUpButton.ArrowPosition.noArrow
 
          return result
       }//
