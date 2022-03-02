@@ -44,6 +44,7 @@ class rPopUpZelle:NSTableCellView, NSMenuDelegate,NSTableViewDataSource
    {
        print("popUpButtonUsed \(sender.indexOfSelectedItem)")
    }
+   
    required init?(coder  aDecoder : NSCoder) 
    {
       super.init(coder: aDecoder)
@@ -205,7 +206,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       eepromwritestatus = 0
       Halt_Taste.toolTip = "HALT vor Aenderungen im EEPROM"
       
-      var    container:NSTextContainer = EE_dataview.textContainer ?? NSTextContainer()
+ //     var    container:NSTextContainer = EE_dataview.textContainer ?? NSTextContainer()
       /*
       var z:Int = 0
       print("KanalArray count: \(KanalArray.count)")
