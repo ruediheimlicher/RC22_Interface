@@ -64,7 +64,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
 {
 
    
-   var popup:rPopUpZelle! 
+ //  var popup:rPopUpZelle! 
    var hintergrundfarbe = NSColor()
  
    override func viewDidAppear() 
@@ -85,9 +85,11 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       
       default_ONArray = [okimage, notokimage]
       // https://stackoverflow.com/questions/43510646/how-to-change-font-size-of-nstableheadercell
-      DispatchTable.tableColumns.forEach { (column) in column.headerCell.attributedStringValue = NSAttributedString(string: column.title, attributes: [NSAttributedStringKey.font: NSFont.boldSystemFont(ofSize: 12)])
+ //     DispatchTable.tableColumns.forEach { (column) in column.headerCell.attributedStringValue = NSAttributedString(string: column.title, attributes: [NSAttributedStringKey.font: //NSFont.boldSystemFont(ofSize: 12)])
           // Optional: you can change title color also jsut by adding NSForegroundColorAttributeName
-      }     
+  //    }  
+      
+      
       KanalTable.tableColumns.forEach { (column) in column.headerCell.attributedStringValue = NSAttributedString(string: column.title, attributes: [NSAttributedStringKey.font: NSFont.boldSystemFont(ofSize: 12)])
          // Optional: you can change title color also jsut by adding NSForegroundColorAttributeName
      }
