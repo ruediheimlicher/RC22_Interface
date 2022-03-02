@@ -360,7 +360,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
              */
             break
 
-         case 3: // Kanal
+         case 4: // Kanal
             DispatchArray[0][zeile]["dispatchkanal"]  = UInt8(itemindex)
             DispatchTable.reloadData()
             print("dispatchkanal")
@@ -438,7 +438,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       case "dispatch":
          print("*********  ******  table dispatch clicked  zeile: \(zeile)")
          clickeddispacharrayrow = Int(zeile)
-         if (kolonne == 4) // ON
+         if (kolonne == 3) // ON
          {
             let wert = UInt8(DispatchArray[0][zeile]["dispatchonimage"] ?? 0 )
             DispatchArray[0][zeile]["dispatchonimage"]  = 1 - wert
