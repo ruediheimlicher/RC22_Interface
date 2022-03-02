@@ -84,6 +84,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       expobpop.removeAllItems()
       
       default_ONArray = [okimage, notokimage]
+      default_RichtungArray = [[pfeillinksimage, pfeilrechtsimage],[pfeilupimage, pfeildownimage]]
       // https://stackoverflow.com/questions/43510646/how-to-change-font-size-of-nstableheadercell
  //     DispatchTable.tableColumns.forEach { (column) in column.headerCell.attributedStringValue = NSAttributedString(string: column.title, attributes: [NSAttributedStringKey.font: //NSFont.boldSystemFont(ofSize: 12)])
           // Optional: you can change title color also jsut by adding NSForegroundColorAttributeName
@@ -175,6 +176,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
             dispatchdic["dispatchgo"] = 1 // verwendet 
             dispatchdic["dispatchonimage"] = dispatchindex%2 // verwendet
             dispatchdic["dispatchpopup"] = dispatchindex & 0x03 
+            dispatchdic["dispatchrichtung"] = 1
             DispatchSettingArray.append(dispatchdic)
          }
          DispatchArray.append(DispatchSettingArray)
@@ -294,7 +296,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
    var default_LevelArray = ["1/1","7/8","3/4","5/8","1/2"]
    var default_ExpoArray = ["1/1","7/8","3/4","5/8","1/2"]
  
-   
+   var default_RichtungArray:[[NSImage]] = [[NSImage]]()//[pfeilup pfeildown], [pfeillinks pfeilrechts]
    
    var default_ONArray:[NSImage] = [NSImage]()//[okimage, notokimage]
    @objc func usbstatusAktion(_ notification:Notification) 
@@ -596,6 +598,8 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       //if ident == "dispatchdevice"
       //let defaultwert = NSUserInterfaceItemIdentifier(rawValue:"dispatchdevice")
       
+      // no arrow: https://stackoverflow.com/questions/4376393/how-can-i-create-a-nspopupbutton-that-uses-a-fixed-image-and-no-arrows
+      
       if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"dispatchdevice") )
       {
          
@@ -605,6 +609,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
             print("dispatchdevice ist nil")
             return nil 
          }
+         
          var wert = Int(DispatchArray[0][row]["dispatchdevice"] ?? 0)
          if wert > default_DeviceArray.count - 1
          {
@@ -616,10 +621,14 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          result.PopUp?.removeAllItems()
          result.PopUp?.addItems(withTitles: default_DeviceArray)
          result.PopUp?.selectItem(at: wert)
+         let popupCell = result.PopUp?.cell as! NSPopUpButtonCell
+         popupCell.arrowPosition = NSPopUpButton.ArrowPosition.noArrow
+         
          return result
 
         
       }
+      /*
       else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"dispatchkanal") )
       {
          let popident = NSUserInterfaceItemIdentifier(rawValue:"popup")
@@ -642,6 +651,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          return result
 
          }
+       */
       else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"dispatchnummer") )
       {
          guard let result = tableView.makeView(withIdentifier: tableColumn!.identifier, owner: self) as? NSTableCellView else 
@@ -679,6 +689,8 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          result.PopUp?.removeAllItems()
          result.PopUp?.addItems(withTitles: default_FunktionArray)
          result.PopUp?.selectItem(at: wert)
+      //   let popupCell = result.PopUp?.cell as! NSPopUpButtonCell
+       //  popupCell.arrowPosition = NSPopUpButton.ArrowPosition.noArrow
          return result
       } // funktion
 
@@ -699,6 +711,39 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          return result
 
       } // onimage
+      else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"dispatchrichtung") )
+      {
+         let popident = NSUserInterfaceItemIdentifier(rawValue:"popup")
+         guard let result = tableView.makeView(withIdentifier: popident, owner: self) as? rPopUpZelle else 
+         {
+            print("dispatchrichtung ist nil")
+            return nil 
+            
+         }
+         var wert = Int(DispatchArray[0][row]["dispatchrichtung"] ?? 0)
+          if wert > default_RichtungArray[0].count - 1
+          {
+             wert = 4
+          }
+         result.poptag = row
+         result.tablezeile = row
+         result.tablekolonne = tableView.column(for: result)
+         result.PopUp?.removeAllItems()
+         for zeile in 0..<default_RichtungArray[0].count
+         {
+         result.PopUp?.addItem(withTitle: "")
+         var item = result.PopUp?.lastItem
+             item?.image = default_RichtungArray[0][zeile]
+         }
+         result.PopUp?.selectItem(at: wert)
+  //       print("dispatchpop row: \(row) kolonne: \(tableView.column(for: result))")
+         let popupCell = result.PopUp?.cell as! NSPopUpButtonCell
+         popupCell.arrowPosition = NSPopUpButton.ArrowPosition.noArrow
+
+         return result
+      }//
+
+      /*
       else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"dispatchpopup") )
       {
          let popident = NSUserInterfaceItemIdentifier(rawValue:"popup")
@@ -722,7 +767,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
   //       print("dispatchpop row: \(row) kolonne: \(tableView.column(for: result))")
          return result
       }//
-      
+     */ 
   // Kanal
       if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"kanalnummer") )
       {
@@ -755,6 +800,39 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          result.textField?.stringValue = default_ArtArray[wert]
          return result
       } // kanalnummer
+      else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"richtung") )
+      {
+         let popident = NSUserInterfaceItemIdentifier(rawValue:"popup")
+         guard let result = tableView.makeView(withIdentifier: popident, owner: self) as? rPopUpZelle else 
+         {
+            print("richtungpop ist nil")
+            return nil 
+            
+         }
+         var wert = Int(KanalArray[0][row]["richtung"] ?? 0)
+          if wert > default_ArtArray.count - 1
+          {
+             wert = 4
+          }
+         result.poptag = row
+         result.tablezeile = row
+         result.tablekolonne = tableView.column(for: result)
+         result.PopUp?.removeAllItems()
+         for zeile in 0..<default_RichtungArray[0].count
+         {
+         result.PopUp?.addItem(withTitle: "")
+         var item = result.PopUp?.lastItem
+             item?.image = default_RichtungArray[0][zeile]
+        // result.PopUp?.addItems(withTitles: default_RichtungArray[0])
+         }
+         result.PopUp?.selectItem(at: wert)
+  //       print("dispatchpop row: \(row) kolonne: \(tableView.column(for: result))")
+         let popupCell = result.PopUp?.cell as! NSPopUpButtonCell
+         popupCell.arrowPosition = NSPopUpButton.ArrowPosition.noArrow
+
+         return result
+      }//
+
       else if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"levela") )
       {
          guard let result = tableView.makeView(withIdentifier: tableColumn!.identifier, owner: self) as? NSTableCellView else 

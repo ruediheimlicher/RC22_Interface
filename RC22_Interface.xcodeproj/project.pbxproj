@@ -21,6 +21,8 @@
 		BD2ED5E0256FAB97008D1E16 /* Lok128_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BD2ED5D8256FAB97008D1E16 /* Lok128_2x.png */; };
 		BD2ED5E1256FAB97008D1E16 /* Lok128.png in Resources */ = {isa = PBXBuildFile; fileRef = BD2ED5D9256FAB97008D1E16 /* Lok128.png */; };
 		BD2ED5E3256FAC66008D1E16 /* Lok16_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BD2ED5E2256FAC66008D1E16 /* Lok16_2x.png */; };
+		BD3D960227CF78D100105003 /* pfeilup.png in Resources */ = {isa = PBXBuildFile; fileRef = BD3D960127CF78D000105003 /* pfeilup.png */; };
+		BD3D960427CF790F00105003 /* pfeildown.png in Resources */ = {isa = PBXBuildFile; fileRef = BD3D960327CF790F00105003 /* pfeildown.png */; };
 		BD3E62F0230541910096AC70 /* kreisschnittpunkt.c in Sources */ = {isa = PBXBuildFile; fileRef = BD3E62EF230541910096AC70 /* kreisschnittpunkt.c */; };
 		BD3E630E2305DDE60096AC70 /* geom.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3E630D2305DDE60096AC70 /* geom.swift */; };
 		BD3E63112309A96D0096AC70 /* rJoystickView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3E63102309A96D0096AC70 /* rJoystickView.swift */; };
@@ -74,6 +76,8 @@
 		BD2ED5D8256FAB97008D1E16 /* Lok128_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Lok128_2x.png; sourceTree = "<group>"; };
 		BD2ED5D9256FAB97008D1E16 /* Lok128.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Lok128.png; sourceTree = "<group>"; };
 		BD2ED5E2256FAC66008D1E16 /* Lok16_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Lok16_2x.png; sourceTree = "<group>"; };
+		BD3D960127CF78D000105003 /* pfeilup.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pfeilup.png; sourceTree = "<group>"; };
+		BD3D960327CF790F00105003 /* pfeildown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pfeildown.png; sourceTree = "<group>"; };
 		BD3E62EF230541910096AC70 /* kreisschnittpunkt.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = kreisschnittpunkt.c; sourceTree = "<group>"; };
 		BD3E630D2305DDE60096AC70 /* geom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = geom.swift; sourceTree = "<group>"; };
 		BD3E630F2305E9BB0096AC70 /* kreisschnittpunkt.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = kreisschnittpunkt.h; sourceTree = "<group>"; };
@@ -173,6 +177,8 @@
 				BD140742233A8F6300EDC163 /* ok.png */,
 				BD6B26A727C3FEEA003D59B9 /* pfeillinks.png */,
 				BD6B26A927C3FEF2003D59B9 /* pfeilrechts.png */,
+				BD3D960127CF78D000105003 /* pfeilup.png */,
+				BD3D960327CF790F00105003 /* pfeildown.png */,
 			);
 			name = Bilder;
 			sourceTree = "<group>";
@@ -316,11 +322,13 @@
 				BD2ED5E0256FAB97008D1E16 /* Lok128_2x.png in Resources */,
 				BD2ED5DC256FAB97008D1E16 /* Lok256_2x.png in Resources */,
 				BD2ED5E1256FAB97008D1E16 /* Lok128.png in Resources */,
+				BD3D960427CF790F00105003 /* pfeildown.png in Resources */,
 				BD86A6CE27CA5E9A00A5FAF4 /* RC22_16_2x.png in Resources */,
 				BD86A6CD27CA5E9A00A5FAF4 /* RC22_256_2x.png in Resources */,
 				BD86A6D027CA5E9A00A5FAF4 /* RC22_64.png in Resources */,
 				BDD71BFD26AC40B400213B2E /* local.png in Resources */,
 				BD140744233A8F6400EDC163 /* ok.png in Resources */,
+				BD3D960227CF78D100105003 /* pfeilup.png in Resources */,
 				BD140745233A8F6400EDC163 /* notok.png in Resources */,
 				BD86A6D327CA5E9A00A5FAF4 /* RC22_1024.png in Resources */,
 				BD94A905250789CA00D815E2 /* lok.png in Resources */,
