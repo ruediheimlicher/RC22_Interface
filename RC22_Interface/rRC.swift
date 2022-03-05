@@ -208,7 +208,6 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
             dispatchdic["dispatchmixkanal"]  = dispatchindex
             dispatchdic["dispatchmodelnummer"]  = model
             dispatchdic["dispatchmodel"]  = model
-
             DispatchSettingArray.append(dispatchdic)
          }
          DispatchArray.append(DispatchSettingArray)
