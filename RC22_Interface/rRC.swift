@@ -681,6 +681,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
             print("viewFor dispatchdevice ist nil")
             return nil 
          }
+         
          var wert = Int(DispatchArray[0][row]["dispatchdevice"] ?? 0)
          if wert > default_DeviceArray.count - 1
          {
@@ -692,14 +693,14 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          result.PopUp?.removeAllItems()
          result.PopUp?.addItems(withTitles: default_DeviceArray)
          result.PopUp?.selectItem(at: wert)
-   //      result.PopUp?.cell.frame.width = 100
-         let popupCell = result.PopUp?.cell as! NSPopUpButtonCell
-         popupCell.arrowPosition = NSPopUpButton.ArrowPosition.noArrow
-
+  //       let popupCell = result.PopUp?.cell as! NSPopUpButtonCell
+  //       popupCell.arrowPosition = NSPopUpButton.ArrowPosition.noArrow
+         
          return result
 
         
       }
+
       
       else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"dispatchlevela") )
       {
@@ -723,6 +724,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          return result
 
          }
+
       else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"dispatchlevelb") )
       {
          let popident = NSUserInterfaceItemIdentifier(rawValue:"levelpopup")
@@ -745,7 +747,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          return result
 
          }
-       
+   
       else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"dispatchnummer") )
       {
          guard let result = tableView.makeView(withIdentifier: tableColumn!.identifier, owner: self) as? NSTableCellView else 
@@ -783,8 +785,8 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          result.PopUp?.removeAllItems()
          result.PopUp?.addItems(withTitles: default_FunktionArray)
          result.PopUp?.selectItem(at: wert)
-         let popupCell = result.PopUp?.cell as! NSPopUpButtonCell
-         popupCell.arrowPosition = NSPopUpButton.ArrowPosition.noArrow
+      //   let popupCell = result.PopUp?.cell as! NSPopUpButtonCell
+       //  popupCell.arrowPosition = NSPopUpButton.ArrowPosition.noArrow
          return result
       } // funktion
 
@@ -807,6 +809,40 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       } // onimage
       
       else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"dispatchrichtung") )
+
+      {
+         let popident = NSUserInterfaceItemIdentifier(rawValue:"popup")
+         guard let result = tableView.makeView(withIdentifier: popident, owner: self) as? rPopUpZelle else 
+         {
+            print("dispatchrichtung ist nil")
+            return nil 
+            
+         }
+         var wert = Int(DispatchArray[0][row]["dispatchrichtung"] ?? 0)
+          if wert > default_RichtungArray[0].count - 1
+          {
+             wert = 4
+          }
+         result.poptag = row
+         result.tablezeile = row
+         result.tablekolonne = tableView.column(for: result)
+         result.PopUp?.removeAllItems()
+         for zeile in 0..<default_RichtungArray[0].count
+         {
+         result.PopUp?.addItem(withTitle: "")
+         var item = result.PopUp?.lastItem
+             item?.image = default_RichtungArray[0][zeile]
+         }
+         result.PopUp?.selectItem(at: wert)
+  //       print("dispatchpop row: \(row) kolonne: \(tableView.column(for: result))")
+   //      let popupCell = result.PopUp?.cell as! NSPopUpButtonCell
+  //       popupCell.arrowPosition = NSPopUpButton.ArrowPosition.noArrow
+
+         return result
+      }//
+
+      /*
+      else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"dispatchpopup") )
       {
          let popident = NSUserInterfaceItemIdentifier(rawValue:"richtungpopup")
          guard let result = tableView.makeView(withIdentifier: popident, owner: self) as? rPopUpZelle else 
@@ -844,6 +880,8 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
 
          return result
       }//
+     */ 
+
   // Kanal
       if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"kanalnummer") )
       {
