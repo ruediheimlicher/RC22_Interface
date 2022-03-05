@@ -8,6 +8,17 @@
 
 import Foundation
 
+
+let columnfunktion = 1
+let columndevice = 2
+let columnon = 3
+let columnrichtung = 4
+let columnlevela = 5
+let columnlevelb = 6
+let columnexpoa = 7
+let columnexpob = 8
+
+
 let GOTO_0:UInt8  =  0xA7
 let SET_RING:UInt8  =  0xA3
 let CLEAR_RING:UInt8  =  0xA4

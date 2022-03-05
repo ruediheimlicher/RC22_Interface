@@ -168,10 +168,14 @@ class rViewController: NSViewController, NSWindowDelegate
 {
    let notokimage :NSImage = NSImage(named:NSImage.Name(rawValue: "notok_image"))!
    let okimage :NSImage = NSImage(named:NSImage.Name(rawValue: "ok_image"))!
-   
- //  let notokimage :NSImage = NSImage(named:NSImage.Name(rawValue: "notok_image"))!
-//   let okimage :NSImage = NSImage(named:NSImage.Name(rawValue: "ok_image"))!
  
+   let pfeillinksimage :NSImage = NSImage(named:NSImage.Name(rawValue: "pfeillinks"))!
+   let pfeilrechtsimage :NSImage = NSImage(named:NSImage.Name(rawValue: "pfeilrechts"))!
+   let pfeilupimage :NSImage = NSImage(named:NSImage.Name(rawValue: "pfeilup"))!
+   let pfeildownimage :NSImage = NSImage(named:NSImage.Name(rawValue: "pfeildown"))!
+
+ 
+  
    
    // Robot
    var z0:Float = 30 // Hoehe Drehpunkt 0

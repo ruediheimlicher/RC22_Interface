@@ -1850,8 +1850,8 @@
             filePath = "RC22_Interface/rRC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "144"
-            endingLineNumber = "144"
+            startingLineNumber = "166"
+            endingLineNumber = "166"
             landmarkName = "viewDidAppear()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1866,8 +1866,8 @@
             filePath = "RC22_Interface/rRC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "208"
-            endingLineNumber = "208"
+            startingLineNumber = "242"
+            endingLineNumber = "242"
             landmarkName = "viewDidAppear()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1882,8 +1882,8 @@
             filePath = "RC22_Interface/rRC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "72"
-            endingLineNumber = "72"
+            startingLineNumber = "89"
+            endingLineNumber = "89"
             landmarkName = "viewDidAppear()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1898,8 +1898,8 @@
             filePath = "RC22_Interface/rRC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "230"
-            endingLineNumber = "230"
+            startingLineNumber = "264"
+            endingLineNumber = "264"
             landmarkName = "viewDidLoad()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1914,8 +1914,8 @@
             filePath = "RC22_Interface/rRC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "225"
-            endingLineNumber = "225"
+            startingLineNumber = "259"
+            endingLineNumber = "259"
             landmarkName = "viewDidAppear()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1930,8 +1930,8 @@
             filePath = "RC22_Interface/rRC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "270"
-            endingLineNumber = "270"
+            startingLineNumber = "304"
+            endingLineNumber = "304"
             landmarkName = "viewDidLoad()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1946,9 +1946,9 @@
             filePath = "RC22_Interface/rRC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "953"
-            endingLineNumber = "953"
-            landmarkName = "tableView(tableView:setObjectValue:forTableColumn:row:)"
+            startingLineNumber = "1116"
+            endingLineNumber = "1116"
+            landmarkName = "report_tableRowWasClicked(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1962,9 +1962,9 @@
             filePath = "RC22_Interface/rRC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "698"
-            endingLineNumber = "698"
-            landmarkName = "tableView(_:viewFor:row:)"
+            startingLineNumber = "804"
+            endingLineNumber = "804"
+            landmarkName = "report_tableRowWasClicked(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1978,9 +1978,9 @@
             filePath = "RC22_Interface/rRC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "687"
-            endingLineNumber = "687"
-            landmarkName = "tableView(_:viewFor:row:)"
+            startingLineNumber = "793"
+            endingLineNumber = "793"
+            landmarkName = "report_tableRowWasClicked(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1994,9 +1994,9 @@
             filePath = "RC22_Interface/rRC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "685"
-            endingLineNumber = "685"
-            landmarkName = "tableView(_:viewFor:row:)"
+            startingLineNumber = "791"
+            endingLineNumber = "791"
+            landmarkName = "report_tableRowWasClicked(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2010,8 +2010,8 @@
             filePath = "RC22_Interface/rRC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "187"
-            endingLineNumber = "187"
+            startingLineNumber = "221"
+            endingLineNumber = "221"
             landmarkName = "viewDidAppear()"
             landmarkType = "7">
          </BreakpointContent>
@@ -2026,9 +2026,9 @@
             filePath = "RC22_Interface/rRC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "856"
-            endingLineNumber = "856"
-            landmarkName = "tableView(_:objectValueFor:row:)"
+            startingLineNumber = "1010"
+            endingLineNumber = "1010"
+            landmarkName = "report_tableRowWasClicked(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2042,9 +2042,9 @@
             filePath = "RC22_Interface/rRC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "594"
-            endingLineNumber = "594"
-            landmarkName = "tableView(_:viewFor:row:)"
+            startingLineNumber = "668"
+            endingLineNumber = "668"
+            landmarkName = "report_tableRowWasClicked(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2058,9 +2058,9 @@
             filePath = "RC22_Interface/rRC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "729"
-            endingLineNumber = "729"
-            landmarkName = "tableView(_:viewFor:row:)"
+            startingLineNumber = "850"
+            endingLineNumber = "850"
+            landmarkName = "report_tableRowWasClicked(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2074,9 +2074,9 @@
             filePath = "RC22_Interface/rRC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "826"
-            endingLineNumber = "826"
-            landmarkName = "tableView(_:viewFor:row:)"
+            startingLineNumber = "980"
+            endingLineNumber = "980"
+            landmarkName = "report_tableRowWasClicked(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2090,8 +2090,8 @@
             filePath = "RC22_Interface/rRC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "463"
-            endingLineNumber = "463"
+            startingLineNumber = "537"
+            endingLineNumber = "537"
             landmarkName = "report_tableRowWasClicked(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -2106,9 +2106,9 @@
             filePath = "RC22_Interface/rRC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "836"
-            endingLineNumber = "836"
-            landmarkName = "tableView(_:viewFor:row:)"
+            startingLineNumber = "990"
+            endingLineNumber = "990"
+            landmarkName = "report_tableRowWasClicked(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2122,9 +2122,9 @@
             filePath = "RC22_Interface/rRC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "922"
-            endingLineNumber = "922"
-            landmarkName = "tableView(_:objectValueFor:row:)"
+            startingLineNumber = "1085"
+            endingLineNumber = "1085"
+            landmarkName = "report_tableRowWasClicked(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2138,8 +2138,8 @@
             filePath = "RC22_Interface/rRC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "467"
-            endingLineNumber = "467"
+            startingLineNumber = "541"
+            endingLineNumber = "541"
             landmarkName = "report_tableRowWasClicked(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -2154,8 +2154,8 @@
             filePath = "RC22_Interface/rRC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "472"
-            endingLineNumber = "472"
+            startingLineNumber = "546"
+            endingLineNumber = "546"
             landmarkName = "report_tableRowWasClicked(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -2170,25 +2170,9 @@
             filePath = "RC22_Interface/rRC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "940"
-            endingLineNumber = "940"
-            landmarkName = "tableView(_:objectValueFor:row:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "B2687FDD-A617-4F6D-9560-32DA3C059268"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "RC22_Interface/rRC.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "704"
-            endingLineNumber = "704"
-            landmarkName = "tableView(_:viewFor:row:)"
+            startingLineNumber = "1103"
+            endingLineNumber = "1103"
+            landmarkName = "report_tableRowWasClicked(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2218,8 +2202,8 @@
             filePath = "RC22_Interface/rRC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "456"
-            endingLineNumber = "456"
+            startingLineNumber = "530"
+            endingLineNumber = "530"
             landmarkName = "report_tableRowWasClicked(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -2259,22 +2243,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "2C6096FF-2465-4EA4-9937-DD893C108B29"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "RC22_Interface/rRC.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "717"
-            endingLineNumber = "717"
-            landmarkName = "tableView(_:viewFor:row:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "5166F3B6-FF7E-40B1-91B5-1A7B8CEB7C0C"
             shouldBeEnabled = "No"
             ignoreCount = "0"
@@ -2282,8 +2250,8 @@
             filePath = "RC22_Interface/rRC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "394"
-            endingLineNumber = "394"
+            startingLineNumber = "466"
+            endingLineNumber = "466"
             landmarkName = "tablePopAktion(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -2298,9 +2266,9 @@
             filePath = "RC22_Interface/rRC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "494"
-            endingLineNumber = "494"
-            landmarkName = "printTable(_:)"
+            startingLineNumber = "568"
+            endingLineNumber = "568"
+            landmarkName = "report_tableRowWasClicked(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2314,9 +2282,9 @@
             filePath = "RC22_Interface/rRC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "522"
-            endingLineNumber = "522"
-            landmarkName = "printArray(_:index:)"
+            startingLineNumber = "596"
+            endingLineNumber = "596"
+            landmarkName = "report_tableRowWasClicked(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2330,8 +2298,8 @@
             filePath = "RC22_Interface/rRC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "338"
-            endingLineNumber = "338"
+            startingLineNumber = "373"
+            endingLineNumber = "373"
             landmarkName = "tablePopAktion(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -2346,8 +2314,8 @@
             filePath = "RC22_Interface/rRC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "347"
-            endingLineNumber = "347"
+            startingLineNumber = "382"
+            endingLineNumber = "382"
             landmarkName = "tablePopAktion(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -2362,8 +2330,8 @@
             filePath = "RC22_Interface/rRC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "337"
-            endingLineNumber = "337"
+            startingLineNumber = "372"
+            endingLineNumber = "372"
             landmarkName = "tablePopAktion(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -2378,9 +2346,73 @@
             filePath = "RC22_Interface/rRC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "382"
-            endingLineNumber = "382"
+            startingLineNumber = "427"
+            endingLineNumber = "427"
             landmarkName = "tablePopAktion(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6717F568-0CB4-4163-8482-88F17C7C6D1E"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RC22_Interface/rRC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "881"
+            endingLineNumber = "881"
+            landmarkName = "report_tableRowWasClicked(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D872A2BD-5742-41BF-984D-BDC1062132D3"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RC22_Interface/rRC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "678"
+            endingLineNumber = "678"
+            landmarkName = "report_tableRowWasClicked(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B3335A5F-4C98-45A7-BD79-78397EC9EF49"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RC22_Interface/rRC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "457"
+            endingLineNumber = "457"
+            landmarkName = "tablePopAktion(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E62E3198-4584-4906-A390-CDDD2CD3CC5E"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RC22_Interface/rRC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "516"
+            endingLineNumber = "516"
+            landmarkName = "report_tableRowWasClicked(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
