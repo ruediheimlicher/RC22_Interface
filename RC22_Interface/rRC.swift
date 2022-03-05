@@ -509,11 +509,20 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       case "dispatch":
          print("*********  ******  table dispatch clicked  zeile: \(zeile)")
          clickeddispacharrayrow = Int(zeile)
-         if (kolonne == 3) // ON
+         if (kolonne == columnon) // ON
          {
             let wert = UInt8(DispatchArray[0][zeile]["dispatchonimage"] ?? 0 )
             DispatchArray[0][zeile]["dispatchonimage"]  = 1 - wert
             DispatchTable.reloadData()
+            DispatchTable.deselectRow(kolonne)
+         }
+         if (kolonne == columnrichtung)
+         {
+            let wert = UInt8(DispatchArray[0][zeile]["dispatchrichtung"] ?? 0 )
+            DispatchArray[0][zeile]["dispatchrichtung"]  = 1 - wert
+            DispatchTable.reloadData()
+            
+            
          }
          /*
          let row = DispatchTable.rowView(atRow: kolonne, makeIfNecessary: false)
@@ -806,8 +815,34 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          return result
 
       } // onimage
-      
-      
+ 
+      else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"dispatchrichtung") )
+      {
+         guard let result = tableView.makeView(withIdentifier: tableColumn!.identifier, owner: self) as? NSTableCellView else 
+         {
+            print("dispatchrichtung ist nil")
+            return nil 
+            
+         }
+         let nummer = Int(DispatchArray[0][row]["dispatchrichtung"] ?? 0)
+         let wert:Int = nummer
+         //print("dispatchnummer onimage: \(wert)")
+         var pfeilrichtung = 0
+         // index von funktion checken
+         let funktionindex = Int(DispatchArray[0][row]["dispatchfunktion"] ?? 0)
+         if funktionindex == 1 // Hoehe
+         {
+            pfeilrichtung = 1
+         }
+
+         //https://stackoverflow.com/questions/37100846/osx-swift-add-image-into-nstableview
+         // Image muss mit TableCellView verlinkt sein!!! S. Screenshot TableView Image
+         result.imageView?.image = default_RichtungArray[pfeilrichtung][wert]
+         return result
+
+      } // onimage
+
+      /*
       else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"dispatchrichtung") )
 
       {
@@ -838,7 +873,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
  
          return result
       }//
-
+*/
   // Kanal
       if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"kanalnummer") )
       {
