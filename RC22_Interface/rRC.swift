@@ -807,10 +807,11 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
 
       } // onimage
       
+      
       else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"dispatchrichtung") )
 
       {
-         let popident = NSUserInterfaceItemIdentifier(rawValue:"popup")
+         let popident = NSUserInterfaceItemIdentifier(rawValue:"richtungpopup")
          guard let result = tableView.makeView(withIdentifier: popident, owner: self) as? rPopUpZelle else 
          {
             print("dispatchrichtung ist nil")
@@ -834,52 +835,9 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          }
          result.PopUp?.selectItem(at: wert)
   //       print("dispatchpop row: \(row) kolonne: \(tableView.column(for: result))")
-   //      let popupCell = result.PopUp?.cell as! NSPopUpButtonCell
-  //       popupCell.arrowPosition = NSPopUpButton.ArrowPosition.noArrow
-
+ 
          return result
       }//
-
-      /*
-      else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"dispatchpopup") )
-      {
-         let popident = NSUserInterfaceItemIdentifier(rawValue:"richtungpopup")
-         guard let result = tableView.makeView(withIdentifier: popident, owner: self) as? rPopUpZelle else 
-         {
-            print("richtungpop ist nil")
-            return nil 
-            
-         }
-         var wert = Int(DispatchArray[0][row]["dispatchrichtung"] ?? 0)
-          if wert > default_RichtungArray.count - 1
-          {
-             wert = 4
-          }
-         result.poptag = row
-         result.tablezeile = row
-         var pfeilrichtung = 0
-         // index von funktion checken
-         let funktionindex = Int(DispatchArray[0][row]["dispatchfunktion"] ?? 0)
-         if funktionindex == 1 // Hoehe
-         {
-            pfeilrichtung = 1
-         }
-         result.tablekolonne = tableView.column(for: result)
-         result.PopUp?.removeAllItems()
-         for zeile in 0..<default_RichtungArray[0].count
-         {
-         result.PopUp?.addItem(withTitle: "")
-         var item = result.PopUp?.lastItem
-             item?.image = default_RichtungArray[pfeilrichtung][zeile]
-         }
-         result.PopUp?.selectItem(at: wert)
-  //       print("dispatchpop row: \(row) kolonne: \(tableView.column(for: result))")
-         let popupCell = result.PopUp?.cell as! NSPopUpButtonCell
-         popupCell.arrowPosition = NSPopUpButton.ArrowPosition.noArrow
-
-         return result
-      }//
-     */ 
 
   // Kanal
       if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"kanalnummer") )
