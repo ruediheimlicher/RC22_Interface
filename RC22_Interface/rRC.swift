@@ -1242,6 +1242,9 @@ func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColu
    @IBOutlet   weak var          window:NSWindow!
    @IBOutlet   weak var          macroPopup:NSPopUpButton!
    @IBOutlet   weak var          readButton:NSButton!
+   
+   @IBOutlet   weak var          sendSettingsButton:NSButton!
+   
 
    @IBOutlet      weak var       modelFeld:NSTextField! 
    
