@@ -219,7 +219,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       eepromwritestatus = 0
       Halt_Taste.toolTip = "HALT vor Aenderungen im EEPROM"
       
-      model.selectSegment(withTag: 0)
+      //model.selectSegment(withTag: 0)
       var    container:NSTextContainer = EE_dataview.textContainer ?? NSTextContainer()
       /*
       var z:Int = 0
