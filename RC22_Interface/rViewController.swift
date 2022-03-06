@@ -333,8 +333,6 @@ class rViewController: NSViewController, NSWindowDelegate
       //print("Basis tabviewAktion:\t \(ident)")
       selectedDevice = ident
    }
-
-   
    
    @objc func joystickAktion(_ notification:Notification) 
    {
