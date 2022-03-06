@@ -321,7 +321,7 @@ class rViewController: NSViewController, NSWindowDelegate
    {
       
       print("VC beendenAktion")
-      NSApplication.shared.terminate(self)
+      //NSApplication.shared.terminate(self)
       
       
    }
