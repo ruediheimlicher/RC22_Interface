@@ -218,7 +218,7 @@ class rViewController: NSViewController, NSWindowDelegate
    }
 
    func windowWillClose(_ aNotification: Notification) {
-      print("windowWillClose")
+      print("VC windowWillClose")
       let nc = NotificationCenter.default
       nc.post(name:Notification.Name(rawValue:"beenden"),
               object: nil,
@@ -292,7 +292,7 @@ class rViewController: NSViewController, NSWindowDelegate
    
    override func viewDidAppear() 
    {
-      print("viewDidAppear")
+      print("VC viewDidAppear")
       let nc = NotificationCenter.default
       var userinformation:[String : Any]
       var manufactorername = "-"
@@ -320,8 +320,8 @@ class rViewController: NSViewController, NSWindowDelegate
    @objc func beendenAktion(_ notification:Notification) 
    {
       
-      print("beendenAktion")
-      
+      print("VC beendenAktion")
+      NSApplication.shared.terminate(self)
       
       
    }

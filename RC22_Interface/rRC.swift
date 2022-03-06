@@ -76,6 +76,14 @@ class rDevicePopUpZelle:rPopUpZelle
 
 }
 
+// MARK: Konstanten
+
+
+let USB_DATA_OFFSET = 4
+let ANZAHLMODELLE = 1
+let KANALSETTINGBREITE = 4
+let USB_DATENBREITE = 64
+
 
 class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableViewDelegate,NSComboBoxDataSource,NSComboBoxDelegate
 {
@@ -131,7 +139,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
             var kanaldic = [String:UInt8]()
             kanaldic["kanalnummer"] = kanal
             kanaldic["art"] = kanal & 0x03
-           
+            
             kanaldic["richtung"] = 1
             kanaldic["levela"]  = kanal & 0x03
             kanaldic["levelb"]  = 3
@@ -165,8 +173,8 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          MixingSettingArray[2]["mixart"] = 0x00
          MixingSettingArray[3]["mixart"] = 0x00
          MixingArray.append(MixingSettingArray)
-      
-
+         
+         
          var   DispatchSettingArray = [[String:UInt8]]()
          for dispatchindex:UInt8 in 0..<8
          {
@@ -180,8 +188,6 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
             dispatchdic["dispatchdevice"] = (dispatchindex ) & 0x07
             dispatchdic["dispatchgo"] = 1 // verwendet 
             dispatchdic["dispatchonimage"] = dispatchindex%2 // verwendet
-            dispatchdic["dispatchpopup"] = dispatchindex & 0x03 
-            
             // von kanal
             dispatchdic["dispatchrichtung"] = 1
             dispatchdic["dispatchlevela"]  = dispatchindex & 0x03
@@ -195,8 +201,8 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
             DispatchSettingArray.append(dispatchdic)
          }
          DispatchArray.append(DispatchSettingArray)
-
-       }// for model
+         
+      }// for model
       
       
       DispatchTable.target = self      
@@ -204,20 +210,16 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       DispatchTable.delegate = self
       
       
-       MixingTable.reloadData()
+      MixingTable.reloadData()
       DispatchTable.reloadData()
       
-
-
-      
-   
-      //var            FunktionArray = [UInt8]()
       
       (SettingTab.selectedTabViewItem?.view?.viewWithTag(100) as! NSTextField).stringValue =  "Mod 0"
 
       eepromwritestatus = 0
       Halt_Taste.toolTip = "HALT vor Aenderungen im EEPROM"
       
+      model.selectSegment(withTag: 0)
       var    container:NSTextContainer = EE_dataview.textContainer ?? NSTextContainer()
       /*
       var z:Int = 0
@@ -284,6 +286,11 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
    
    } // end viewDidLoad
    
+   @IBAction func report_Model(_ sender: NSSegmentedControl) 
+  {
+   print("report_Model model: \(sender.indexOfSelectedItem)")
+     modelFeld.integerValue = sender.indexOfSelectedItem
+  }
    
     @IBAction func report_artPop(_ sender: NSPopUpButton) 
    {
@@ -295,13 +302,92 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       }
    }
 
+   
+   @IBAction func report_sendSettings(_ sender: NSButton) 
+  {
+     print("report_sendSettings ")
+     sendbuffer[0] = 0xF4
+     var pos = 0
+     for modelindex in 0..<ANZAHLMODELLE
+     {
+        pos = USB_DATA_OFFSET + modelindex * KANALSETTINGBREITE
+        // status
+        for kanal in 0..<8
+        {
+           var tempbuffer = UInt8(modelindex)
+           if (DispatchArray[modelindex][kanal]["dispatchonimage"] == 1)
+           {
+              tempbuffer |= 1<<3 // ON
+           }
+
+           //tempbuffer |= ((DispatchArray[modelindex][kanal]["kanal"] ?? 0) & 0x07) << 4
+           tempbuffer |=  (UInt8(kanal) & 0x07)<<4
+           
+           if (DispatchArray[modelindex][kanal]["dispatchrichtung"] == 1)
+           {
+              tempbuffer |= 1<<7 // richtung
+           }
+
+           var temp = 0
+           
+           sendbuffer[pos + kanal] = tempbuffer
+           print("status kanal: \(kanal) tempbuffer: \(tempbuffer)")
+           
+        }
+         // level
+        print("level")
+        pos += 8
+        for kanal in 0..<8
+        {
+           var tempbuffer:UInt8 = 0
+           tempbuffer |= (DispatchArray[modelindex][kanal]["dispatchlevela"] ?? 0) & 0x07
+           tempbuffer |= ((DispatchArray[modelindex][kanal]["dispatchlevelb"] ?? 0) & 0x07) << 4
+           sendbuffer[pos + kanal] = tempbuffer
+           print("level kanal: \(kanal) tempbuffer: \(tempbuffer)")
+        }// level
+        
+        print("expo")
+        pos += 8
+        for kanal in 0..<8
+        {
+           var tempbuffer:UInt8 = 0
+           tempbuffer |= (DispatchArray[modelindex][kanal]["dispatchexpoa"] ?? 0) & 0x07
+           tempbuffer |= ((DispatchArray[modelindex][kanal]["dispatchexpob"] ?? 0) & 0x07) << 4
+           sendbuffer[pos + kanal] = tempbuffer
+           print("expo kanal: \(kanal) tempbuffer: \(tempbuffer)")
+        }// level
+        
+        // funktion & device
+        print("funktion & device")
+        pos += 8
+        for kanal in 0..<8
+        {
+           var tempbuffer:UInt8 = 0
+           tempbuffer |= (DispatchArray[modelindex][kanal]["dispatchfunktion"] ?? 0) & 0x07
+           tempbuffer |= ((DispatchArray[modelindex][kanal]["dispatchdevice"] ?? 0) & 0x07) << 4
+           sendbuffer[pos + kanal] = tempbuffer
+           print("funktion&device kanal: \(kanal) tempbuffer: \(tempbuffer)")
+        }// level
+      
+        if (usbstatus > 0)
+        {
+           let senderfolg = teensy.send_USB()
+           print("report_Slider0 senderfolg: \(senderfolg)")
+        }
+
+        
+        
+     }// for mod
+     
+     
+  }
 
  
    var     default_DeviceArray:[String] = ["Pitch_L_H","Pitch_L_V","Pitch_R_H","Pitch_R_V","Schieber_L","Schieber_R","Schalter","leer"]
    var     default_FunktionArray:[String] = ["Seite","Hoehe","Quer","Motor","Quer L","Quer R","Lande","Aux"]
    var     default_KanalArray:[String] = ["0","1","2","3","4","5","6","7"]
 
-   var default_ArtArray = ["Stick","Schieber","Schalter","-"]
+   var default_ArtArray = ["Stick","Schieber","Schalter","--"]
    
    var default_LevelArray = ["1/1","7/8","3/4","5/8","1/2"]
    var default_ExpoArray = ["1/1","7/8","3/4","5/8","1/2"]
@@ -328,15 +414,15 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       print("\n* * * * RC tablePopAktion itemindex:\t \(itemindex) zeile: \(zeile) kolonne: \(kolonne) tabletag: \(tabletag)")
       switch tabletag
       {
-         case 4: // Kanal
+      case 4: // Kanal
          DispatchArray[0][zeile]["dispatchkanal"]  = UInt8(itemindex)
          DispatchTable.reloadData()
          /*
-         for ident in 0..<DispatchArray[0].count-1
-         {
-         printArray(DispatchArray[0],index: ident)
-         }
-        */
+          for ident in 0..<DispatchArray[0].count-1
+          {
+          printArray(DispatchArray[0],index: ident)
+          }
+          */
          
          break
       case 5: // Mixing
@@ -349,12 +435,11 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
             DispatchArray[0][zeile]["dispatchfunktion"]  = UInt8(itemindex)
             DispatchTable.reloadData()
             print("dispatchfunktion")
-                        
+            
          case columndevice: // device(Steuerelement)
             DispatchArray[0][zeile]["dispatchdevice"]  = UInt8(itemindex)
             DispatchTable.reloadData()
             print("dispatchdevice")
-
             
          case columnon: // onimage
             let onwert = UInt8(DispatchArray[0][zeile]["dispatchonimage"] ?? 0)
@@ -362,8 +447,6 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
             DispatchArray[0][zeile]["dispatchonimage"]  = 1 - onwert
             DispatchTable.reloadData()
             print("dispatchonimage")
-            
-
             
          case columnlevela:
             DispatchArray[0][zeile]["dispatchlevela"]  = UInt8(itemindex)
@@ -384,29 +467,19 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
             DispatchArray[0][zeile]["dispatchexpob"]  = UInt8(itemindex)
             DispatchTable.reloadData()
             print("columnexpob")
-         
+            
          case columnrichtung:
             DispatchArray[0][zeile]["dispatchrichtung"]  = UInt8(itemindex)
             DispatchTable.reloadData()
             print("columnrichtung")
             
             
-            
          default: break
          }// switch kolonne
-         DispatchArray[0][zeile]["dispatchpopup"]  = UInt8(itemindex)
-         DispatchTable.reloadData()
-         /*
-         for ident in 0..<DispatchArray[0].count-1
-         {
-         printArray(DispatchArray[0],index: ident)
-         }
-          */
          break
       default:
          break
       }// switch tabletag
-      
    }
 
   @nonobjc override func windowShouldClose(_ sender: Any) 
@@ -415,15 +488,13 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
      NSApplication.shared.terminate(self)
   }
    
-   
-   
    // MARK: Actions
    
-   @IBAction func report_TableView(_ sender: NSPopUpButtonCell)
+   @IBAction func report_TableView(_ sender: NSTableView)
    {
       print("reportTableView clicked: \(DispatchTable.clickedRow) \(DispatchTable.clickedColumn)")
       let ident = sender.identifier
-   print("sender ident \( ident)")
+      print("sender ident \( ident)")
    }
    
    
@@ -1109,8 +1180,7 @@ func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColu
    }
    
    
-   
-   // MARK: Variablen
+      // MARK: Variablen
    var                     dumpCounter:Int = 0
    
    var                        lastValueRead: NSData = NSData() /*" The last value read"*/
@@ -1133,7 +1203,14 @@ func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColu
   
   // var               usbstatus:Int = 0// was tun
    var               usbtask:Int = 0 // welche Task ist aktuell
+   var            buffer = [UInt8](repeating: 0,count: USB_DATENBREITE)
+   var            sendbuffer = [UInt8](repeating: 0,count: USB_DATENBREITE)
 
+   var            outbuffer = [UInt8](repeating: 0,count: USB_DATENBREITE)
+
+   var            inbuffer = [UInt8](repeating: 0,count: USB_DATENBREITE)
+   
+ 
    
    
    var            ExpoDatenArray = [UInt8]()
@@ -1166,17 +1243,18 @@ func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColu
    @IBOutlet   weak var          macroPopup:NSPopUpButton!
    @IBOutlet   weak var          readButton:NSButton!
 
-   @IBOutlet    var     richtungpoppop:NSPopUpButton!
-   @IBOutlet    var     artpop:NSPopUpButton!
-   @IBOutlet    var     levelapop:NSPopUpButton!
-   @IBOutlet    var     levelbpop:NSPopUpButton!
-   @IBOutlet    var     expoapop:NSPopUpButton!
-   @IBOutlet    var     expobpop:NSPopUpButton!
+   @IBOutlet      weak var       modelFeld:NSTextField! 
+   
+   @IBOutlet      weak var        AdressPop:NSPopUpButton!
+   @IBOutlet        weak var      model:NSSegmentedControl!
+   
+   
+  @IBOutlet        weak var          readUSB:NSButton!
+   @IBOutlet        weak var          sendSettingsTaste:NSButton!
   
    
-   @IBOutlet     weak var      AdressPop:NSPopUpButton!
-  
-  @IBOutlet        weak var          readUSB:NSButton!
+   
+   
   @IBOutlet       weak var        USB_DataFeld:NSTextField!
   @IBOutlet       weak var        rundeFeld:NSTextField!
   
