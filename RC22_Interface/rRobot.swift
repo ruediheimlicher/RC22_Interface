@@ -381,10 +381,10 @@ class rRobot: rViewController
    @objc func usbstatusAktion(_ notification:Notification) 
    {
       let info = notification.userInfo
-      let status = info?["usbstatus"] as! Int32 // 
+      let status = info?["usbstatus"] as! Int // 
       let manufactorer = info?["manufactorer"] as! String
      print("Robot usbstatusAktion:\t \(status) manufactorer: \(manufactorer)")
-      usbstatus = Int32(status)
+      usbstatus = (status)
    }
    
    @objc override func newDataAktion(_ notification:Notification) 

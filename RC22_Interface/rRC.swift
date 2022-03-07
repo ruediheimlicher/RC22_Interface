@@ -357,12 +357,32 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
      print("report_sendSettingChannels ")
      let kanaldataarray = readSettingKanalArray()
      sendbuffer[0] = 0xF4
-     var pos = 0
+     var pos:Int = 0
      for modelindex in 0..<ANZAHLMODELLE
      {
-
+        let modeldataarray = kanaldataarray[modelindex]
+        for kanal in 0..<8
+        {
+           
+           for dataindex in 0..<4
+           {
+              sendbuffer[USB_DATA_OFFSET + pos + dataindex] = modeldataarray[kanal][dataindex]
+           }
+            pos += KANALSETTINGBREITE
+               
+               
+           //print("status kanal: \(kanal) tempbuffer: \(tempbuffer)")
+           
+        }// for kanal
      
      }//model
+     
+     if (usbstatus > 0)
+     {
+        let senderfolg = teensy.send_USB()
+        print("report_Slider0 senderfolg: \(senderfolg)")
+     }
+
   }// report_sendSettingChannels
    
    @IBAction func report_sendSettings(_ sender: NSButton) 
@@ -449,16 +469,16 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
      
   }
 
-func readSettingKanalArray() -> [[UInt8]]
+func readSettingKanalArray() -> [[[UInt8]]]
    {
       print("report_sendSettings ")
       sendbuffer[0] = 0xF4
-      var data = [[UInt8]]()
+      var data = [[[UInt8]]]()
       var pos = 0
       for modelindex in 0..<ANZAHLMODELLE
       {
          pos = USB_DATA_OFFSET + modelindex * KANALSETTINGBREITE
-         
+         var modeldata = [[UInt8]]()
          for kanal in 0..<8
          {
             var kanaldata = [UInt8]()
@@ -499,9 +519,9 @@ func readSettingKanalArray() -> [[UInt8]]
             
             
 
-            data.append(kanaldata)
+            modeldata.append(kanaldata)
          } // for kanal
-         
+         data.append(modeldata)
       }// for modell
       return data
    }
@@ -522,9 +542,9 @@ func readSettingKanalArray() -> [[UInt8]]
    @objc func usbstatusAktion(_ notification:Notification) 
   {
      let info = notification.userInfo
-     let status = info?["usbstatus"] as! Int32 // 
+     let status = info?["usbstatus"]  // 
      print("Trigo usbstatusAktion:\t \(status) ")
-     usbstatus = Int32(status)
+     usbstatus = status as! Int
   }
 
    @objc func  tablePopAktion(_ notification:Notification) 

@@ -178,9 +178,9 @@ class rTrigo: rViewController
    @objc func usbstatusAktion(_ notification:Notification) 
    {
       let info = notification.userInfo
-      let status = info?["usbstatus"] as! Int32 // 
+      let status = info?["usbstatus"] as! Int // 
       print("Trigo usbstatusAktion:\t \(status) ")
-      usbstatus = Int32(status)
+      usbstatus = (status)
    }
    
    @objc  func drehknopfAktion(_ notification:Notification) 

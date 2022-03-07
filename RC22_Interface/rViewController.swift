@@ -188,7 +188,7 @@ class rViewController: NSViewController, NSWindowDelegate
    var phi2:Float = 0 // Winkel Arm 2
    // var  myUSBController:USBController
    // var usbzugang:
-   var usbstatus: Int32 = 0
+   var usbstatus: Int = 0
    
    var teensy = usb_teensy()
    
@@ -303,12 +303,12 @@ class rViewController: NSViewController, NSWindowDelegate
       {
          USB_OK_Feld.image = okimage
          manufactorername = teensy.manustring
-         usbstatus = Int32(1)
+         usbstatus = 1
       }
       else
       {
          USB_OK_Feld.image = notokimage
-         usbstatus = Int32(0)
+         usbstatus = 0
       }
       userinformation = ["message":"usb", "usbstatus": usbstatus,"manufactorer": manufactorername] as [String : Any]
       nc.post(name:Notification.Name(rawValue:"usb_status"),
@@ -970,7 +970,7 @@ class rViewController: NSViewController, NSWindowDelegate
 
       }
       let erfolg = teensy.USBOpen()
-      usbstatus = erfolg
+      usbstatus = Int(erfolg)
       globalusbstatus = Int(erfolg)
       print("USBOpen erfolg: \(erfolg) usbstatus: \(usbstatus)")
       

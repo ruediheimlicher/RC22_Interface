@@ -227,9 +227,9 @@ class rBasis: rViewController
    @objc func usbstatusAktion(_ notification:Notification) 
    {
       let info = notification.userInfo
-      let status = info?["usbstatus"] as! Int32 // 
+      let status = info?["usbstatus"] as! Int // 
       //print("Basis usbstatusAktion:\t \(status)")
-      usbstatus = Int32(status)
+      usbstatus = (status)
    }
 
    
