@@ -302,7 +302,23 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       }
    }
 
-   
+   func decodeUSBSettings(_ buffer:[UInt8]) -> [String:[UInt8]]
+   {
+      var data =  [String:[UInt8]]()
+()
+        let code = buffer[0]
+      print("decodeUSBSettings code: \(code)")
+      var pos:Int = 0
+      var statusarray = [UInt8]()
+      // status
+      for kanal in 0..<8
+      {
+         statusarray.append(buffer[pos + kanal])
+      
+      }//status
+      data["status"] = statusarray
+      return data                           
+   }
    @IBAction func report_sendSettings(_ sender: NSButton) 
   {
      print("report_sendSettings ")
@@ -369,6 +385,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
            print("funktion&device kanal: \(kanal) tempbuffer: \(tempbuffer)")
         }// level
       
+        let a = decodeUSBSettings(sendbuffer)
         if (usbstatus > 0)
         {
            let senderfolg = teensy.send_USB()
