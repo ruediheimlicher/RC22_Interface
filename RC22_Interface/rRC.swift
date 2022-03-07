@@ -302,26 +302,76 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       }
    }
 
+   
+   
    func decodeUSBSettings(_ buffer:[UInt8]) -> [String:[UInt8]]
    {
       var data =  [String:[UInt8]]()
 ()
         let code = buffer[0]
-      print("decodeUSBSettings code: \(code)")
-      var pos:Int = 0
+      let hexcode = String(format: "%02X", code)
+      print("decodeUSBSettings code: \(code) hex: \(hexcode)")
+      var pos:Int = USB_DATA_OFFSET
       var statusarray = [UInt8]()
       // status
       for kanal in 0..<8
       {
          statusarray.append(buffer[pos + kanal])
-      
       }//status
       data["status"] = statusarray
+      
+      // level
+      pos += 8
+      var levelarray = [UInt8]()
+      for kanal in 0..<8
+      {
+         levelarray.append(buffer[pos + kanal])
+      }//level
+      data["level"] = levelarray 
+
+      // expo
+      pos += 8
+      var expoarray = [UInt8]()
+      for kanal in 0..<8
+      {
+         expoarray.append(buffer[pos + kanal])
+      }//expo
+      data["expo"] = expoarray 
+      
+      // funktion & device
+      pos += 8
+      var funktionarray = [UInt8]()
+      for kanal in 0..<8
+      {
+         funktionarray.append(buffer[pos + kanal])
+      }//expo
+      data["funktion"] = funktionarray 
+      
+      
       return data                           
    }
+   
+   @IBAction func report_sendSettingChannels(_ sender: NSButton) 
+  {
+     
+     print("report_sendSettingChannels ")
+     let kanaldataarray = readSettingKanalArray()
+     sendbuffer[0] = 0xF4
+     var pos = 0
+     for modelindex in 0..<ANZAHLMODELLE
+     {
+
+     
+     }//model
+  }// report_sendSettingChannels
+   
    @IBAction func report_sendSettings(_ sender: NSButton) 
   {
+     
      print("report_sendSettings ")
+     let kanaldataarray = readSettingKanalArray()
+     
+     
      sendbuffer[0] = 0xF4
      var pos = 0
      for modelindex in 0..<ANZAHLMODELLE
@@ -399,6 +449,63 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
      
   }
 
+func readSettingKanalArray() -> [[UInt8]]
+   {
+      print("report_sendSettings ")
+      sendbuffer[0] = 0xF4
+      var data = [[UInt8]]()
+      var pos = 0
+      for modelindex in 0..<ANZAHLMODELLE
+      {
+         pos = USB_DATA_OFFSET + modelindex * KANALSETTINGBREITE
+         
+         for kanal in 0..<8
+         {
+            var kanaldata = [UInt8]()
+            // status
+            var tempbuffer = UInt8(modelindex)
+            if (DispatchArray[modelindex][kanal]["dispatchonimage"] == 1)
+            {
+               tempbuffer |= 1<<3 // ON
+            }
+
+            //tempbuffer |= ((DispatchArray[modelindex][kanal]["kanal"] ?? 0) & 0x07) << 4
+            tempbuffer |=  (UInt8(kanal) & 0x07)<<4
+            
+            if (DispatchArray[modelindex][kanal]["dispatchrichtung"] == 1)
+            {
+               tempbuffer |= 1<<7 // richtung
+            }
+            kanaldata.append(tempbuffer)
+            
+            // level
+            tempbuffer = 0
+            tempbuffer |= (DispatchArray[modelindex][kanal]["dispatchlevela"] ?? 0) & 0x07
+            tempbuffer |= ((DispatchArray[modelindex][kanal]["dispatchlevelb"] ?? 0) & 0x07) << 4
+            kanaldata.append(tempbuffer)
+            
+            // expo
+            tempbuffer = 0
+            tempbuffer |= (DispatchArray[modelindex][kanal]["dispatchexpoa"] ?? 0) & 0x07
+            tempbuffer |= ((DispatchArray[modelindex][kanal]["dispatchexpob"] ?? 0) & 0x07) << 4
+            kanaldata.append(tempbuffer)
+            
+            // funktion & device
+            tempbuffer = 0
+            tempbuffer |= (DispatchArray[modelindex][kanal]["dispatchfunktion"] ?? 0) & 0x07
+            tempbuffer |= ((DispatchArray[modelindex][kanal]["dispatchdevice"] ?? 0) & 0x07) << 4
+            kanaldata.append(tempbuffer)
+           
+            
+            
+
+            data.append(kanaldata)
+         } // for kanal
+         
+      }// for modell
+      return data
+   }
+   
  
    var     default_DeviceArray:[String] = ["Pitch_L_H","Pitch_L_V","Pitch_R_H","Pitch_R_V","Schieber_L","Schieber_R","Schalter","leer"]
    var     default_FunktionArray:[String] = ["Seite","Hoehe","Quer","Motor","Quer L","Quer R","Lande","Aux"]
