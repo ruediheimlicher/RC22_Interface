@@ -297,7 +297,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       //USB_OK.backgroundColor = NSColor.greenColor()
       // Do any additional setup after loading the view.
       let newdataname = Notification.Name("newdata")
-      NotificationCenter.default.addObserver(self, selector:#selector(newDataAktion(_:)),name:newdataname,object:nil)
+      NotificationCenter.default.addObserver(self, selector:#selector(newRCDataAktion(_:)),name:newdataname,object:nil)
 //      NotificationCenter.default.addObserver(self, selector:#selector(joystickAktion(_:)),name:NSNotification.Name(rawValue: "joystick"),object:nil)
       NotificationCenter.default.addObserver(self, selector:#selector(usbstatusAktion(_:)),name:NSNotification.Name(rawValue: "usb_status"),object:nil)
 //      NotificationCenter.default.addObserver(self, selector:#selector(drehknopfAktion(_:)),name:NSNotification.Name(rawValue: "drehknopf"),object:nil)
@@ -322,11 +322,11 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
    
    } // end viewDidLoad
    
-   @objc override func newDataAktion(_ notification:Notification) 
+   @objc  func newRCDataAktion(_ notification:Notification) 
    {
        let info = notification.userInfo
       
-      print("new DataAktion info: \(String(describing: info))")
+      //print("new DataAktion info: \(String(describing: info))")
       //print("new DataAktion")
       let data = notification.userInfo?["data"] as! [UInt8]
 
