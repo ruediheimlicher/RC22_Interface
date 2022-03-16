@@ -42,6 +42,7 @@
 		BD874E8E27D6071200EBA1D8 /* RC22_256_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BD874E8427D6071100EBA1D8 /* RC22_256_2x.png */; };
 		BD874E8F27D6071200EBA1D8 /* RC22_32.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BD874E8527D6071100EBA1D8 /* RC22_32.jpg */; };
 		BD874E9027D6071200EBA1D8 /* RC22_128.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BD874E8627D6071100EBA1D8 /* RC22_128.jpg */; };
+		BD874E9227DB5D9B00EBA1D8 /* RC22_model0.png in Resources */ = {isa = PBXBuildFile; fileRef = BD874E9127DB5D9B00EBA1D8 /* RC22_model0.png */; };
 		BD94A905250789CA00D815E2 /* lok.png in Resources */ = {isa = PBXBuildFile; fileRef = BD94A904250789C900D815E2 /* lok.png */; };
 		BD94A9072507958900D815E2 /* lok_inv.png in Resources */ = {isa = PBXBuildFile; fileRef = BD94A9062507958900D815E2 /* lok_inv.png */; };
 		BDACB33D2537021D00BF7361 /* drehscheibe.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BDACB33C2537021D00BF7361 /* drehscheibe.jpg */; };
@@ -92,6 +93,7 @@
 		BD874E8427D6071100EBA1D8 /* RC22_256_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RC22_256_2x.png; sourceTree = "<group>"; };
 		BD874E8527D6071100EBA1D8 /* RC22_32.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = RC22_32.jpg; sourceTree = "<group>"; };
 		BD874E8627D6071100EBA1D8 /* RC22_128.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = RC22_128.jpg; sourceTree = "<group>"; };
+		BD874E9127DB5D9B00EBA1D8 /* RC22_model0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RC22_model0.png; sourceTree = "<group>"; };
 		BD94A904250789C900D815E2 /* lok.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lok.png; sourceTree = "<group>"; };
 		BD94A9062507958900D815E2 /* lok_inv.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lok_inv.png; sourceTree = "<group>"; };
 		BDACB33C2537021D00BF7361 /* drehscheibe.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = drehscheibe.jpg; sourceTree = "<group>"; };
@@ -142,6 +144,7 @@
 			children = (
 				BD33FAFF257E93F400B11D1E /* Icon */,
 				BDACB33C2537021D00BF7361 /* drehscheibe.jpg */,
+				BD874E9127DB5D9B00EBA1D8 /* RC22_model0.png */,
 				BD94A9062507958900D815E2 /* lok_inv.png */,
 				BD94A904250789C900D815E2 /* lok.png */,
 				BD140746233A93A900EDC163 /* notok_image.png */,
@@ -286,6 +289,7 @@
 				BDACB33D2537021D00BF7361 /* drehscheibe.jpg in Resources */,
 				BD874E8E27D6071200EBA1D8 /* RC22_256_2x.png in Resources */,
 				BD874E8F27D6071200EBA1D8 /* RC22_32.jpg in Resources */,
+				BD874E9227DB5D9B00EBA1D8 /* RC22_model0.png in Resources */,
 				BD874E8827D6071200EBA1D8 /* RC22_16_2x.jpg in Resources */,
 				BD8702671A06852A00F2C77B /* Main.storyboard in Resources */,
 				BD6B26AA27C3FEF3003D59B9 /* pfeilrechts.png in Resources */,

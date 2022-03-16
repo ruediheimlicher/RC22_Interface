@@ -928,7 +928,7 @@ class rViewController: NSViewController, NSWindowDelegate
       {
          var start_read_USB_erfolg = teensy.start_read_USB(true)
          Start_Knopf.isEnabled = false
-         Stop_Knopf.isEnabled = true
+      //   Stop_Knopf.isEnabled = true
 
       }
       else
@@ -939,7 +939,7 @@ class rViewController: NSViewController, NSWindowDelegate
          warnung.addButton(withTitle: "OK")
          warnung.runModal()
          Start_Knopf.isEnabled = false
-         Stop_Knopf.isEnabled = false
+       //  Stop_Knopf.isEnabled = false
 
       }
       

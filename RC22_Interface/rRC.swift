@@ -58,6 +58,31 @@ class rPopUpZelle:NSTableCellView, NSMenuDelegate,NSTableViewDataSource
   
 }
 
+class rBox:NSView
+{
+   var hintergrundfarbe = NSColor()
+   override init(frame: CGRect) 
+   {
+         super.init(frame: frame)
+        // initialize what is needed
+     }
+
+   required init?(coder  aDecoder : NSCoder) 
+   {
+      hintergrundfarbe  = NSColor.init(red: 0.45, 
+                                    green: 0.95, 
+                                    blue: 0.55, 
+                                    alpha: 0.15)
+
+      super.init(coder: aDecoder)
+      self.wantsLayer = true
+      self.layer?.backgroundColor = hintergrundfarbe.cgColor
+
+   }
+   
+ 
+}
+
 class rDevicePopUpZelle:rPopUpZelle
 {
    @IBOutlet weak var DevicePopUp:NSPopUpButton?
@@ -80,8 +105,10 @@ class rDevicePopUpZelle:rPopUpZelle
 
 
 let USB_DATA_OFFSET = 4
-let ANZAHLMODELLE = 1
+let ANZAHLMODELLE = 3
 let KANALSETTINGBREITE = 4
+let MODELSETTINGBREITE = 32
+
 let USB_DATENBREITE = 64
 
 
@@ -91,16 +118,20 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
    
  //  var popup:rPopUpZelle! 
    var hintergrundfarbe = NSColor()
- 
+ var modelnummer = 0
    override func viewDidAppear() 
    {
       print ("RC viewDidAppear selectedDevice: \(selectedDevice)")
+  
+      SettingTab.drawsBackground = true
+      //SettingTab.wantsLayer = true
+      //SettingTab.layer?.backgroundColor = NSColor.blue.cgColor
 
       MixingTable.dataSource = self
       MixingTable.delegate = self
  
       
-      default_ONArray = [okimage, notokimage]
+      default_ONArray = [notokimage, okimage]
       default_RichtungArray = [[pfeillinksimage, pfeilrechtsimage],[pfeilupimage, pfeildownimage]]
       // https://stackoverflow.com/questions/43510646/how-to-change-font-size-of-nstableheadercell
  //     DispatchTable.tableColumns.forEach { (column) in column.headerCell.attributedStringValue = NSAttributedString(string: column.title, attributes: [NSAttributedStringKey.font: //NSFont.boldSystemFont(ofSize: 12)])
@@ -187,7 +218,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
             dispatchdic["dispatchkanal"] = dispatchindex 
             dispatchdic["dispatchdevice"] = (dispatchindex ) & 0x07
             dispatchdic["dispatchgo"] = 1 // verwendet 
-            dispatchdic["dispatchonimage"] = dispatchindex%2 // verwendet
+            dispatchdic["dispatchonimage"] = 1 //dispatchindex%2 // verwendet
             // von kanal
             dispatchdic["dispatchrichtung"] = 1
             dispatchdic["dispatchlevela"]  = dispatchindex & 0x03
@@ -214,7 +245,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       DispatchTable.reloadData()
       
       
-      (SettingTab.selectedTabViewItem?.view?.viewWithTag(100) as! NSTextField).stringValue =  "Mod 0"
+//      (SettingTab.selectedTabViewItem?.view?.viewWithTag(100) as! NSTextField).stringValue =  "Mod 0"
 
       eepromwritestatus = 0
       Halt_Taste.toolTip = "HALT vor Aenderungen im EEPROM"
@@ -237,6 +268,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          z += 1
       }
        */
+      
       print("end viewDidAppear")  
    } // end viewDidAppear
 
@@ -248,7 +280,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       //let view = view[0] as! NSView
       self.view.wantsLayer = true
       hintergrundfarbe  = NSColor.init(red: 0.25, 
-                                    green: 0.45, 
+                                    green: 0.95, 
                                     blue: 0.45, 
                                     alpha: 0.25)
       self.view.layer?.backgroundColor =  hintergrundfarbe.cgColor
@@ -282,14 +314,89 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          index += 1
       }
    */
-      print("end viewDidLoad")
+       print("end viewDidLoad")
    
    } // end viewDidLoad
+   
+   @objc override func newDataAktion(_ notification:Notification) 
+   {
+      let lastData = teensy.getlastDataRead()
+      //print("lastData:\t \(lastData[1])\t\(lastData[2])   ")
+      var ii = 0
+      while ii < 15
+      {
+         print("ii: \(ii)  wert: \(lastData[ii])\t")
+         ii = ii+1
+      }
+      
+      let u = ((Int32(lastData[9])<<8) + Int32(lastData[8]))
+      print("stick 1: hb: \(lastData[9]) lb: \(lastData[8]) u: \(u)")
+      Pot0_SliderInt.intValue = u
+      Pot0_DataFeld.intValue = u
+      let info = notification.userInfo
+      
+      //print("info: \(String(describing: info))")
+      print("new Data")
+      let data = notification.userInfo?["data"] as! [UInt8]
+      print("data: \(String(describing: data)) \n") // data: Optional([0, 9, 51, 0,....
+      
+      let code = data[0]
+        
+      switch code
+      {
+      case 0xF4:
+         print("newDataAktion 0xF4")
+         let modelindex = (data[USB_DATA_OFFSET]) & 0x08
+         let ON = ((data[USB_DATA_OFFSET]) & 0x08) >> 3 // bit 4
+         let richtung = ((data[USB_DATA_OFFSET]) & 0x80) >> 7 // bit 7
+         print("newDataAktion data4: \(data[USB_DATA_OFFSET]) modelindex: \(modelindex) ON: \(ON) richtung: \(richtung)")
+         
+         for z in 0..<USB_DATENBREITE
+         {
+            print("\(z) \t\(data[z])")
+         }
+         break
+      default:
+         break
+      }// switch code
+      /*
+      if let d:[UInt8] = (notification.userInfo!["usbdata"] as! [UInt8]) 
+      {
+         
+         //print("d: \(d)\n") // d: [0, 9, 56, 0, 0,... 
+         let t = type(of:d)
+         //print("typ: \(t)\n") // typ: Array<UInt8>
+         
+         //print("element: \(d[1])\n")
+         
+         //       print("d as string: \(String(describing: d))\n")
+         if d != nil
+         {
+            //print("d not nil\n")
+            var i = 0
+            while i < 20
+            {
+               let dd = d[i] as uint8
+               print("i: \(i)  wert: \(dd)\t")
+               i = i+1
+            }
+            
+         }
+         
+         
+         //print("dic end\n")
+      }
+ */
+      
+      //let dic = notification.userInfo as? [String:[UInt8]]
+      //print("dic: \(dic ?? ["a":[123]])\n")
+      
+   }
    
    @IBAction func report_Model(_ sender: NSSegmentedControl) 
   {
    print("report_Model model: \(sender.indexOfSelectedItem)")
-     modelFeld.integerValue = sender.indexOfSelectedItem
+     //modelFeld.integerValue = sender.indexOfSelectedItem
   }
    
     @IBAction func report_artPop(_ sender: NSPopUpButton) 
@@ -302,13 +409,41 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       }
    }
 
+   func decodeUSBChannelSettings(_ buffer:[UInt8], model:UInt8) -> [[UInt8]] // daten fuer Modellnummer aus USB
+   {
+     var data = [[UInt8]]()
+      let code = buffer[0]
+      let hexcode = String(format: "%02X", code)
+      print("decodeUSBSettings code: \(code) hex: \(hexcode)")
+      var pos:Int = USB_DATA_OFFSET
+      
+      for kanal in 0..<8
+      {
+         var kanalarray = [UInt8]()
+         
+         for dataindex in 0..<4
+         {
+            //print("pos: \(pos) dataindex: \(dataindex)")
+            kanalarray.append(buffer[pos + dataindex]) // status, level, expo, funktion
+              
+         } // for dataindex
+         pos += KANALSETTINGBREITE
+         data.append(kanalarray)
+         
+      
+      }
+   
+       
+      return data
+   }
    
    
-   func decodeUSBSettings(_ buffer:[UInt8]) -> [String:[UInt8]]
+   
+   func decodeUSBSettings(_ buffer:[UInt8]) -> [String:[UInt8]] // dictionary aus USB
    {
       var data =  [String:[UInt8]]()
 ()
-        let code = buffer[0]
+      let code = buffer[0]
       let hexcode = String(format: "%02X", code)
       print("decodeUSBSettings code: \(code) hex: \(hexcode)")
       var pos:Int = USB_DATA_OFFSET
@@ -351,22 +486,25 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       return data                           
    }
    
-   @IBAction func report_sendSettingChannels(_ sender: NSButton) 
+   @IBAction func report_sendSettingChannels(_ sender: NSButton)  // USB-Daten von aktuellem modell
   {
      
      print("report_sendSettingChannels ")
      let kanaldataarray = readSettingKanalArray()
-     sendbuffer[0] = 0xF4
-     var pos:Int = 0
-     for modelindex in 0..<ANZAHLMODELLE
+     //sendbuffer[0] = 0xF4
+     teensy.write_byteArray[0] = 0xF4
+     //for modelindex in 0..<ANZAHLMODELLE
+   for modelindex in 0..<1
      {
+        var pos:Int = 0
         let modeldataarray = kanaldataarray[modelindex]
         for kanal in 0..<8
         {
            
            for dataindex in 0..<4
            {
-              sendbuffer[USB_DATA_OFFSET + pos + dataindex] = modeldataarray[kanal][dataindex]
+              //sendbuffer[USB_DATA_OFFSET + pos + dataindex] = modeldataarray[kanal][dataindex]
+              teensy.write_byteArray[USB_DATA_OFFSET + pos + dataindex] = modeldataarray[kanal][dataindex]
            }
             pos += KANALSETTINGBREITE
                
@@ -375,14 +513,16 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
            
         }// for kanal
      
-     }//model
-     
-     if (usbstatus > 0)
-     {
-        let senderfolg = teensy.send_USB()
-        print("report_Slider0 senderfolg: \(senderfolg)")
-     }
+        print("model: \(modelindex) sendbuffer: \(teensy.write_byteArray)")
+        let controlarrayy = decodeUSBChannelSettings(teensy.write_byteArray, model:0)
+        if (usbstatus > 0)
+        {
+           let senderfolg = teensy.send_USB()
+           print("model: \(modelindex) report_sendSettingChannels senderfolg: \(senderfolg)")
+        }
 
+     }//model
+  
   }// report_sendSettingChannels
    
    @IBAction func report_sendSettings(_ sender: NSButton) 
@@ -469,9 +609,9 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
      
   }
 
-func readSettingKanalArray() -> [[[UInt8]]]
+func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> Kanal> device
    {
-      print("report_sendSettings ")
+      print("readSettingKanalArray ")
       sendbuffer[0] = 0xF4
       var data = [[[UInt8]]]()
       var pos = 0
@@ -1393,7 +1533,7 @@ func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColu
    @IBOutlet      weak var       modelFeld:NSTextField! 
    
    @IBOutlet      weak var        AdressPop:NSPopUpButton!
-   @IBOutlet        weak var      model:NSSegmentedControl!
+   @IBOutlet        weak var      modelSeg:NSSegmentedControl!
    
    
   @IBOutlet        weak var          readUSB:NSButton!
