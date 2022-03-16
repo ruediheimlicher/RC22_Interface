@@ -111,6 +111,7 @@ let MODELSETTINGBREITE = 32
 
 let USB_DATENBREITE = 64
 
+let ADCOFFSET  = 48
 
 class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableViewDelegate,NSComboBoxDataSource,NSComboBoxDelegate
 {
@@ -119,6 +120,9 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
  //  var popup:rPopUpZelle! 
    var hintergrundfarbe = NSColor()
  var modelnummer = 0
+   
+   var usbcounter = 0
+   
    override func viewDidAppear() 
    {
       print ("RC viewDidAppear selectedDevice: \(selectedDevice)")
@@ -320,77 +324,49 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
    
    @objc override func newDataAktion(_ notification:Notification) 
    {
-      let lastData = teensy.getlastDataRead()
-      //print("lastData:\t \(lastData[1])\t\(lastData[2])   ")
-      var ii = 0
-      while ii < 15
-      {
-         print("ii: \(ii)  wert: \(lastData[ii])\t")
-         ii = ii+1
-      }
+       let info = notification.userInfo
       
-      let u = ((Int32(lastData[9])<<8) + Int32(lastData[8]))
-      print("stick 1: hb: \(lastData[9]) lb: \(lastData[8]) u: \(u)")
-      Pot0_SliderInt.intValue = u
-      Pot0_DataFeld.intValue = u
-      let info = notification.userInfo
-      
-      //print("info: \(String(describing: info))")
-      print("new Data")
+      print("new DataAktion info: \(String(describing: info))")
+      //print("new DataAktion")
       let data = notification.userInfo?["data"] as! [UInt8]
-      print("data: \(String(describing: data)) \n") // data: Optional([0, 9, 51, 0,....
-      
+
       let code = data[0]
-        
-      switch code
+      if (code > 0)
       {
-      case 0xF4:
-         print("newDataAktion 0xF4")
-         let modelindex = (data[USB_DATA_OFFSET]) & 0x08
-         let ON = ((data[USB_DATA_OFFSET]) & 0x08) >> 3 // bit 4
-         let richtung = ((data[USB_DATA_OFFSET]) & 0x80) >> 7 // bit 7
-         print("newDataAktion data4: \(data[USB_DATA_OFFSET]) modelindex: \(modelindex) ON: \(ON) richtung: \(richtung)")
-         
-         for z in 0..<USB_DATENBREITE
+         print("new data: \(String(describing: data)) \n") // data: Optional([0, 9, 51, 0,....
+
+         switch code
          {
-            print("\(z) \t\(data[z])")
-         }
-         break
-      default:
-         break
-      }// switch code
-      /*
-      if let d:[UInt8] = (notification.userInfo!["usbdata"] as! [UInt8]) 
-      {
-         
-         //print("d: \(d)\n") // d: [0, 9, 56, 0, 0,... 
-         let t = type(of:d)
-         //print("typ: \(t)\n") // typ: Array<UInt8>
-         
-         //print("element: \(d[1])\n")
-         
-         //       print("d as string: \(String(describing: d))\n")
-         if d != nil
-         {
-            //print("d not nil\n")
-            var i = 0
-            while i < 20
-            {
-               let dd = d[i] as uint8
-               print("i: \(i)  wert: \(dd)\t")
-               i = i+1
-            }
+         case 0xF5:
+            print("newDataAktion 0xF5")
+            let modelindex = (data[USB_DATA_OFFSET]) & 0x08
+            let ON = ((data[USB_DATA_OFFSET]) & 0x08) >> 3 // bit 4
+            let richtung = ((data[USB_DATA_OFFSET]) & 0x80) >> 7 // bit 7
+            print("newDataAktion data5: \(data[USB_DATA_OFFSET]) modelindex: \(modelindex) ON: \(ON) richtung: \(richtung)")
             
-         }
+            /*
+             for z in 0..<USB_DATENBREITE
+             {
+             print("\(z) \t\(data[z])")
+             }
+             */
+            let pot0 = ((Int32(data[ADCOFFSET + 1])<<8) + Int32(data[ADCOFFSET]))
+            //print("stick 0: hb: \(data[9]) lb: \(data[8]) u: \(u)")
+            Pot0_SliderInt.intValue = pot0
+            Pot0_DataFeld.intValue = pot0
+            let pot1 = ((Int32(data[ADCOFFSET + 2 + 1])<<8) + Int32(data[ADCOFFSET + 2]))
+            //print("stick 1: hb: \(data[9]) lb: \(data[8]) u: \(u)")
+            Pot1_SliderInt.intValue = pot1
+            Pot1_DataFeld.intValue = pot1
+            print("newDataAktion data5 end\n\n")
+            break
+         default:
+            break
+         }// switch code
          
-         
-         //print("dic end\n")
-      }
- */
-      
-      //let dic = notification.userInfo as? [String:[UInt8]]
-      //print("dic: \(dic ?? ["a":[123]])\n")
-      
+         //let dic = notification.userInfo as? [String:[UInt8]]
+         //print("dic: \(dic ?? ["a":[123]])\n")
+      } // if code
    }
    
    @IBAction func report_Model(_ sender: NSSegmentedControl) 
@@ -489,7 +465,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
    @IBAction func report_sendSettingChannels(_ sender: NSButton)  // USB-Daten von aktuellem modell
   {
      
-     print("report_sendSettingChannels ")
+     print("report_sendSettingChannels start")
      let kanaldataarray = readSettingKanalArray()
      //sendbuffer[0] = 0xF4
      teensy.write_byteArray[0] = 0xF4
@@ -518,8 +494,19 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
         if (usbstatus > 0)
         {
            let senderfolg = teensy.send_USB()
-           print("model: \(modelindex) report_sendSettingChannels senderfolg: \(senderfolg)")
+           usbcounter += 1
+           print("model: \(modelindex) usbcounter: \(usbcounter) report_sendSettingChannels senderfolg: \(senderfolg)")
         }
+      if self.teensy.readtimervalid() == true
+      {
+         print("PCB readtimer valid vor")
+      }
+      else 
+      {
+         print("PCB readtimer not valid bevor")
+         self.teensy.start_read_USB(true)
+      }
+
 
      }//model
   
