@@ -180,7 +180,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
             kanaldic["levelb"]  = 3
             kanaldic["expoa"]  = 7-kanal & 0x03
             kanaldic["expob"]  = kanal & 0x03
-            kanaldic["mix"]  = 1
+           // kanaldic["mix"]  = 1
             kanaldic["mixkanal"]  = kanal
             kanaldic["kanalonimage"]  = kanal%2
             kanaldic["state"]  = 0
@@ -197,9 +197,10 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          {
             var mixingdic = [String:UInt8]()
             mixingdic["mixnummer"] = mixingindex
+            mixingdic["mixonimage"] = 1
             mixingdic["mixart"] = 2
-            mixingdic["canala"] = 0x08
-            mixingdic["canalb"] = 0x08
+            mixingdic["mixcanala"] = 0x08
+            mixingdic["mixcanalb"] = 0x08
             mixingdic["mixing"] = 0 // verwendet als Mix xy
             MixingSettingArray.append(mixingdic)
          }
@@ -326,30 +327,47 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
    {
        let info = notification.userInfo
       
-      //print("new DataAktion info: \(String(describing: info))")
+     // print("new DataAktion info: \(String(describing: info))")
       //print("new DataAktion")
       let data = notification.userInfo?["data"] as! [UInt8]
 
       let code = data[0]
       if (code > 0)
       {
-         print("new data: \(String(describing: data)) \n") // data: Optional([0, 9, 51, 0,....
+       //  print("new data: \(String(describing: data)) \n") // data: Optional([0, 9, 51, 0,....
 
          switch code
          {
          case 0xF5:
             print("newDataAktion 0xF5")
-            let modelindex = (data[USB_DATA_OFFSET]) & 0x08
+            let modelindex = Int((data[USB_DATA_OFFSET]) & 0x07)
+            
+            let kanalindex = Int((data[USB_DATA_OFFSET]) & 0x70)
             let ON = ((data[USB_DATA_OFFSET]) & 0x08) >> 3 // bit 4
             let richtung = ((data[USB_DATA_OFFSET]) & 0x80) >> 7 // bit 7
             print("newDataAktion data5: \(data[USB_DATA_OFFSET]) modelindex: \(modelindex) ON: \(ON) richtung: \(richtung)")
-            
+            /*
+             NSMutableDictionary* mixingdic = [[NSMutableDictionary dictionaryWithObjectsAndKeys:
+             [NSNumber numberWithInt:settingindex],@"mixnummer",
+             [NSNumber numberWithInt:0],@"mixart",
+             [NSNumber numberWithInt:0xFF],@"canala",
+             [NSNumber numberWithInt:0xFF],@"canalb",
+             [NSString stringWithFormat:@"Mix %d",0],@"mixing",
+
+             */
             /*
              for z in 0..<USB_DATENBREITE
              {
              print("\(z) \t\(data[z])")
              }
              */
+            
+           // decodeUSBChannelSettings(_ buffer:[UInt8], model:UInt8) -> [[UInt8]] 
+            let newdata:[[UInt8]]  = decodeUSBChannelSettings(data, model:0) // 8 array mit settings
+       
+            
+            importTableData(newdata, kanal:kanalindex, model: modelindex)
+                            
             let pot0 = ((Int32(data[ADCOFFSET + 1])<<8) + Int32(data[ADCOFFSET]))
             //print("stick 0: hb: \(data[9]) lb: \(data[8]) u: \(u)")
             Pot0_SliderInt.intValue = pot0
@@ -359,6 +377,26 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
             Pot1_SliderInt.intValue = pot1
             Pot1_DataFeld.intValue = pot1
             print("newDataAktion data5 end\n\n")
+            break
+            
+         case 0xF7:
+            print("newDataAktion 0xF7")
+            
+            let modelindex = Int((data[USB_DATA_OFFSET]) & 0x07)
+            
+            let kanalindex = Int((data[USB_DATA_OFFSET]) & 0x70) >> 4
+            let ON = ((data[USB_DATA_OFFSET]) & 0x08) >> 3 // bit 4
+            let richtung = ((data[USB_DATA_OFFSET]) & 0x80) >> 7 // bit 7
+            print("newDataAktion data status(4): \(data[USB_DATA_OFFSET]) modelindex: \(modelindex) ON: \(ON) kanalindex: \(kanalindex)  richtung: \(richtung)")
+            
+            var currentdata = [UInt8]()
+            for pos in 0..<4
+            {
+               let d = data[USB_DATA_OFFSET + pos]
+               currentdata.append(data[USB_DATA_OFFSET + pos])
+            }
+            importCurrentTableData(currentdata,kanal: kanalindex,model: modelindex)
+            
             break
          default:
             break
@@ -412,8 +450,115 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
        
       return data
    }
+
+   func importCurrentTableData(_ kanaldata:[UInt8], kanal:Int, model: Int)// daten pro kanal
+   {
+      //let kanaldata:[UInt8] = indata[(kanal)]
+      /*
+       dispatchdic["dispatchnummer"] = dispatchindex
+       dispatchdic["dispatchfunktion"] = (dispatchindex ) & 0x07 // ausgesuchte funktion
+       dispatchdic["dispatchkanal"] = dispatchindex 
+       dispatchdic["dispatchdevice"] = (dispatchindex ) & 0x07
+       dispatchdic["dispatchgo"] = 1 // verwendet 
+       dispatchdic["dispatchonimage"] = 1 //dispatchindex%2 // verwendet
+       // von kanal
+       dispatchdic["dispatchrichtung"] = 1
+       dispatchdic["dispatchlevela"]  = dispatchindex & 0x03
+       dispatchdic["dispatchlevelb"]  = 4-dispatchindex & 0x03
+       dispatchdic["dispatchexpoa"]  = 4-dispatchindex & 0x03
+       dispatchdic["dispatchexpob"]  = dispatchindex & 0x03
+       dispatchdic["dispatchmix"]  = 1
+       dispatchdic["dispatchmixkanal"]  = dispatchindex
+       dispatchdic["dispatchmodelnummer"]  = model
+       dispatchdic["dispatchmodel"]  = model
+
+       */
+      let dispatchkanal = UInt8(kanal)
+    
+      let dispatchonimage = (kanaldata[0] & 0x08) >> 3 // Bit 3
+      let dispatchrichtung = (kanaldata[0] & 0x80) >> 7 // Bit 7
+      let dispatchlevela = (kanaldata[1] & 0x07) 
+      let dispatchlevelb = (kanaldata[1] & 0x70) >> 4 
+      let dispatchexpoa = (kanaldata[2] & 0x07)
+      let dispatchexpob = (kanaldata[2] & 0x70) >> 4 
+      let dispatchdevice =  kanaldata[3] & 0x70  >> 4 
+      let dispatchfunktion = (kanaldata[3] & 0x07)
+      
+      print("dispatchkanal: \(dispatchkanal)")
+      print("dispatchonimage: \(dispatchonimage)")
+      print("dispatchlevela: \(dispatchlevela)")
+      print("dispatchlevelb: \(dispatchlevelb)")
+      print("dispatchexpoa: \(dispatchexpoa)")
+      print("dispatchexpob: \(dispatchexpob)")
+      print("dispatchdevice: \(dispatchdevice)")
+      print("dispatchfunktion: \(dispatchfunktion)")
+      
+      DispatchArray[(model)][(kanal)]["dispatchkanal"]  = UInt8(kanal)
+      DispatchArray[(model)][(kanal)]["dispatchonimage"]  = (kanaldata[0] & 0x08) >> 3 // Bit 3
+      DispatchArray[(model)][(kanal)]["dispatchrichtung"]  = (kanaldata[0] & 0x80) >> 7 // Bit 7
+      DispatchArray[(model)][(kanal)]["dispatchlevela"]  = (kanaldata[1] & 0x07) 
+      DispatchArray[(model)][(kanal)]["dispatchlevelb"]  = (kanaldata[1] & 0x70) >> 4 
+      DispatchArray[(model)][(kanal)]["dispatchexpoa"]  = (kanaldata[2] & 0x07) 
+      DispatchArray[(model)][(kanal)]["dispatchexpob"]  = (kanaldata[2] & 0x70) >> 4 
+      DispatchArray[(model)][(kanal)]["dispatchdevice"] = kanaldata[3] & 0x70 >> 4                     
+      DispatchArray[(model)][(kanal)]["dispatchfunktion"]  = (kanaldata[3] & 0x07) >> 4
    
+      DispatchTable.reloadData()
+   }   
+   func importTableData(_ indata:[[UInt8]], kanal:Int, model: Int)// daten pro kanal
+   {
+      let kanaldata:[UInt8] = indata[(kanal)]
+      /*
+       dispatchdic["dispatchnummer"] = dispatchindex
+       dispatchdic["dispatchfunktion"] = (dispatchindex ) & 0x07 // ausgesuchte funktion
+       dispatchdic["dispatchkanal"] = dispatchindex 
+       dispatchdic["dispatchdevice"] = (dispatchindex ) & 0x07
+       dispatchdic["dispatchgo"] = 1 // verwendet 
+       dispatchdic["dispatchonimage"] = 1 //dispatchindex%2 // verwendet
+       // von kanal
+       dispatchdic["dispatchrichtung"] = 1
+       dispatchdic["dispatchlevela"]  = dispatchindex & 0x03
+       dispatchdic["dispatchlevelb"]  = 4-dispatchindex & 0x03
+       dispatchdic["dispatchexpoa"]  = 4-dispatchindex & 0x03
+       dispatchdic["dispatchexpob"]  = dispatchindex & 0x03
+       dispatchdic["dispatchmix"]  = 1
+       dispatchdic["dispatchmixkanal"]  = dispatchindex
+       dispatchdic["dispatchmodelnummer"]  = model
+       dispatchdic["dispatchmodel"]  = model
+
+       */
+      let dispatchkanal = UInt8(kanal)
+    
+      let dispatchonimage = (kanaldata[0] & 0x08) >> 3 // Bit 3
+      let dispatchrichtung = (kanaldata[0] & 0x80) >> 7 // Bit 7
+      let dispatchlevela = (kanaldata[1] & 0x07) 
+      let dispatchlevelb = (kanaldata[1] & 0x70) >> 4 
+      let dispatchexpoa = (kanaldata[2] & 0x07)
+      let dispatchexpob = (kanaldata[2] & 0x70) >> 4 
+      let dispatchdevice =  kanaldata[3] & 0x70  >> 4 
+      let dispatchfunktion = (kanaldata[3] & 0x07)
+      
+      print("dispatchkanal: \(dispatchkanal)")
+      print("dispatchonimage: \(dispatchonimage)")
+      print("dispatchlevela: \(dispatchlevela)")
+      print("dispatchlevelb: \(dispatchlevelb)")
+      print("dispatchexpoa: \(dispatchexpoa)")
+      print("dispatchexpob: \(dispatchexpob)")
+      print("dispatchdevice: \(dispatchdevice)")
+      print("dispatchfunktion: \(dispatchfunktion)")
+      
+      DispatchArray[(model)][(kanal)]["dispatchkanal"]  = UInt8(kanal)
+      DispatchArray[(model)][(kanal)]["dispatchonimage"]  = (kanaldata[0] & 0x08) >> 3 // Bit 3
+      DispatchArray[(model)][(kanal)]["dispatchrichtung"]  = (kanaldata[0] & 0x80) >> 7 // Bit 7
+      DispatchArray[(model)][(kanal)]["dispatchlevela"]  = (kanaldata[1] & 0x07) 
+      DispatchArray[(model)][(kanal)]["dispatchlevelb"]  = (kanaldata[1] & 0x70) >> 4 
+      DispatchArray[(model)][(kanal)]["dispatchexpoa"]  = (kanaldata[2] & 0x07) 
+      DispatchArray[(model)][(kanal)]["dispatchexpob"]  = (kanaldata[2] & 0x70) >> 4 
+      DispatchArray[(model)][(kanal)]["dispatchdevice"] = kanaldata[3] & 0x70 >> 4                     
+      DispatchArray[(model)][(kanal)]["dispatchfunktion"]  = (kanaldata[3] & 0x07) >> 4
    
+      DispatchTable.reloadData()
+   }
    
    func decodeUSBSettings(_ buffer:[UInt8]) -> [String:[UInt8]] // dictionary aus USB
    {
@@ -470,7 +615,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
      //sendbuffer[0] = 0xF4
      teensy.write_byteArray[0] = 0xF4
      //for modelindex in 0..<ANZAHLMODELLE
-   for modelindex in 0..<1
+     for modelindex in 0..<1
      {
         var pos:Int = 0
         let modeldataarray = kanaldataarray[modelindex]
@@ -490,7 +635,8 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
         }// for kanal
      
         print("model: \(modelindex) sendbuffer: \(teensy.write_byteArray)")
-        let controlarrayy = decodeUSBChannelSettings(teensy.write_byteArray, model:0)
+       let controlarrayy = decodeUSBChannelSettings(teensy.write_byteArray, model:0)
+        print("model: \(modelindex) sendbuffer nach: \(teensy.write_byteArray)")
         if (usbstatus > 0)
         {
            let senderfolg = teensy.send_USB()
@@ -511,6 +657,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
      }//model
   
   }// report_sendSettingChannels
+   
    
    @IBAction func report_sendSettings(_ sender: NSButton) 
   {
@@ -586,7 +733,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
         if (usbstatus > 0)
         {
            let senderfolg = teensy.send_USB()
-           print("report_Slider0 senderfolg: \(senderfolg)")
+           print("report_sendSettings senderfolg: \(senderfolg)")
         }
 
         
@@ -595,6 +742,32 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
      
      
   }
+   
+   @IBAction func report_getTeensySettings(_ sender: NSButton)
+   {
+      print("report_sendTeensySettings ")
+      var teensykanal:UInt8 = 0
+      var teensymodel:UInt8 = 0
+      teensy.write_byteArray[0] = 0xF6
+      teensy.write_byteArray[USB_DATA_OFFSET] = teensymodel | (teensykanal>>4)
+      if (usbstatus > 0)
+      {
+         let senderfolg = teensy.send_USB()
+         print("report_sendTeensySettings senderfolg: \(senderfolg)")
+      }
+      if self.teensy.readtimervalid() == true
+      {
+         print("PCB readtimer valid vor")
+      }
+      else 
+      {
+         print("PCB readtimer not valid bevor")
+         self.teensy.start_read_USB(true)
+      }
+
+
+   }
+   
 
 func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> Kanal> device
    {
@@ -659,13 +832,15 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
    var     default_KanalArray:[String] = ["0","1","2","3","4","5","6","7"]
 
    var default_ArtArray = ["Stick","Schieber","Schalter","--"]
-   
    var default_LevelArray = ["1/1","7/8","3/4","5/8","1/2"]
    var default_ExpoArray = ["1/1","7/8","3/4","5/8","1/2"]
  
    var default_RichtungArray:[[NSImage]] = [[NSImage]]()//[pfeilup pfeildown], [pfeillinks pfeilrechts]
    
    var default_ONArray:[NSImage] = [NSImage]()//[okimage, notokimage]
+   
+   var default_MixingArtArray = ["--","V-Mix","Butterfly"]
+   
    @objc func usbstatusAktion(_ notification:Notification) 
   {
      let info = notification.userInfo
@@ -926,7 +1101,6 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
       
       if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"dispatchdevice") )
       {
-         
          let popident = NSUserInterfaceItemIdentifier(rawValue:"devicepopup")
          guard var result = tableView.makeView(withIdentifier: popident, owner: self) as? rPopUpZelle else 
          {
@@ -1315,8 +1489,27 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
       } // onimage
 
       
-      
-      
+      // Mixing
+      else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"mixon") )
+      {
+         
+         guard let result = tableView.makeView(withIdentifier: tableColumn!.identifier, owner: self) as? NSTableCellView else 
+         {
+            print("mixon ist nil")
+            return nil 
+         }
+         let nummer = Int(MixingArray[0][row]["mixonimage"] ?? 0)
+         let wert:Int = nummer
+         print("mixing on row: \(row) wert: \(wert)")
+         //https://stackoverflow.com/questions/37100846/osx-swift-add-image-into-nstableview
+         let bild:NSImage = default_ONArray[wert]
+         result.imageView?.image = default_ONArray[wert]
+         
+         return result
+
+      } // onimage
+
+      //default_MixingArtArray
       
       
       
