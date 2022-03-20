@@ -18,6 +18,9 @@ let columnlevelb = 6
 let columnexpoa = 7
 let columnexpob = 8
 
+// mixing
+let mixingcolumnon = 3
+
 
 let GOTO_0:UInt8  =  0xA7
 let SET_RING:UInt8  =  0xA3

@@ -20,7 +20,7 @@ class rPopUpZelle:NSTableCellView, NSMenuDelegate,NSTableViewDataSource
     
    @IBAction func popupAction(_ sender: NSPopUpButton)
    {
-     // print("popupAction tag: \(sender.tag)    itemindex: \(sender.indexOfSelectedItem) titel: \(sender.titleOfSelectedItem)")
+      print("popupAction tag: \(sender.tag)    itemindex: \(sender.indexOfSelectedItem) titel: \(sender.titleOfSelectedItem)")
       let sup = self.superview?.superview as! NSTableView
       let zeile = sup.row(for: self)
       let kolonne = sup.column(for: self)
@@ -202,10 +202,10 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          {
             var mixingdic = [String:UInt8]()
             mixingdic["mixnummer"] = mixingindex
-            mixingdic["mixonimage"] = 1
+            mixingdic["mixonimage"] = 0
             mixingdic["mixart"] = 2
-            mixingdic["mixcanala"] = 0x00
-            mixingdic["mixcanalb"] = 0x01
+            mixingdic["mixkanala"] = 0x00
+            mixingdic["mixkanalb"] = 0x00
             mixingdic["mixing"] = 0 // verwendet als Mix xy
             MixingSettingArray.append(mixingdic)
          }
@@ -213,6 +213,9 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          MixingSettingArray[1]["mixart"] = 0x02
          MixingSettingArray[2]["mixart"] = 0x00
          MixingSettingArray[3]["mixart"] = 0x00
+         
+         MixingSettingArray[0]["mixonimage"] = 1
+         
          MixingArray.append(MixingSettingArray)
          
          
@@ -1091,6 +1094,51 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
             tableView.reloadData()
             tableView.deselectRow(kolonne)
          }
+      case "mixing":
+         print("*********  ******  table mixing clicked  zeile: \(zeile)")
+         clickedmixingarrayrow = Int(zeile)
+         if (kolonne == mixingcolumnon) // ON
+         {
+            
+            let wert = UInt8(MixingArray[0][zeile]["mixonimage"] ?? 0 )
+            MixingArray[0][zeile]["mixonimage"]  = 1 - wert
+            tableView.reloadData()
+            tableView.deselectRow(kolonne)
+         }
+
+      default:
+         break
+      }
+   }
+
+   @IBAction private func report_mixingtableRowWasClicked(_ tableView: NSTableView)
+   {
+      // https://stackoverflow.com/questions/18560509/nstableview-detecting-a-mouse-click-together-with-the-row-and-column
+      let identstring = tableView.identifier?.rawValue ?? "x"
+      let ident = NSUserInterfaceItemIdentifier(tableView.identifier?.rawValue ?? "x")
+      let zeile = (tableView.clickedRow)
+      let kolonne = tableView.clickedColumn
+      
+      print("*** report_mixingtableRowWasClicked row \(zeile), col \(kolonne) ident: \(ident)")
+      switch identstring
+      {
+      case "dispatch":
+         print("*********  ******  table dispatch clicked  zeile: \(zeile)")
+         clickeddispacharrayrow = Int(zeile)
+         if (kolonne == columnon) // ON
+         {
+            let wert = UInt8(DispatchArray[0][zeile]["dispatchonimage"] ?? 0 )
+            DispatchArray[0][zeile]["dispatchonimage"]  = 1 - wert
+            tableView.reloadData()
+            tableView.deselectRow(kolonne)
+         }
+         if (kolonne == columnrichtung)
+         {
+            let wert = UInt8(DispatchArray[0][zeile]["dispatchrichtung"] ?? 0 )
+            DispatchArray[0][zeile]["dispatchrichtung"]  = 1 - wert
+            tableView.reloadData()
+            tableView.deselectRow(kolonne)
+         }
       default:
          break
       }
@@ -1662,7 +1710,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
             print("mixkanalbpopup ist nil")
             return nil 
          }
-         var wert = Int(MixingArray[0][row]["mixkanala"] ?? 0)
+         var wert = Int(MixingArray[0][row]["mixkanalb"] ?? 0)
          if wert > default_KanalArray.count - 1
          {
             wert = 7
@@ -1676,9 +1724,31 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
          return result
 
          }  
-      //default_MixingArtArray
       
+      else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"mixart") )
+      {
+         let popident = NSUserInterfaceItemIdentifier(rawValue:"mixartpopup")
+         guard let result = tableView.makeView(withIdentifier: popident, owner: self) as? rPopUpZelle else 
+         {
+            print("mixartpopup ist nil")
+            return nil 
+         }
+         var wert = Int(MixingArray[0][row]["mixart"] ?? 0)
+         if wert > default_MixingArtArray.count - 1
+         {
+            wert = 7
+         }
+         result.poptag = row
+         result.tablezeile = row
+         result.tablekolonne = tableView.column(for: result)
+         result.PopUp?.removeAllItems()
+         result.PopUp?.addItems(withTitles: default_MixingArtArray)
+         result.PopUp?.selectItem(at: wert)
+         return result
+
+         }  
       
+ 
       
       return nil
    }
@@ -1860,6 +1930,9 @@ func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColu
    var            clickeddispacharrayrow:Int = -1 // angeklickte Zeile
 
    var            clickedkanalarrayrow:Int = -1 // angeklickte Zeile
+   
+   
+   var            clickedmixingarrayrow:Int = -1 // angeklickte Zeile in MixTable
    
    var data: [[String: String]] = [[:]]
    
