@@ -19,7 +19,7 @@ let columnexpoa = 7
 let columnexpob = 8
 
 // mixing
-let mixingcolumnon = 3
+let mixingcolumnon = 4
 
 
 let GOTO_0:UInt8  =  0xA7

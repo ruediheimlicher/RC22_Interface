@@ -13,6 +13,8 @@ let SET_RC:UInt8 = 0xA2
 class rPopUpZelle:NSTableCellView, NSMenuDelegate,NSTableViewDataSource
 {
    @IBOutlet weak var PopUp:NSPopUpButton?
+   @IBOutlet weak var ImageButton:NSButton?
+   
    var poptag:Int = 0
    var itemindex:Int = 0
    var tablezeile:Int = 0
@@ -40,6 +42,30 @@ class rPopUpZelle:NSTableCellView, NSMenuDelegate,NSTableViewDataSource
               userInfo: notDic)
 
    }
+   
+   @IBAction func imageAction(_ sender: NSButton)
+   {
+      print("imageAction tag: \(sender.tag)")
+      let sup = self.superview?.superview as! NSTableView
+      let zeile = sup.row(for: self)
+      let kolonne = sup.column(for: self)
+      let tabletag = sup.tag
+      
+      print("imageAction tag: \(sender.tag)      zeile: \(zeile) kolonne: \(kolonne)  tabletag: \(tabletag)")
+      //print("sup: \(sup)")
+      
+      var notDic = [String:Int]()
+      notDic["itemindex"] = 0
+      notDic["zeile"] = zeile
+      notDic["kolonne"] = kolonne
+      notDic["tabletag"] = tabletag
+      let nc = NotificationCenter.default
+      nc.post(name:Notification.Name(rawValue:"tablepop"),
+              object: nil,
+              userInfo: notDic)
+
+   }
+
    @objc func popUpButtonUsed(_ sender: NSPopUpButton) 
    {
        print("popUpButtonUsed \(sender.indexOfSelectedItem)")
@@ -205,7 +231,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
             mixingdic["mixonimage"] = 0
             mixingdic["mixart"] = 2
             mixingdic["mixkanala"] = 0x00
-            mixingdic["mixkanalb"] = 0x00
+            mixingdic["mixkanalb"] = 0x01
             mixingdic["mixing"] = 0 // verwendet als Mix xy
             MixingSettingArray.append(mixingdic)
          }
@@ -993,7 +1019,21 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
          
          break
       case 5: // Mixing
+         print("case 5 Mixing kolonne: \(kolonne)")
+         switch kolonne
+         {
+         case mixingcolumnon:
+            let onwert = UInt8(MixingArray[0][zeile]["mixonimage"] ?? 0)
+            
+            MixingArray[0][zeile]["mixonimage"]  = 1 - onwert
+            MixingTable.reloadData()
+            print("mixonimage")
+            
+         default: break
+         }// switch
+         
          break
+         
       case 6: // Dispatch
          print("case 6 dispatch kolonne: \(kolonne)")
          switch kolonne
@@ -1036,7 +1076,9 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
             print("columnexpob")
             
          case columnrichtung:
-            DispatchArray[0][zeile]["dispatchrichtung"]  = UInt8(itemindex)
+            let richtungwert = UInt8(DispatchArray[0][zeile]["dispatchrichtung"] ?? 0)
+            
+            DispatchArray[0][zeile]["dispatchrichtung"]  = 1-richtungwert
             DispatchTable.reloadData()
             print("columnrichtung")
             
@@ -1446,7 +1488,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
          return result
 
       } // onimage
- 
+ /*
       else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"dispatchrichtung") )
       {
          guard let result = tableView.makeView(withIdentifier: tableColumn!.identifier, owner: self) as? NSTableCellView else 
@@ -1472,7 +1514,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
          return result
 
       } // onimage
-
+*/
       /*
       else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"dispatchrichtung") )
 
@@ -1537,36 +1579,45 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
          result.textField?.stringValue = default_ArtArray[wert]
          return result
       } // kanalnummer
-      else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"richtung") )
+      
+      else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"dispatchrichtung") )
       {
-         let popident = NSUserInterfaceItemIdentifier(rawValue:"popup")
-         guard let result = tableView.makeView(withIdentifier: popident, owner: self) as? rPopUpZelle else 
+         let richtungident = NSUserInterfaceItemIdentifier(rawValue:"richtungimage")
+         guard let result = tableView.makeView(withIdentifier: richtungident, owner: self) as? rPopUpZelle else 
          {
-            print("richtungpop ist nil")
+            print("richtungident ist nil")
             return nil 
             
          }
-         var wert = Int(KanalArray[0][row]["richtung"] ?? 0)
-          if wert > default_ArtArray.count - 1
-          {
-             wert = 4
-          }
+         var wert = Int(DispatchArray[0][row]["dispatchrichtung"] ?? 0)
+ 
          result.poptag = row
          result.tablezeile = row
-         result.tablekolonne = tableView.column(for: result)
+         //result.tablekolonne = tableView.column(for: result)
+         var pfeilrichtung = 0
+         // index von funktion checken
+         let funktionindex = Int(DispatchArray[0][row]["dispatchfunktion"] ?? 0)
+         if funktionindex == 1 // Hoehe
+         {
+            pfeilrichtung = 1
+         }
+
+         result.ImageButton?.image = default_RichtungArray[pfeilrichtung][wert]
+         
+         /*
          result.PopUp?.removeAllItems()
          for zeile in 0..<default_RichtungArray[0].count
          {
-         result.PopUp?.addItem(withTitle: "")
-         var item = result.PopUp?.lastItem
-             item?.image = default_RichtungArray[0][zeile]
-        // result.PopUp?.addItems(withTitles: default_RichtungArray[0])
+            result.PopUp?.addItem(withTitle: "")
+            var item = result.PopUp?.lastItem
+            item?.image = default_RichtungArray[0][zeile]
+            // result.PopUp?.addItems(withTitles: default_RichtungArray[0])
          }
          result.PopUp?.selectItem(at: wert)
-  //       print("dispatchpop row: \(row) kolonne: \(tableView.column(for: result))")
+         //       print("dispatchpop row: \(row) kolonne: \(tableView.column(for: result))")
          let popupCell = result.PopUp?.cell as! NSPopUpButtonCell
          popupCell.arrowPosition = NSPopUpButton.ArrowPosition.noArrow
-
+         */
          return result
       }//
 
@@ -1678,6 +1729,29 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
 
       } // onimage
 
+      else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"mixzeileonimage") )
+      {
+         let imageident = NSUserInterfaceItemIdentifier(rawValue:"mixzeileimage")
+         guard let result = tableView.makeView(withIdentifier: imageident, owner: self) as? rPopUpZelle else 
+         {
+            print("mixzeileonimage ist nil")
+            return nil 
+         }
+         //print("mixzeileonimage ist ok")
+         let nummer = Int(MixingArray[0][row]["mixonimage"] ?? 0)
+         let wert:Int = nummer
+         print("mixzeile  on row: \(row) wert: \(wert)")
+         //https://stackoverflow.com/questions/37100846/osx-swift-add-image-into-nstableview
+         let bild:NSImage = default_ONArray[wert]
+         //result.imageView?.image = default_ONArray[wert]
+         result.ImageButton?.image = default_ONArray[wert]
+         
+         return result
+
+      } // onimage
+
+      
+      
       // mixkanala
       else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"mixkanala") )
       {
