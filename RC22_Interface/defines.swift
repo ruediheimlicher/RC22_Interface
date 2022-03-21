@@ -19,6 +19,10 @@ let columnexpoa = 7
 let columnexpob = 8
 
 // mixing
+let mixingcolumnnummer = 0
+let mixingcolumnart = 1
+let mixingcolumnkanala = 2
+let mixingcolumnkanalb = 3
 let mixingcolumnon = 4
 
 

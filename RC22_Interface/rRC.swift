@@ -169,10 +169,9 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       default_ONArray = [notokimage, okimage]
       default_RichtungArray = [[pfeillinksimage, pfeilrechtsimage],[pfeilupimage, pfeildownimage]]
       // https://stackoverflow.com/questions/43510646/how-to-change-font-size-of-nstableheadercell
- //     DispatchTable.tableColumns.forEach { (column) in column.headerCell.attributedStringValue = NSAttributedString(string: column.title, attributes: [NSAttributedStringKey.font: //NSFont.boldSystemFont(ofSize: 12)])
-          // Optional: you can change title color also jsut by adding NSForegroundColorAttributeName
-  //    }  
-      
+      MixingTable.tableColumns.forEach { (column) in
+         column.headerCell.attributedStringValue = NSAttributedString(string: column.title, attributes: [NSAttributedStringKey.font: NSFont.boldSystemFont(ofSize: 11)])
+      }      
 
       DispatchTable.tableColumns.forEach { (column) in column.headerCell.attributedStringValue = NSAttributedString(string: column.title, attributes: [NSAttributedStringKey.font: NSFont.boldSystemFont(ofSize: 11)])
          // Optional: you can change title color also jsut by adding NSForegroundColorAttributeName
@@ -256,7 +255,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
             dispatchdic["dispatchfunktion"] = (dispatchindex ) & 0x07 // ausgesuchte funktion
             dispatchdic["dispatchkanal"] = dispatchindex 
             dispatchdic["dispatchdevice"] = (dispatchindex ) & 0x07
-            dispatchdic["dispatchgo"] = 1 // verwendet 
+            //dispatchdic["dispatchgo"] = 1 // verwendet 
             dispatchdic["dispatchonimage"] = 1 //dispatchindex%2 // verwendet
             // von kanal
             dispatchdic["dispatchrichtung"] = 1
@@ -264,8 +263,8 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
             dispatchdic["dispatchlevelb"]  = 4-dispatchindex & 0x03
             dispatchdic["dispatchexpoa"]  = 4-dispatchindex & 0x03
             dispatchdic["dispatchexpob"]  = dispatchindex & 0x03
-            dispatchdic["dispatchmix"]  = 1
-            dispatchdic["dispatchmixkanal"]  = dispatchindex
+            //dispatchdic["dispatchmix"]  = 1
+            //dispatchdic["dispatchmixkanal"]  = dispatchindex
             dispatchdic["dispatchmodelnummer"]  = model
             dispatchdic["dispatchmodel"]  = model
             DispatchSettingArray.append(dispatchdic)
@@ -742,6 +741,9 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
    
    @IBAction func report_sendSettingChannels(_ sender: NSButton)  // USB-Daten von aktuellem modell
   {
+     let mixingarray = readSettingMixingArray()
+     print("report_sendSettings mixingarray: \(mixingarray)")
+ 
      print("report_sendSettingChannels start")
      let kanaldataarray = readSettingKanalArray()
      //sendbuffer[0] = 0xF4
@@ -756,7 +758,6 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
            
            for dataindex in 0..<4
            {
-              //sendbuffer[USB_DATA_OFFSET + pos + dataindex] = modeldataarray[kanal][dataindex]
               teensy.write_byteArray[USB_DATA_OFFSET + pos + dataindex] = modeldataarray[kanal][dataindex]
            }
             pos += KANALSETTINGBREITE
@@ -765,8 +766,12 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
            //print("status kanal: \(kanal) tempbuffer: \(tempbuffer)")
            
         }// for kanal
-     
-        print("model: \(modelindex) sendbuffer: \(teensy.write_byteArray)")
+        print("model: \(modelindex) pos: \(pos)  sendbuffer vor: \(teensy.write_byteArray)")
+        // mixing anfuegen: 2 bytes pro model
+        let mixpos = USB_DATA_OFFSET + (8 * KANALSETTINGBREITE) + 1 // aktelle position in write_byteArray
+        teensy.write_byteArray[ mixpos] = mixingarray[modelindex][0][0] // byte 0
+        teensy.write_byteArray[ mixpos + 1] = mixingarray[modelindex][0][1] // byte 1
+        
        let controlarrayy = decodeUSBChannelSettings(teensy.write_byteArray, model:0)
         print("model: \(modelindex) sendbuffer nach: \(teensy.write_byteArray)")
         if (usbstatus > 0)
@@ -786,6 +791,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          self.teensy.start_read_USB(true)
       }
 
+        
 
      }//model
   
@@ -798,7 +804,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
      print("report_sendSettings ")
      let kanaldataarray = readSettingKanalArray()
      
-     
+      
      sendbuffer[0] = 0xF4
      var pos = 0
      for modelindex in 0..<ANZAHLMODELLE
@@ -973,6 +979,49 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
       return data
    }
    
+   func readSettingMixingArray() -> [[[UInt8]]] // Array aus MixingArray, 2 bytes pro mix
+   {
+      /*
+       mixingdic["mixnummer"] = mixingindex
+       mixingdic["mixonimage"] = 0
+       mixingdic["mixart"] = 2
+       mixingdic["mixkanala"] = 0x00
+       mixingdic["mixkanalb"] = 0x01
+       mixingdic["mixing"] = 0 // verwendet als Mix xy
+
+       */
+      var data = [[[UInt8]]]()
+      var pos = 0
+      for modelindex in 0..<ANZAHLMODELLE
+      {
+         var modeldata = [[UInt8]]()
+         for mixingindex in 0..<4
+         {
+            var kanaldata = [UInt8]()
+            var tempbuffer = UInt8(modelindex) // Modellnummer, bit 0-2
+            if (MixingArray[modelindex][mixingindex]["mixonimage"] == 1)
+            {
+               tempbuffer |= 1<<3 // ON
+            }
+            let mixart = MixingArray[modelindex][mixingindex]["mixart"] ?? 0
+            tempbuffer |=  (UInt8(mixart) & 0x03) << 4
+            let mixnummer = MixingArray[modelindex][mixingindex]["mixnummer"] ?? 0
+            tempbuffer |= (UInt8(mixnummer) & 0x03) << 6
+            
+            kanaldata.append(tempbuffer)
+            tempbuffer = 0
+            
+            let mixkanala = MixingArray[modelindex][mixingindex]["mixkanala"] ?? 0
+            tempbuffer = UInt8(mixkanala)
+            let mixkanalb = MixingArray[modelindex][mixingindex]["mixkanalb"] ?? 0
+            tempbuffer |= (UInt8(mixkanalb) << 4)
+            kanaldata.append(tempbuffer)
+            modeldata.append(kanaldata)
+         } // for mixingindex
+         data.append(modeldata)
+      } // for modelindex
+      return data
+   } // readSettingMixingArray
  
    var     default_DeviceArray:[String] = ["Pitch_L_H","Pitch_L_V","Pitch_R_H","Pitch_R_V","Schieber_L","Schieber_R","Schalter","leer"]
    var     default_FunktionArray:[String] = ["Seite","Hoehe","Quer","Motor","Quer L","Quer R","Lande","Aux"]
@@ -1020,6 +1069,14 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
          break
       case 5: // Mixing
          print("case 5 Mixing kolonne: \(kolonne)")
+         /*
+          let mixingcolumnnummer = 0
+          let mixingcolumnart = 1
+          let mixingcolumnkanala = 2
+          let mixingcolumnkanalb = 3
+          let mixingcolumnon = 4
+
+          */
          switch kolonne
          {
          case mixingcolumnon:
@@ -1028,7 +1085,22 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
             MixingArray[0][zeile]["mixonimage"]  = 1 - onwert
             MixingTable.reloadData()
             print("mixonimage")
+ 
+         case mixingcolumnart:
+            MixingArray[0][zeile]["mixart"]  = UInt8(itemindex)
+            MixingTable.reloadData()
+            print("mixart")
+           
             
+         case mixingcolumnkanala:
+            MixingArray[0][zeile]["mixkanala"]  = UInt8(itemindex)
+            MixingTable.reloadData()
+            print("mixkanala")
+            
+         case mixingcolumnkanalb:
+            MixingArray[0][zeile]["mixkanalb"]  = UInt8(itemindex)
+            MixingTable.reloadData()
+            print("mixkanalb")  
          default: break
          }// switch
          
@@ -1473,80 +1545,22 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
 
       else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"dispatchonimage") )
       {
-         guard let result = tableView.makeView(withIdentifier: tableColumn!.identifier, owner: self) as? NSTableCellView else 
+         let onident = NSUserInterfaceItemIdentifier(rawValue:"onimagebutton")
+         guard let result = tableView.makeView(withIdentifier: onident, owner: self) as? rPopUpZelle else 
          {
-            print("dispatchonimage ist nil")
+            print("richtungident ist nil")
             return nil 
-            
          }
-         let nummer = Int(DispatchArray[0][row]["dispatchonimage"] ?? 0)
-         let wert:Int = nummer
-         //print("dispatchnummer onimage: \(wert)")
-         //https://stackoverflow.com/questions/37100846/osx-swift-add-image-into-nstableview
-         // Image muss mit TableCellView verlinkt sein!!! S. Screenshot TableView Image
-         result.imageView?.image = default_ONArray[wert]
-         return result
-
-      } // onimage
- /*
-      else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"dispatchrichtung") )
-      {
-         guard let result = tableView.makeView(withIdentifier: tableColumn!.identifier, owner: self) as? NSTableCellView else 
-         {
-            print("dispatchrichtung ist nil")
-            return nil 
-            
-         }
-         let nummer = Int(DispatchArray[0][row]["dispatchrichtung"] ?? 0)
-         let wert:Int = nummer
-         //print("dispatchnummer onimage: \(wert)")
-         var pfeilrichtung = 0
-         // index von funktion checken
-         let funktionindex = Int(DispatchArray[0][row]["dispatchfunktion"] ?? 0)
-         if funktionindex == 1 // Hoehe
-         {
-            pfeilrichtung = 1
-         }
-
-         //https://stackoverflow.com/questions/37100846/osx-swift-add-image-into-nstableview
-         // Image muss mit TableCellView verlinkt sein!!! S. Screenshot TableView Image
-         result.imageView?.image = default_RichtungArray[pfeilrichtung][wert]
-         return result
-
-      } // onimage
-*/
-      /*
-      else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"dispatchrichtung") )
-
-      {
-         let popident = NSUserInterfaceItemIdentifier(rawValue:"richtungpopup")
-         guard let result = tableView.makeView(withIdentifier: popident, owner: self) as? rPopUpZelle else 
-         {
-            print("dispatchrichtung ist nil")
-            return nil 
-            
-         }
-         var wert = Int(DispatchArray[0][row]["dispatchrichtung"] ?? 0)
-          if wert > default_RichtungArray[0].count - 1
-          {
-             wert = 4
-          }
+         var wert = Int(DispatchArray[0][row]["dispatchonimage"] ?? 0)
          result.poptag = row
          result.tablezeile = row
-         result.tablekolonne = tableView.column(for: result)
-         result.PopUp?.removeAllItems()
-         for zeile in 0..<default_RichtungArray[0].count
-         {
-         result.PopUp?.addItem(withTitle: "")
-         var item = result.PopUp?.lastItem
-             item?.image = default_RichtungArray[0][zeile]
-         }
-         result.PopUp?.selectItem(at: wert)
-  //       print("dispatchpop row: \(row) kolonne: \(tableView.column(for: result))")
- 
+         result.ImageButton?.image = default_ONArray[wert]
+         //print("dispatchnummer onimage: \(wert)")
+         //https://stackoverflow.com/questions/37100846/osx-swift-add-image-into-nstableview
+         // Image muss mit TableCellView verlinkt sein!!! S. Screenshot TableView Image
          return result
-      }//
-*/
+
+      } // onimage
   // Kanal
       if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"kanalnummer") )
       {
@@ -1587,7 +1601,6 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
          {
             print("richtungident ist nil")
             return nil 
-            
          }
          var wert = Int(DispatchArray[0][row]["dispatchrichtung"] ?? 0)
  
@@ -1603,23 +1616,8 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
          }
 
          result.ImageButton?.image = default_RichtungArray[pfeilrichtung][wert]
-         
-         /*
-         result.PopUp?.removeAllItems()
-         for zeile in 0..<default_RichtungArray[0].count
-         {
-            result.PopUp?.addItem(withTitle: "")
-            var item = result.PopUp?.lastItem
-            item?.image = default_RichtungArray[0][zeile]
-            // result.PopUp?.addItems(withTitles: default_RichtungArray[0])
-         }
-         result.PopUp?.selectItem(at: wert)
-         //       print("dispatchpop row: \(row) kolonne: \(tableView.column(for: result))")
-         let popupCell = result.PopUp?.cell as! NSPopUpButtonCell
-         popupCell.arrowPosition = NSPopUpButton.ArrowPosition.noArrow
-         */
-         return result
-      }//
+          return result
+      }//dispatchrichtung
 
       // MARK: Level A
       else if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"levela") )
@@ -1709,6 +1707,21 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
 
       // MARK: Mixing     
       // Mixing
+      
+      if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"mixnummer") )
+      {
+         guard let result = tableView.makeView(withIdentifier: tableColumn!.identifier, owner: self) as? NSTableCellView else 
+         {
+            print("mixingnummer ist nil")
+            return nil 
+            
+         }
+         let wert = Int(MixingArray[0][row]["mixnummer"] ?? 0)
+         //print("kanalnummer wert: \(wert)")
+         result.textField?.integerValue = wert
+         return result
+      } // kanalnummer
+
       else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"mixonimage") )
       {
          
