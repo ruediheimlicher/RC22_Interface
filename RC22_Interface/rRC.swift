@@ -134,6 +134,7 @@ let USB_DATA_OFFSET = 4
 let ANZAHLMODELLE = 3
 let KANALSETTINGBREITE = 4
 let MODELSETTINGBREITE = 32
+let MIXINGSETTINGBREITE = 2
 
 let USB_DATENBREITE = 64
 
@@ -145,7 +146,9 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
 {
    
    var teensysettingarray = [[[UInt8]]](repeating:[[UInt8]](repeating:[UInt8](repeating: 0,count:4), count:8)  , count:ANZAHLMODELLE)
-   
+  
+   var teensymixingarray = [[[UInt8]]](repeating:[[UInt8]](repeating:[UInt8](repeating: 0,count:2), count:4)  , count:ANZAHLMODELLE)
+
  //  var popup:rPopUpZelle! 
    var hintergrundfarbe = NSColor()
    var modelnummer = 0
@@ -355,7 +358,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
        print("end viewDidLoad")
    
    } // end viewDidLoad
-   
+   // MARK: newDataAktion
    @objc  func newRCDataAktion(_ notification:Notification) 
    {
        let info = notification.userInfo
@@ -372,6 +375,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          switch code
          {
          case 0xF5:
+            // MARK: F5
             print("newDataAktion 0xF5")
             let modelindex = Int((data[USB_DATA_OFFSET]) & 0x07)
             
@@ -416,6 +420,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
             break
             
          case 0xF7:
+            // MARK: F7
             print("newDataAktion 0xF7")
             
             let modelindex = Int((data[USB_DATA_OFFSET]) & 0x07)
@@ -440,10 +445,23 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
                   teensysettingarray[modelindex][kanalindex][pos] = data[USB_DATA_OFFSET + kanalindex * KANALSETTINGBREITE + pos]
                }
             }
+            [[136, 64, 4, 0], [152, 49, 19, 17], [168, 34, 34, 34], [184, 19, 49, 51], [200, 64, 4, 68], [216, 49, 19, 85], [232, 34, 34, 102], [248, 19, 49, 119]]
             print("F7 modelindex: \(modelindex)  \n teensysettingarray: \(teensysettingarray[modelindex ])")
             importTableData(teensysettingarray[modelindex], model:0)
+  
+            // import Mixing : 
+            //   teensymixingarray = [[[UInt8]]](repeating:[[UInt8]](repeating:[UInt8](repeating: 0,count:2), count:4)  , count:ANZAHLMODELLE)
+            for mixindex in 0..<4
+            {
+               for pos in 0..<2
+               {
+                  teensymixingarray[modelindex][mixindex][pos] = data[USB_DATA_OFFSET + MODELSETTINGBREITE + mixindex * MIXINGSETTINGBREITE + pos]
+               }
+            }
+            // [[24, 16], [96, 16], [128, 16], [255, 255]]
+            print("F7 modelindex: \(modelindex)  \n teensymixingarray: \(teensymixingarray[modelindex ])")
+            importMixingData(teensymixingarray[modelindex], model: 0)
             
-    //        importCurrentTableData(currentdata,kanal: kanalindex,model: modelindex)
             
             break
          default:
@@ -577,6 +595,58 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       DispatchTable.reloadData()
    }   
    
+   func importMixingData(_ indata:[[UInt8]],  model: Int)// daten pro mixing 
+   {
+      print("importMixingData")
+      for mixindex in 0..<4
+      {
+         let mixdata:[UInt8] = indata[(mixindex)]
+         let mix0 = mixdata[0]
+         let mix1 = mixdata[1]
+         print("mixindex: \(mixindex) mix0: \(mix0)  mix1: \(mix1) ")
+         
+         /*
+          uint8_t modelindex = mix0 & 0x03; // bit 0,1
+          Serial.printf("modelindex: %d \n",modelindex);
+          uint8_t mixart = (mix0 & 0x30) >> 4; // bit 4,5
+          Serial.printf("mixart: %d \n",mixart);
+          uint8_t mixnummer = (mix0 & 0xC0) >> 6; // bit 6,7
+          Serial.printf("mixnummer: %d \n",mixnummer);
+          uint8_t mixon = (mix0 & 0x08) >> 3; // Bit 3
+          Serial.printf("mixon: %d \n",mixon);
+          */
+         let modelindex = mix0 & 0x03 // bit 0,1
+         let mixart = (mix0 & 0x30) >> 4 // bit 4,5
+         let mixnummer = (mix0 & 0xC0) >> 6 // bit 6,7
+         let mixon = (mix0 & 0x08) >> 3 // Bit 3
+         print("modelindex: \(modelindex) mixart: \(mixart)  mixnummer: \(mixnummer) mixon: \(mixon)")
+         /*
+          uint8_t mixkanala = mix1 & 0x07 ; // Bit 0-3
+          Serial.printf("mixkanala: %d \n",mixkanala);
+          uint8_t mixkanalb = (mix1 & 0x70) >> 4; // Bit 4-6
+          Serial.printf("mixkanalb: %d \n", mixkanalb);
+          */
+         let mixkanala = mix1 & 0x07  // Bit 0-3
+         let mixkanalb = (mix1 & 0x70) >> 4 // Bit 4-6
+         print("mixkanala: \(mixkanala) mixkanalb: \(mixkanalb)   ")
+         /*
+          mixingdic["mixnummer"] = mixingindex
+          mixingdic["mixonimage"] = 0
+          mixingdic["mixart"] = 2
+          mixingdic["mixkanala"] = 0x00
+          mixingdic["mixkanalb"] = 0x01
+          mixingdic["mixing"] = 0 // verwendet als Mix xy
+          */
+         MixingArray[model][mixindex]["mixnummer"] = UInt8(mixindex)
+         MixingArray[model][mixindex]["mixonimage"] = mixon
+         MixingArray[model][mixindex]["mixart"] = mixart
+         MixingArray[model][mixindex]["mixkanala"] = mixkanala
+         MixingArray[model][mixindex]["mixkanalb"] = mixkanalb
+         
+      }// for mixindex
+      MixingTable.reloadData()
+   }
+   
    func importTableData(_ indata:[[UInt8]],  model: Int)// daten pro kanal
    {
       for kanalindex in 0..<8
@@ -632,7 +702,14 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          DispatchArray[(model)][(kanalindex)]["dispatchfunktion"]  = (kanaldata[3] & 0x07) 
       }
       DispatchTable.reloadData()
+      
+      for mixindex in 0..<4
+      {
+         
+      }// mixindex
    }
+   
+   
    
    
    func importCurrentTableData(_ indata:[[UInt8]], kanal:Int, model: Int)// daten pro kanal
