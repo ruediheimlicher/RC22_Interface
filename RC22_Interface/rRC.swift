@@ -491,7 +491,6 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          } // for dataindex
          pos += KANALSETTINGBREITE
          data.append(kanalarray)
-         
       
       }
    
@@ -517,10 +516,9 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
             teensysettingarray[model][kanal][dataindex] = buffer[pos + dataindex]
          } // for dataindex
          pos += KANALSETTINGBREITE
-         
-         
       
       }
+      
 
    }
 
@@ -556,7 +554,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       let dispatchexpob = (kanaldata[2] & 0x70) >> 4 
       let dispatchdevice =  kanaldata[3] & 0x70  >> 4 
       let dispatchfunktion = (kanaldata[3] & 0x07)
-      
+      /*
       print("dispatchkanal: \(dispatchkanal)")
       print("dispatchonimage: \(dispatchonimage)")
       print("dispatchlevela: \(dispatchlevela)")
@@ -565,7 +563,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       print("dispatchexpob: \(dispatchexpob)")
       print("dispatchdevice: \(dispatchdevice)")
       print("dispatchfunktion: \(dispatchfunktion)")
-      
+      */
       DispatchArray[(model)][(kanal)]["dispatchkanal"]  = UInt8(kanal)
       DispatchArray[(model)][(kanal)]["dispatchonimage"]  = (kanaldata[0] & 0x08) >> 3 // Bit 3
       DispatchArray[(model)][(kanal)]["dispatchrichtung"]  = (kanaldata[0] & 0x80) >> 7 // Bit 7
@@ -613,7 +611,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          let dispatchexpob = (kanaldata[2] & 0x70) >> 4 
          let dispatchdevice =  kanaldata[3] & 0x70  >> 4 
          let dispatchfunktion = (kanaldata[3] & 0x07)
-         
+         /*
          print("dispatchkanal: \(dispatchkanal)")
          print("dispatchonimage: \(dispatchonimage)")
          print("dispatchlevela: \(dispatchlevela)")
@@ -622,7 +620,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          print("dispatchexpob: \(dispatchexpob)")
          print("dispatchdevice: \(dispatchdevice)")
          print("dispatchfunktion: \(dispatchfunktion)")
-         
+         */
          DispatchArray[(model)][(kanalindex)]["dispatchkanal"]  = UInt8(kanalindex)
          DispatchArray[(model)][(kanalindex)]["dispatchonimage"]  = (kanaldata[0] & 0x08) >> 3 // Bit 3
          DispatchArray[(model)][(kanalindex)]["dispatchrichtung"]  = (kanaldata[0] & 0x80) >> 7 // Bit 7
@@ -670,6 +668,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       let dispatchdevice =  kanaldata[3] & 0x70  >> 4 
       let dispatchfunktion = (kanaldata[3] & 0x07)
       
+      /*
       print("dispatchkanal: \(dispatchkanal)")
       print("dispatchonimage: \(dispatchonimage)")
       print("dispatchlevela: \(dispatchlevela)")
@@ -678,7 +677,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       print("dispatchexpob: \(dispatchexpob)")
       print("dispatchdevice: \(dispatchdevice)")
       print("dispatchfunktion: \(dispatchfunktion)")
-      
+      */
       DispatchArray[(model)][(kanal)]["dispatchkanal"]  = UInt8(kanal)
       DispatchArray[(model)][(kanal)]["dispatchonimage"]  = (kanaldata[0] & 0x08) >> 3 // Bit 3
       DispatchArray[(model)][(kanal)]["dispatchrichtung"]  = (kanaldata[0] & 0x80) >> 7 // Bit 7
@@ -746,7 +745,6 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
  
      print("report_sendSettingChannels start")
      let kanaldataarray = readSettingKanalArray()
-     //sendbuffer[0] = 0xF4
      teensy.write_byteArray[0] = 0xF4
      //for modelindex in 0..<ANZAHLMODELLE
      for modelindex in 0..<1
@@ -755,23 +753,28 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
         let modeldataarray = kanaldataarray[modelindex]
         for kanal in 0..<8
         {
-           
            for dataindex in 0..<4
            {
               teensy.write_byteArray[USB_DATA_OFFSET + pos + dataindex] = modeldataarray[kanal][dataindex]
            }
             pos += KANALSETTINGBREITE
-               
-               
+                
            //print("status kanal: \(kanal) tempbuffer: \(tempbuffer)")
            
         }// for kanal
         print("model: \(modelindex) pos: \(pos)  sendbuffer vor: \(teensy.write_byteArray)")
-        // mixing anfuegen: 2 bytes pro model
-        let mixpos = USB_DATA_OFFSET + (8 * KANALSETTINGBREITE) + 1 // aktelle position in write_byteArray
-        teensy.write_byteArray[ mixpos] = mixingarray[modelindex][0][0] // byte 0
-        teensy.write_byteArray[ mixpos + 1] = mixingarray[modelindex][0][1] // byte 1
         
+        print("model: \(modelindex) MixingArray: \(MixingArray) ")
+        // mixing anfuegen: 2 bytes pro model
+        
+        let mixpos = USB_DATA_OFFSET + (8 * KANALSETTINGBREITE)  // aktelle position in write_byteArray
+        
+        for mixindex in 0..<3
+        {
+        teensy.write_byteArray[ mixpos + 2*mixindex] = mixingarray[modelindex][mixindex][0] // byte 0
+        teensy.write_byteArray[ mixpos + 2*mixindex + 1] = mixingarray[modelindex][mixindex][1] // byte 1
+        }
+   
        let controlarrayy = decodeUSBChannelSettings(teensy.write_byteArray, model:0)
         print("model: \(modelindex) sendbuffer nach: \(teensy.write_byteArray)")
         if (usbstatus > 0)
