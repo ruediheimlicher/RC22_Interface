@@ -133,7 +133,10 @@ class rDevicePopUpZelle:rPopUpZelle
 let USB_DATA_OFFSET = 4
 let ANZAHLMODELLE = 3
 let KANALSETTINGBREITE = 4
-let MODELSETTINGBREITE = 32
+let MODELSETTINGBREITE = 32// nur Kanalsettings. Anschliessend MixingSettings
+let EEPROM_MODELSETTINGBREITE  = 64 //Kanalsettings und MixingSettings
+
+
 let MIXINGSETTINGBREITE = 2
 
 let USB_DATENBREITE = 64
@@ -181,7 +184,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
      }
       
       
-      for model:UInt8 in 0..<3
+      for model:UInt8 in 0..<UInt8(ANZAHLMODELLE)
       { 
          var    FunktionSettingArray = [[String:UInt8]]()
          for funktionindex:UInt8 in 0..<8
@@ -370,10 +373,23 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       let code = data[0]
       if (code > 0)
       {
-         print("new data: \(String(describing: data)) \n") // data: Optional([0, 9, 51, 0,....
+        // print("new data: \(String(describing: data)) \n") // data: Optional([0, 9, 51, 0,....
 
          switch code
          {
+         case 0xA0: // idle
+            
+               let pot0 = ((Int32(data[ADCOFFSET + 1])<<8) + Int32(data[ADCOFFSET]))
+               //print("stick 0: hb: \(data[9]) lb: \(data[8]) u: \(u)")
+               Pot0_SliderInt.intValue = pot0
+               Pot0_DataFeld.intValue = pot0
+               let pot1 = ((Int32(data[ADCOFFSET + 2 + 1])<<8) + Int32(data[ADCOFFSET + 2]))
+               //print("stick 1: hb: \(data[9]) lb: \(data[8]) u: \(u)")
+               Pot1_SliderInt.intValue = pot1
+               Pot1_DataFeld.intValue = pot1
+
+           
+            
          case 0xF5:
             // MARK: F5
             print("newDataAktion 0xF5")
@@ -405,7 +421,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
             
             //importCurrentTableData(newdata, kanal:kanalindex, model: modelindex)
            
-            importTableData(newdata,  model: modelindex)
+     //       importTableData(newdata,  model: modelindex)
 
             
             let pot0 = ((Int32(data[ADCOFFSET + 1])<<8) + Int32(data[ADCOFFSET]))
@@ -419,7 +435,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
             print("newDataAktion data5 end\n\n")
             break
             
-         case 0xF7:
+         case 0xF7: // antwort auf report_getTeensySettings
             // MARK: F7
             print("newDataAktion 0xF7")
             
@@ -817,21 +833,32 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
    
    @IBAction func report_sendSettingChannels(_ sender: NSButton)  // USB-Daten von aktuellem modell
   {
-     let mixingarray = readSettingMixingArray()
-     print("report_sendSettings mixingarray: \(mixingarray)")
+     let mixingarray = readSettingMixingArray() //  [[uint8]]
+     //print("report_sendSettings mixingarray: \(mixingarray)")
  
      print("report_sendSettingChannels start")
-     let kanaldataarray = readSettingKanalArray()
+     let kanaldataarray = readSettingKanalArray() // [[uint8]]
      teensy.write_byteArray[0] = 0xF4
      //for modelindex in 0..<ANZAHLMODELLE
-     for modelindex in 0..<1
+     
+     for modelindex in 0..<1 // teensy.write_byteArray fuer ein Model aufbauen
      {
         var pos:Int = 0
         let modeldataarray = kanaldataarray[modelindex]
+        /*
+         pro model
+         32 bytes
+         > 4 bytes pro kanal
+            status   (model, ON, Kanal, RI)
+            level    (levela, levelb)
+            expo     (expoa, expob)
+            device   /(fkt, device)
+         */
         for kanal in 0..<8
         {
            for dataindex in 0..<4
            {
+              // daten pro kanal hintereinander: status, level, expo, device
               teensy.write_byteArray[USB_DATA_OFFSET + pos + dataindex] = modeldataarray[kanal][dataindex]
            }
             pos += KANALSETTINGBREITE
@@ -839,21 +866,22 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
            //print("status kanal: \(kanal) tempbuffer: \(tempbuffer)")
            
         }// for kanal
-        print("model: \(modelindex) pos: \(pos)  sendbuffer vor: \(teensy.write_byteArray)")
+        //print("model: \(modelindex) pos: \(pos)  sendbuffer vor: \(teensy.write_byteArray)")
         
-        print("model: \(modelindex) MixingArray: \(MixingArray) ")
+        //print("model: \(modelindex) MixingArray: \(MixingArray) ")
         // mixing anfuegen: 2 bytes pro model
         
         let mixpos = USB_DATA_OFFSET + (8 * KANALSETTINGBREITE)  // aktelle position in write_byteArray
         
-        for mixindex in 0..<3
+        for mixindex in 0..<3 // 4 * 2 bytes
         {
         teensy.write_byteArray[ mixpos + 2*mixindex] = mixingarray[modelindex][mixindex][0] // byte 0
         teensy.write_byteArray[ mixpos + 2*mixindex + 1] = mixingarray[modelindex][mixindex][1] // byte 1
         }
    
        let controlarrayy = decodeUSBChannelSettings(teensy.write_byteArray, model:0)
-        print("model: \(modelindex) sendbuffer nach: \(teensy.write_byteArray)")
+       
+        print("model: \(modelindex) sendbuffer nach: \(teensy.write_byteArray)") // 32 bytes kanal, 8 bytes mixing
         if (usbstatus > 0)
         {
            let senderfolg = teensy.send_USB()
@@ -948,7 +976,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
            print("funktion&device kanal: \(kanal) tempbuffer: \(tempbuffer)")
         }// level
       
-        let a = decodeUSBSettings(sendbuffer)
+    //    let a = decodeUSBSettings(sendbuffer)
         if (usbstatus > 0)
         {
            let senderfolg = teensy.send_USB()
@@ -1007,10 +1035,10 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
       print("readSettingKanalArray ")
       sendbuffer[0] = 0xF4
       var data = [[[UInt8]]]()
-      var pos = 0
+      //var pos = 0
       for modelindex in 0..<ANZAHLMODELLE
       {
-         pos = USB_DATA_OFFSET + modelindex * KANALSETTINGBREITE
+         //pos = USB_DATA_OFFSET + modelindex * KANALSETTINGBREITE
          var modeldata = [[UInt8]]()
          for kanal in 0..<8
          {
@@ -1071,13 +1099,13 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
 
        */
       var data = [[[UInt8]]]()
-      var pos = 0
+      //var pos = 0
       for modelindex in 0..<ANZAHLMODELLE
       {
-         var modeldata = [[UInt8]]()
+         var modeldata = [[UInt8]]() // 4 mixings pro model, je 2 bytes
          for mixingindex in 0..<4
          {
-            var kanaldata = [UInt8]()
+            var kanaldata = [UInt8]() // 2 bytes: mixstatus, mixkanal
             var tempbuffer = UInt8(modelindex) // Modellnummer, bit 0-2
             if (MixingArray[modelindex][mixingindex]["mixonimage"] == 1)
             {
@@ -1096,6 +1124,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
             let mixkanalb = MixingArray[modelindex][mixingindex]["mixkanalb"] ?? 0
             tempbuffer |= (UInt8(mixkanalb) << 4)
             kanaldata.append(tempbuffer)
+            
             modeldata.append(kanaldata)
          } // for mixingindex
          data.append(modeldata)
