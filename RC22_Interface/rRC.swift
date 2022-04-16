@@ -461,7 +461,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
                   teensysettingarray[modelindex][kanalindex][pos] = data[USB_DATA_OFFSET + kanalindex * KANALSETTINGBREITE + pos]
                }
             }
-            [[136, 64, 4, 0], [152, 49, 19, 17], [168, 34, 34, 34], [184, 19, 49, 51], [200, 64, 4, 68], [216, 49, 19, 85], [232, 34, 34, 102], [248, 19, 49, 119]]
+    //        [[136, 64, 4, 0], [152, 49, 19, 17], [168, 34, 34, 34], [184, 19, 49, 51], [200, 64, 4, 68], [216, 49, 19, 85], //[232, 34, 34, 102], [248, 19, 49, 119]]
             print("F7 modelindex: \(modelindex)  \n teensysettingarray: \(teensysettingarray[modelindex ])")
             importTableData(teensysettingarray[modelindex], model:0)
   
@@ -2190,7 +2190,6 @@ func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColu
    @IBOutlet weak var        Write_Part_Taste:NSButton!
    @IBOutlet weak var        Read_Part_Taste:NSButton!
    
-   @IBOutlet weak var       Write_Stufe_Taste:NSButton!
    @IBOutlet weak var        StufeFeld:NSTextField!
    @IBOutlet weak var        PartnummerFeld:NSTextField!
    
@@ -2200,24 +2199,9 @@ func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColu
   // @IBOutlet weak var   USB_OK_Feld:NSImageView!
    
    @IBOutlet      weak var     Taskwahl:NSTextField!
-   @IBOutlet      weak var     EE_StartadresseFeld:NSTextField!
-   @IBOutlet      weak var     EE_StartadresseFeldHexLO:NSTextField!
-   @IBOutlet      weak var     EE_StartadresseFeldHexHI:NSTextField!
-   @IBOutlet      weak var     EE_startadresselo:NSTextField!
-   @IBOutlet      weak var     EE_startadressehi:NSTextField!
-   @IBOutlet      weak var     EE_DataFeld:NSTextField!
-   @IBOutlet      weak var     EE_datalo:NSTextField!
-   @IBOutlet      weak var     EE_datahi:NSTextField!
-   @IBOutlet      weak var     EE_datalohex:NSTextField!
-   @IBOutlet      weak var     EE_datahihex:NSTextField!
-   @IBOutlet      weak var     EE_databin:NSTextField!
-   @IBOutlet    weak var      EE_dataview:NSTextView!
+    @IBOutlet    weak var      EE_dataview:NSTextView!
    @IBOutlet    weak var     PPM_testdatafeld:NSTextField!
     
-   @IBOutlet    weak var     readsetting_mark:NSTextField!
-   @IBOutlet    weak var     readsender_mark:NSTextField!
-   @IBOutlet    weak var     readfunktion_mark:NSTextField!
-   @IBOutlet    weak var     refreshmaster_mark:NSTextField!
 
    @IBOutlet   weak var      SettingTab:NSTabView!
    
@@ -2228,15 +2212,6 @@ func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColu
    @IBOutlet      weak var   DispatchTable:NSTableView!
 
    
-   @IBOutlet      weak var  FixSettingTaste:NSButton!
-   @IBOutlet      weak var  FixMixingTaste:NSButton!
-   @IBOutlet      weak var  FixFunktionTaste:NSButton!
-   @IBOutlet      weak var  FixAusagangTaste:NSButton!
-   @IBOutlet      weak var  MasterRefreshTaste:NSButton!
-   @IBOutlet      weak var  AdresseIncrement:NSButton!
-   @IBOutlet      weak var  ReadSettingTaste:NSButton!
-   @IBOutlet      weak var  ReadSenderTaste:NSButton!
-   @IBOutlet      weak var  ReadFunktionTaste:NSButton!
    
    @IBOutlet   var      DataTable:NSTableView!
 }// end class rRC
