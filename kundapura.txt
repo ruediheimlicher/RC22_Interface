@@ -1,0 +1,979 @@
+xattr -cr .total 32
+drwxr-xr-x@  9 ruediheimlicher  staff   288 26 Nov 11:47 .
+	com.apple.FinderInfo	  32 
+	com.apple.metadata:_kMDItemUserTags	  57 
+drwxr-xr-x  10 ruediheimlicher  staff   320 26 Nov 10:37 ..
+-rw-r--r--@  1 ruediheimlicher  staff  6148 24 Nov 21:18 .DS_Store
+	com.apple.FinderInfo	  32 
+drwxr-xr-x  15 ruediheimlicher  staff   480 24 Nov 10:05 .git
+-rw-r--r--@  1 ruediheimlicher  staff   157  6 Sep 21:14 .gitignore
+	com.apple.TextEncoding	  11 
+	com.apple.lastuseddate#PS	  16 
+drwxr-xr-x@  6 ruediheimlicher  staff   192 26 Nov 11:44 H0_Interface.xcodeproj
+	LastUpgradeCheck	   4 
+	com.apple.FinderInfo	  32 
+	com.apple.lastuseddate#PS	  16 
+-rw-r--r--   1 ruediheimlicher  staff    67  6 Sep 21:10 README.md
+drwxr-xr-x  46 ruediheimlicher  staff  1472 26 Nov 10:32 Robot_Interface
+-rw-r--r--   1 ruediheimlicher  staff     0 26 Nov 11:47 kundapura.txt
+
+./.git:
+total 56
+drwxr-xr-x  15 ruediheimlicher  staff   480 24 Nov 10:05 .
+drwxr-xr-x@  9 ruediheimlicher  staff   288 26 Nov 11:47 ..
+	com.apple.FinderInfo	  32 
+	com.apple.metadata:_kMDItemUserTags	  57 
+-rw-r--r--   1 ruediheimlicher  staff    35 24 Nov 09:47 COMMIT_EDITMSG
+-rw-r--r--   1 ruediheimlicher  staff   101 24 Nov 10:05 FETCH_HEAD
+-rw-r--r--   1 ruediheimlicher  staff    23  7 Sep 08:51 HEAD
+drwxr-xr-x   2 ruediheimlicher  staff    64  7 Sep 08:51 branches
+-rw-r--r--   1 ruediheimlicher  staff   317 24 Nov 09:47 config
+-rw-r--r--   1 ruediheimlicher  staff    73  7 Sep 08:51 description
+drwxr-xr-x  13 ruediheimlicher  staff   416  7 Sep 08:51 hooks
+-rw-r--r--   1 ruediheimlicher  staff  3355 24 Nov 09:47 index
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:51 info
+drwxr-xr-x   4 ruediheimlicher  staff   128  7 Sep 08:52 logs
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 objects
+drwxr-xr-x   5 ruediheimlicher  staff   160  7 Sep 08:53 refs
+-rw-r--r--@  1 ruediheimlicher  staff   174 24 Nov 10:05 sourcetreeconfig
+	com.apple.TextEncoding	  15 
+
+./.git/branches:
+total 0
+drwxr-xr-x   2 ruediheimlicher  staff   64  7 Sep 08:51 .
+drwxr-xr-x  15 ruediheimlicher  staff  480 24 Nov 10:05 ..
+
+./.git/hooks:
+total 96
+drwxr-xr-x  13 ruediheimlicher  staff   416  7 Sep 08:51 .
+drwxr-xr-x  15 ruediheimlicher  staff   480 24 Nov 10:05 ..
+-rwxr-xr-x   1 ruediheimlicher  staff   478  7 Sep 08:51 applypatch-msg.sample
+-rwxr-xr-x   1 ruediheimlicher  staff   896  7 Sep 08:51 commit-msg.sample
+-rwxr-xr-x   1 ruediheimlicher  staff  3327  7 Sep 08:51 fsmonitor-watchman.sample
+-rwxr-xr-x   1 ruediheimlicher  staff   189  7 Sep 08:51 post-update.sample
+-rwxr-xr-x   1 ruediheimlicher  staff   424  7 Sep 08:51 pre-applypatch.sample
+-rwxr-xr-x   1 ruediheimlicher  staff  1638  7 Sep 08:51 pre-commit.sample
+-rwxr-xr-x   1 ruediheimlicher  staff  1348  7 Sep 08:51 pre-push.sample
+-rwxr-xr-x   1 ruediheimlicher  staff  4898  7 Sep 08:51 pre-rebase.sample
+-rwxr-xr-x   1 ruediheimlicher  staff   544  7 Sep 08:51 pre-receive.sample
+-rwxr-xr-x   1 ruediheimlicher  staff  1492  7 Sep 08:51 prepare-commit-msg.sample
+-rwxr-xr-x   1 ruediheimlicher  staff  3610  7 Sep 08:51 update.sample
+
+./.git/info:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff   96  7 Sep 08:51 .
+drwxr-xr-x  15 ruediheimlicher  staff  480 24 Nov 10:05 ..
+-rw-r--r--   1 ruediheimlicher  staff  250  7 Sep 08:51 exclude
+
+./.git/logs:
+total 8
+drwxr-xr-x   4 ruediheimlicher  staff   128  7 Sep 08:52 .
+drwxr-xr-x  15 ruediheimlicher  staff   480 24 Nov 10:05 ..
+-rw-r--r--   1 ruediheimlicher  staff  1823 24 Nov 09:47 HEAD
+drwxr-xr-x   4 ruediheimlicher  staff   128  7 Sep 08:53 refs
+
+./.git/logs/refs:
+total 0
+drwxr-xr-x  4 ruediheimlicher  staff  128  7 Sep 08:53 .
+drwxr-xr-x  4 ruediheimlicher  staff  128  7 Sep 08:52 ..
+drwxr-xr-x  3 ruediheimlicher  staff   96  7 Sep 08:52 heads
+drwxr-xr-x  3 ruediheimlicher  staff   96  7 Sep 08:53 remotes
+
+./.git/logs/refs/heads:
+total 8
+drwxr-xr-x  3 ruediheimlicher  staff    96  7 Sep 08:52 .
+drwxr-xr-x  4 ruediheimlicher  staff   128  7 Sep 08:53 ..
+-rw-r--r--  1 ruediheimlicher  staff  1823 24 Nov 09:47 master
+
+./.git/logs/refs/remotes:
+total 0
+drwxr-xr-x  3 ruediheimlicher  staff   96  7 Sep 08:53 .
+drwxr-xr-x  4 ruediheimlicher  staff  128  7 Sep 08:53 ..
+drwxr-xr-x  3 ruediheimlicher  staff   96  7 Sep 08:53 origin
+
+./.git/logs/refs/remotes/origin:
+total 8
+drwxr-xr-x  3 ruediheimlicher  staff    96  7 Sep 08:53 .
+drwxr-xr-x  3 ruediheimlicher  staff    96  7 Sep 08:53 ..
+-rw-r--r--  1 ruediheimlicher  staff  1570 24 Nov 09:47 master
+
+./.git/objects:
+total 0
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 .
+drwxr-xr-x  15 ruediheimlicher  staff   480 24 Nov 10:05 ..
+drwxr-xr-x   3 ruediheimlicher  staff    96 15 Nov 10:24 04
+drwxr-xr-x   3 ruediheimlicher  staff    96  8 Sep 16:53 06
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 07
+drwxr-xr-x   3 ruediheimlicher  staff    96 24 Nov 09:47 0a
+drwxr-xr-x   3 ruediheimlicher  staff    96 14 Okt 10:03 0b
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 0c
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 0e
+drwxr-xr-x   4 ruediheimlicher  staff   128 15 Nov 10:25 10
+drwxr-xr-x   3 ruediheimlicher  staff    96  8 Sep 16:53 13
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 16
+drwxr-xr-x   4 ruediheimlicher  staff   128 23 Okt 09:47 19
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 1d
+drwxr-xr-x   3 ruediheimlicher  staff    96 24 Nov 09:47 1f
+drwxr-xr-x   3 ruediheimlicher  staff    96 23 Okt 09:47 20
+drwxr-xr-x   3 ruediheimlicher  staff    96 14 Okt 14:00 21
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:52 23
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 29
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:52 2d
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 38
+drwxr-xr-x   3 ruediheimlicher  staff    96 31 Okt 15:24 3d
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 42
+drwxr-xr-x   5 ruediheimlicher  staff   160 17 Okt 18:06 45
+drwxr-xr-x   3 ruediheimlicher  staff    96 14 Okt 14:00 4c
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 50
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 51
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:52 53
+drwxr-xr-x   3 ruediheimlicher  staff    96  8 Sep 16:53 5a
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 5d
+drwxr-xr-x   3 ruediheimlicher  staff    96 15 Okt 20:58 62
+drwxr-xr-x   3 ruediheimlicher  staff    96 14 Okt 13:58 63
+drwxr-xr-x   3 ruediheimlicher  staff    96 14 Okt 10:03 65
+drwxr-xr-x   3 ruediheimlicher  staff    96 15 Nov 10:28 67
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 70
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 7a
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 7d
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 7e
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 83
+drwxr-xr-x   3 ruediheimlicher  staff    96 24 Nov 09:47 86
+drwxr-xr-x   3 ruediheimlicher  staff    96 31 Okt 15:24 89
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 8b
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 8c
+drwxr-xr-x   3 ruediheimlicher  staff    96 15 Okt 20:58 8e
+drwxr-xr-x   3 ruediheimlicher  staff    96 14 Okt 14:00 92
+drwxr-xr-x   3 ruediheimlicher  staff    96 14 Okt 10:03 94
+drwxr-xr-x   3 ruediheimlicher  staff    96 15 Okt 20:58 95
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 9a
+drwxr-xr-x   3 ruediheimlicher  staff    96 14 Okt 10:03 a4
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 a8
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 ac
+drwxr-xr-x   3 ruediheimlicher  staff    96 15 Okt 20:58 b0
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 b1
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 b2
+drwxr-xr-x   3 ruediheimlicher  staff    96 31 Okt 15:24 b7
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 bc
+drwxr-xr-x   3 ruediheimlicher  staff    96  8 Sep 16:53 c1
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 c5
+drwxr-xr-x   3 ruediheimlicher  staff    96 15 Nov 10:24 ce
+drwxr-xr-x   3 ruediheimlicher  staff    96 15 Nov 10:28 cf
+drwxr-xr-x   3 ruediheimlicher  staff    96 23 Okt 09:47 d0
+drwxr-xr-x   4 ruediheimlicher  staff   128 23 Okt 09:47 d2
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 d3
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 d7
+drwxr-xr-x   3 ruediheimlicher  staff    96  8 Sep 16:53 da
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 db
+drwxr-xr-x   3 ruediheimlicher  staff    96  8 Sep 16:52 de
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:52 df
+drwxr-xr-x   3 ruediheimlicher  staff    96  8 Sep 16:53 e0
+drwxr-xr-x   3 ruediheimlicher  staff    96 15 Nov 10:28 e1
+drwxr-xr-x   3 ruediheimlicher  staff    96 24 Nov 09:47 e4
+drwxr-xr-x   3 ruediheimlicher  staff    96 14 Okt 14:00 e8
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 f0
+drwxr-xr-x   3 ruediheimlicher  staff    96 31 Okt 15:24 f1
+drwxr-xr-x   3 ruediheimlicher  staff    96 15 Nov 10:28 f3
+drwxr-xr-x   3 ruediheimlicher  staff    96 23 Okt 09:47 f7
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 f8
+drwxr-xr-x   2 ruediheimlicher  staff    64  7 Sep 08:51 info
+drwxr-xr-x   2 ruediheimlicher  staff    64  7 Sep 08:51 pack
+
+./.git/objects/04:
+total 16
+drwxr-xr-x   3 ruediheimlicher  staff    96 15 Nov 10:24 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff  5977 15 Nov 10:24 3750b6b26c740f4df6a17b3c36ab8e478b1b9c
+
+./.git/objects/06:
+total 16
+drwxr-xr-x   3 ruediheimlicher  staff    96  8 Sep 16:53 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff  7550  8 Sep 16:53 533a8c6664fcaefb54dd74654a155c9f2342b9
+
+./.git/objects/07:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff   258  7 Sep 08:54 527cf9a0f7220739c944a539f4b552388174a1
+
+./.git/objects/0a:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96 24 Nov 09:47 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff   181 24 Nov 09:47 0cd8dbeb8647eb1f4aace683d9ae14ec755415
+
+./.git/objects/0b:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96 14 Okt 10:03 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff   130 14 Okt 10:03 c227008d787c6b28566c36d85d18706b511ca8
+
+./.git/objects/0c:
+total 24
+drwxr-xr-x   3 ruediheimlicher  staff     96  7 Sep 08:54 .
+drwxr-xr-x  79 ruediheimlicher  staff   2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff  11188  7 Sep 08:54 65098d183bce5580d0669adc85efad0cb4cf99
+
+./.git/objects/0e:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff   130  7 Sep 08:54 3cdd4d6104ec3403d5c4f4b99ba083a43cdbc7
+
+./.git/objects/10:
+total 40
+drwxr-xr-x   4 ruediheimlicher  staff    128 15 Nov 10:25 .
+drwxr-xr-x  79 ruediheimlicher  staff   2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff   4464  7 Sep 08:54 bce5095b5589af3109f0e05853eae04f5d8fa2
+-r--r--r--   1 ruediheimlicher  staff  11320 15 Nov 10:25 d25b3b7410848b1573c62ad528ce27d4402641
+
+./.git/objects/13:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96  8 Sep 16:53 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff    96  8 Sep 16:53 5fc833535c4f473830c7b85443957263c176e7
+
+./.git/objects/16:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff   447  7 Sep 08:54 187563522cd5d58e338d85a0819c75b5138e79
+
+./.git/objects/19:
+total 24
+drwxr-xr-x   4 ruediheimlicher  staff   128 23 Okt 09:47 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff  5962  7 Sep 08:54 7e171115b09b9c5ab7149651168472b896ea00
+-r--r--r--   1 ruediheimlicher  staff   303 23 Okt 09:47 cb6db031000792f4b353ac8364db4feb0c1d13
+
+./.git/objects/1d:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff   499  7 Sep 08:54 aada8eeae488fa20d8483f861da80e54711e90
+
+./.git/objects/1f:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96 24 Nov 09:47 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff   130 24 Nov 09:47 8286e1418bf6f5e401d795d545198cac603a87
+
+./.git/objects/20:
+total 24
+drwxr-xr-x   3 ruediheimlicher  staff     96 23 Okt 09:47 .
+drwxr-xr-x  79 ruediheimlicher  staff   2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff  11210 23 Okt 09:47 ca296b95e99e94d2fe498de4de743b706265c1
+
+./.git/objects/21:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96 14 Okt 14:00 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff   221 14 Okt 14:00 3bf0207b5a811f2c8b0710fdc6e7a3659273a3
+
+./.git/objects/23:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:52 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff   131  7 Sep 08:52 1f7a718d3ee45e4fa3139a0af79130201dfffb
+
+./.git/objects/29:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff  3526  7 Sep 08:54 4d26c11ed5ea43e51a579bc2d403d6e3fba427
+
+./.git/objects/2d:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:52 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff    64  7 Sep 08:52 c65e045b5887dfd712a7910f89668318e2b3ed
+
+./.git/objects/38:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff   548  7 Sep 08:54 fd5fcede518446333a03c6eb5fb6761ee01e34
+
+./.git/objects/3d:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96 31 Okt 15:24 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff   130 31 Okt 15:24 c9386d0976a68cac742f8d3ab31f59a137de00
+
+./.git/objects/42:
+total 160
+drwxr-xr-x   3 ruediheimlicher  staff     96  7 Sep 08:54 .
+drwxr-xr-x  79 ruediheimlicher  staff   2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff  81847  7 Sep 08:54 03032527993138aa0b9487c976d695f088b7c4
+
+./.git/objects/45:
+total 64
+drwxr-xr-x   5 ruediheimlicher  staff   160 17 Okt 18:06 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff  9325 17 Okt 18:06 2dcf30d61421e3f5436838c708da82f6cda10b
+-r--r--r--   1 ruediheimlicher  staff  7520  8 Sep 16:52 69eaf3274c64c0c86fea2df9fb7d23948605ba
+-r--r--r--   1 ruediheimlicher  staff  8237 14 Okt 10:03 b891d6c5d6773626c9d31be3ea5dec41cea678
+
+./.git/objects/4c:
+total 24
+drwxr-xr-x   3 ruediheimlicher  staff    96 14 Okt 14:00 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff  8525 14 Okt 14:00 75ba44b2d020adeffada4e4f54e57ac419b72f
+
+./.git/objects/50:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff  1465  7 Sep 08:54 68500db69b47a54d194cbf6d17c34c882b5d69
+
+./.git/objects/51:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff   630  7 Sep 08:54 ff6bf7ed57a4fa971c4184cf3c0f0a08735320
+
+./.git/objects/53:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:52 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff    88  7 Sep 08:52 f0fb9c67da9f486cc0f8a15dbe04bee1d2e0d6
+
+./.git/objects/5a:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96  8 Sep 16:53 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff   170  8 Sep 16:53 1bdb493da6fa9d90cfa0fab8a050066be867c3
+
+./.git/objects/5d:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff   200  7 Sep 08:54 8407e88373cce0f9a736ffe63983cc44fbb658
+
+./.git/objects/62:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96 15 Okt 20:58 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff   130 15 Okt 20:58 cf383db05df05639cad7b441c87a92bd73257a
+
+./.git/objects/63:
+total 208
+drwxr-xr-x   3 ruediheimlicher  staff      96 14 Okt 13:58 .
+drwxr-xr-x  79 ruediheimlicher  staff    2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff  106384 14 Okt 13:58 4568aebf2956edc369607d6648edbe9d09239f
+
+./.git/objects/65:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96 14 Okt 10:03 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff  1014 14 Okt 10:03 546854b859a446d389414d7bbe0e2b6793a46a
+
+./.git/objects/67:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96 15 Nov 10:28 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff   267 15 Nov 10:28 3ed37b394d2c5fc971d4e6304446d0e7fe98b2
+
+./.git/objects/70:
+total 16
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff  7233  7 Sep 08:54 faefbf6c320b2fda5f36b6ff07838303fbdc60
+
+./.git/objects/7a:
+total 40
+drwxr-xr-x   3 ruediheimlicher  staff     96  7 Sep 08:54 .
+drwxr-xr-x  79 ruediheimlicher  staff   2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff  20184  7 Sep 08:54 e5fd25ab96feb56c1e32a349d48c2d91958612
+
+./.git/objects/7d:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff   508  7 Sep 08:54 5fb217554135cf6d5ebe2c83858798fc3936d6
+
+./.git/objects/7e:
+total 16
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff  7240  7 Sep 08:54 137734484a4d45ee006d224dec1e98eb83f303
+
+./.git/objects/83:
+total 56
+drwxr-xr-x   3 ruediheimlicher  staff     96  7 Sep 08:54 .
+drwxr-xr-x  79 ruediheimlicher  staff   2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff  26217  7 Sep 08:54 2b46ffe45a5c7e16c2c7ab5041a2b9bbb2ba03
+
+./.git/objects/86:
+total 32
+drwxr-xr-x   3 ruediheimlicher  staff     96 24 Nov 09:47 .
+drwxr-xr-x  79 ruediheimlicher  staff   2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff  12589 24 Nov 09:47 a1d4f64e91bde9c24e2f6af28331a1ed86ed4a
+
+./.git/objects/89:
+total 24
+drwxr-xr-x   3 ruediheimlicher  staff    96 31 Okt 15:24 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff  9934 31 Okt 15:24 b6b1692862ff39915e4d383f8699323fe1adaf
+
+./.git/objects/8b:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff   548  7 Sep 08:54 b7e3087e9ae60fbdb1d89c0265db642608dfa4
+
+./.git/objects/8c:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff   959  7 Sep 08:54 31155fbb5052b589761507bf45c47907791b31
+
+./.git/objects/8e:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96 15 Okt 20:58 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff   270 15 Okt 20:58 14817eb15c1dbaf89f30f9e95b937f6ee2109b
+
+./.git/objects/92:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96 14 Okt 14:00 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff  1049 14 Okt 14:00 9a8caa4ca4e2247d116a16035bd6b5feda7996
+
+./.git/objects/94:
+total 24
+drwxr-xr-x   3 ruediheimlicher  staff     96 14 Okt 10:03 .
+drwxr-xr-x  79 ruediheimlicher  staff   2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff  11196 14 Okt 10:03 406b0b90507d2838638598ea543dab5ed8ab3a
+
+./.git/objects/95:
+total 24
+drwxr-xr-x   3 ruediheimlicher  staff    96 15 Okt 20:58 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff  9191 15 Okt 20:58 65b60e166235f11a2174aba851f9c200966d49
+
+./.git/objects/9a:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff   234  7 Sep 08:54 a159b843591dea84f0baebf367c31e77161888
+
+./.git/objects/a4:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96 14 Okt 10:03 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff   220 14 Okt 10:03 7b816cbec3461fab4f07d3e5a3ac730954322e
+
+./.git/objects/a8:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff   547  7 Sep 08:54 0b5a760a35cfb49b589842826669590e71088e
+
+./.git/objects/ac:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff  1028  7 Sep 08:54 dae504f56b81c380ae400808a21b1cadc43886
+
+./.git/objects/b0:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96 15 Okt 20:58 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff  1048 15 Okt 20:58 b5c54e7296187c71eccdbf7e76383d531838f6
+
+./.git/objects/b1:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff   853  7 Sep 08:54 254a873214a576878e1819e705cc11fbf6d370
+
+./.git/objects/b2:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff   161  7 Sep 08:54 ed1324c08d53bacbbcb5998b8321fae1e2ab21
+
+./.git/objects/b7:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96 31 Okt 15:24 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff  1049 31 Okt 15:24 b64f582ba70476bc7083606063fbc786dd5ae0
+
+./.git/objects/bc:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff  2148  7 Sep 08:54 b5cdc46a0c4a68d19e14a876629b0f1ae7ee62
+
+./.git/objects/c1:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96  8 Sep 16:53 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff   130  8 Sep 16:53 75005381c2fece43e045852d20e82109fdbea7
+
+./.git/objects/c5:
+total 16
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff  7553  7 Sep 08:54 23b8dee32f2686e7072559963e3596fcb61d7e
+
+./.git/objects/ce:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96 15 Nov 10:24 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff  3555 15 Nov 10:24 99efe6314178c971983ef457bca3452e4df66d
+
+./.git/objects/cf:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96 15 Nov 10:28 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff  1046 15 Nov 10:28 8754470641fc0a85bd742515f9452e2b51fa46
+
+./.git/objects/d0:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96 23 Okt 09:47 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff  1049 23 Okt 09:47 3520ddc568e262b3b86cdf322f9184e94f9cdd
+
+./.git/objects/d2:
+total 40
+drwxr-xr-x   4 ruediheimlicher  staff   128 23 Okt 09:47 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff  9816 23 Okt 09:47 0046ba69b1b6f8e35d2919f8659dc71418891b
+-r--r--r--   1 ruediheimlicher  staff  5501  8 Sep 16:52 4e9848fd7e74074104489cd3f60bb5e935f304
+
+./.git/objects/d3:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff  1837  7 Sep 08:54 1a456e1ecb22f39cce961b085c3866873e2de9
+
+./.git/objects/d7:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff  3534  7 Sep 08:54 dbcd0b0ded00240b168b25f82c1b547d983fcc
+
+./.git/objects/da:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96  8 Sep 16:53 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff  1085  8 Sep 16:53 e7c5303a1fd60561f3612f7f33179c76a4e11c
+
+./.git/objects/db:
+total 16
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff  5242  7 Sep 08:54 79d0400115010ffcdeebbd2d6d9221b07abf29
+
+./.git/objects/de:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96  8 Sep 16:52 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff  1690  8 Sep 16:52 517d4e9335193a43f427ac261f774511d69583
+
+./.git/objects/df:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:52 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff   131  7 Sep 08:52 4cd247fef8d5249372df94fd1293d39201ab1c
+
+./.git/objects/e0:
+total 24
+drwxr-xr-x   3 ruediheimlicher  staff     96  8 Sep 16:53 .
+drwxr-xr-x  79 ruediheimlicher  staff   2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff  11198  8 Sep 16:53 69c7b0a59fb5cead92ed5bf969c62f69d2f19e
+
+./.git/objects/e1:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96 15 Nov 10:28 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff   130 15 Nov 10:28 b78f894a0491daf7746c30259c9485c0889b9a
+
+./.git/objects/e4:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96 24 Nov 09:47 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff  1047 24 Nov 09:47 65333b9ac5e14f7dee01107b95b3dda5ce1bcb
+
+./.git/objects/e8:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96 14 Okt 14:00 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff   130 14 Okt 14:00 b733be3abaabd4559632dc437b779c79008e3a
+
+./.git/objects/f0:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96  7 Sep 08:54 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff   548  7 Sep 08:54 e20f7dafb5c935fcd1701070db49558acdba59
+
+./.git/objects/f1:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96 31 Okt 15:24 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff   219 31 Okt 15:24 90bccf6a5f5c0aba584c037781819ad205d671
+
+./.git/objects/f3:
+total 24
+drwxr-xr-x   3 ruediheimlicher  staff     96 15 Nov 10:28 .
+drwxr-xr-x  79 ruediheimlicher  staff   2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff  11788 15 Nov 10:28 bc7239c0386a5f65e674a6099005172c5f8424
+
+./.git/objects/f7:
+total 8
+drwxr-xr-x   3 ruediheimlicher  staff    96 23 Okt 09:47 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff   130 23 Okt 09:47 e8096bd7cfdb7c2f0c81d5c29f052b7fbe7ec9
+
+./.git/objects/f8:
+total 56
+drwxr-xr-x   3 ruediheimlicher  staff     96  7 Sep 08:54 .
+drwxr-xr-x  79 ruediheimlicher  staff   2528 24 Nov 09:47 ..
+-r--r--r--   1 ruediheimlicher  staff  27601  7 Sep 08:54 a802690a04685880c47643a11932d13041ff60
+
+./.git/objects/info:
+total 0
+drwxr-xr-x   2 ruediheimlicher  staff    64  7 Sep 08:51 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+
+./.git/objects/pack:
+total 0
+drwxr-xr-x   2 ruediheimlicher  staff    64  7 Sep 08:51 .
+drwxr-xr-x  79 ruediheimlicher  staff  2528 24 Nov 09:47 ..
+
+./.git/refs:
+total 0
+drwxr-xr-x   5 ruediheimlicher  staff  160  7 Sep 08:53 .
+drwxr-xr-x  15 ruediheimlicher  staff  480 24 Nov 10:05 ..
+drwxr-xr-x   3 ruediheimlicher  staff   96 24 Nov 09:47 heads
+drwxr-xr-x   3 ruediheimlicher  staff   96  7 Sep 08:53 remotes
+drwxr-xr-x   2 ruediheimlicher  staff   64  7 Sep 08:51 tags
+
+./.git/refs/heads:
+total 8
+drwxr-xr-x  3 ruediheimlicher  staff   96 24 Nov 09:47 .
+drwxr-xr-x  5 ruediheimlicher  staff  160  7 Sep 08:53 ..
+-rw-r--r--  1 ruediheimlicher  staff   41 24 Nov 09:47 master
+
+./.git/refs/remotes:
+total 0
+drwxr-xr-x  3 ruediheimlicher  staff   96  7 Sep 08:53 .
+drwxr-xr-x  5 ruediheimlicher  staff  160  7 Sep 08:53 ..
+drwxr-xr-x  3 ruediheimlicher  staff   96 24 Nov 09:47 origin
+
+./.git/refs/remotes/origin:
+total 8
+drwxr-xr-x  3 ruediheimlicher  staff  96 24 Nov 09:47 .
+drwxr-xr-x  3 ruediheimlicher  staff  96  7 Sep 08:53 ..
+-rw-r--r--  1 ruediheimlicher  staff  41 24 Nov 09:47 master
+
+./.git/refs/tags:
+total 0
+drwxr-xr-x  2 ruediheimlicher  staff   64  7 Sep 08:51 .
+drwxr-xr-x  5 ruediheimlicher  staff  160  7 Sep 08:53 ..
+
+./H0_Interface.xcodeproj:
+total 48
+drwxr-xr-x@ 6 ruediheimlicher  staff    192 26 Nov 11:44 .
+	LastUpgradeCheck	    4 
+	com.apple.FinderInfo	   32 
+	com.apple.lastuseddate#PS	   16 
+drwxr-xr-x@ 9 ruediheimlicher  staff    288 26 Nov 11:47 ..
+	com.apple.FinderInfo	   32 
+	com.apple.metadata:_kMDItemUserTags	   57 
+-rw-r--r--  1 ruediheimlicher  staff  23072 26 Nov 11:44 project.pbxproj
+drwxr-xr-x@ 5 ruediheimlicher  staff    160  5 Sep 21:19 project.xcworkspace
+	com.apple.lastuseddate#PS	   16 
+drwxr-xr-x  3 ruediheimlicher  staff     96  6 Sep 13:42 xcshareddata
+drwxr-xr-x  3 ruediheimlicher  staff     96  2 Nov  2014 xcuserdata
+
+./H0_Interface.xcodeproj/project.xcworkspace:
+total 8
+drwxr-xr-x@ 5 ruediheimlicher  staff  160  5 Sep 21:19 .
+	com.apple.lastuseddate#PS	 16 
+drwxr-xr-x@ 6 ruediheimlicher  staff  192 26 Nov 11:44 ..
+	LastUpgradeCheck	  4 
+	com.apple.FinderInfo	 32 
+	com.apple.lastuseddate#PS	 16 
+-rw-r--r--  1 ruediheimlicher  staff  218  5 Sep 21:19 contents.xcworkspacedata
+drwxr-xr-x  4 ruediheimlicher  staff  128 31 Mai 09:51 xcshareddata
+drwxr-xr-x  4 ruediheimlicher  staff  128  9 Okt 09:49 xcuserdata
+
+./H0_Interface.xcodeproj/project.xcworkspace/xcshareddata:
+total 16
+drwxr-xr-x  4 ruediheimlicher  staff  128 31 Mai 09:51 .
+drwxr-xr-x@ 5 ruediheimlicher  staff  160  5 Sep 21:19 ..
+	com.apple.lastuseddate#PS	 16 
+-rw-r--r--  1 ruediheimlicher  staff  238 22 Nov  2018 IDEWorkspaceChecks.plist
+-rw-r--r--  1 ruediheimlicher  staff  181 31 Mai 09:51 WorkspaceSettings.xcsettings
+
+./H0_Interface.xcodeproj/project.xcworkspace/xcuserdata:
+total 0
+drwxr-xr-x  4 ruediheimlicher  staff  128  9 Okt 09:49 .
+drwxr-xr-x@ 5 ruediheimlicher  staff  160  5 Sep 21:19 ..
+	com.apple.lastuseddate#PS	 16 
+drwxr-xr-x  3 ruediheimlicher  staff   96 25 Nov 19:44 homebook.xcuserdatad
+drwxr-xr-x  5 ruediheimlicher  staff  160 26 Nov 11:47 ruediheimlicher.xcuserdatad
+
+./H0_Interface.xcodeproj/project.xcworkspace/xcuserdata/homebook.xcuserdatad:
+total 48
+drwxr-xr-x  3 ruediheimlicher  staff     96 25 Nov 19:44 .
+drwxr-xr-x  4 ruediheimlicher  staff    128  9 Okt 09:49 ..
+-rw-r--r--  1 ruediheimlicher  staff  23220 25 Nov 19:44 UserInterfaceState.xcuserstate
+
+./H0_Interface.xcodeproj/project.xcworkspace/xcuserdata/ruediheimlicher.xcuserdatad:
+total 496
+drwxr-xr-x  5 ruediheimlicher  staff     160 26 Nov 11:47 .
+drwxr-xr-x  4 ruediheimlicher  staff     128  9 Okt 09:49 ..
+-rw-r--r--  1 ruediheimlicher  staff     182  1 Okt  2019 IDEFindNavigatorScopes.plist
+-rw-r--r--  1 ruediheimlicher  staff  243186 26 Nov 11:47 UserInterfaceState.xcuserstate
+-rw-r--r--  1 ruediheimlicher  staff     561 31 Mai 09:51 WorkspaceSettings.xcsettings
+
+./H0_Interface.xcodeproj/xcshareddata:
+total 0
+drwxr-xr-x  3 ruediheimlicher  staff   96  6 Sep 13:42 .
+drwxr-xr-x@ 6 ruediheimlicher  staff  192 26 Nov 11:44 ..
+	LastUpgradeCheck	  4 
+	com.apple.FinderInfo	 32 
+	com.apple.lastuseddate#PS	 16 
+drwxr-xr-x  3 ruediheimlicher  staff   96  6 Sep 13:42 xcschemes
+
+./H0_Interface.xcodeproj/xcshareddata/xcschemes:
+total 8
+drwxr-xr-x  3 ruediheimlicher  staff    96  6 Sep 13:42 .
+drwxr-xr-x  3 ruediheimlicher  staff    96  6 Sep 13:42 ..
+-rw-r--r--  1 ruediheimlicher  staff  3363  6 Sep 13:42 H0_Interface.xcscheme
+
+./H0_Interface.xcodeproj/xcuserdata:
+total 0
+drwxr-xr-x  3 ruediheimlicher  staff   96  2 Nov  2014 .
+drwxr-xr-x@ 6 ruediheimlicher  staff  192 26 Nov 11:44 ..
+	LastUpgradeCheck	  4 
+	com.apple.FinderInfo	 32 
+	com.apple.lastuseddate#PS	 16 
+drwxr-xr-x  4 ruediheimlicher  staff  128 18 Sep  2016 ruediheimlicher.xcuserdatad
+
+./H0_Interface.xcodeproj/xcuserdata/ruediheimlicher.xcuserdatad:
+total 0
+drwxr-xr-x  4 ruediheimlicher  staff  128 18 Sep  2016 .
+drwxr-xr-x  3 ruediheimlicher  staff   96  2 Nov  2014 ..
+drwxr-xr-x  3 ruediheimlicher  staff   96 26 Nov 10:49 xcdebugger
+drwxr-xr-x  4 ruediheimlicher  staff  128  6 Sep 13:42 xcschemes
+
+./H0_Interface.xcodeproj/xcuserdata/ruediheimlicher.xcuserdatad/xcdebugger:
+total 128
+drwxr-xr-x  3 ruediheimlicher  staff     96 26 Nov 10:49 .
+drwxr-xr-x  4 ruediheimlicher  staff    128 18 Sep  2016 ..
+-rw-r--r--  1 ruediheimlicher  staff  61550 26 Nov 10:49 Breakpoints_v2.xcbkptlist
+
+./H0_Interface.xcodeproj/xcuserdata/ruediheimlicher.xcuserdatad/xcschemes:
+total 24
+drwxr-xr-x  4 ruediheimlicher  staff   128  6 Sep 13:42 .
+drwxr-xr-x  4 ruediheimlicher  staff   128 18 Sep  2016 ..
+-rw-r--r--  1 ruediheimlicher  staff  4420  5 Sep 21:19 Digital_Power_Interface.xcscheme
+-rw-r--r--  1 ruediheimlicher  staff   699  6 Sep 13:42 xcschememanagement.plist
+
+./Robot_Interface:
+total 2224
+drwxr-xr-x  46 ruediheimlicher  staff    1472 26 Nov 10:32 .
+drwxr-xr-x@  9 ruediheimlicher  staff     288 26 Nov 11:47 ..
+	com.apple.FinderInfo	    32 
+	com.apple.metadata:_kMDItemUserTags	    57 
+-rw-r--r--@  1 ruediheimlicher  staff    6148 14 Sep 13:04 .DS_Store
+	com.apple.FinderInfo	    32 
+-rw-r--r--@  1 ruediheimlicher  staff    1026 14 Jun 09:21 AppDelegate.swift
+	com.apple.lastuseddate#PS	    16 
+drwxr-xr-x   3 ruediheimlicher  staff      96 25 Nov 21:04 Base.lproj
+drwxr-xr-x   4 ruediheimlicher  staff     128 26 Nov 10:27 Images.xcassets
+-rw-r--r--@  1 ruediheimlicher  staff    1091 31 Mai 09:58 Info.plist
+	com.apple.lastuseddate#PS	    16 
+	com.apple.xcode.PlistType	    53 
+-rw-r--r--@  1 ruediheimlicher  staff    1016 14 Jun 09:17 Info.plist Alias
+	com.apple.FinderInfo	    32 
+-rw-r--r--@  1 ruediheimlicher  staff   21930 15 Aug  2019 Kreisschnittpunkte_C.pdf
+	com.apple.lastuseddate#PS	    16 
+	com.apple.metadata:_kMDItemUserTags	    42 
+	com.apple.metadata:kMDItemDownloadedDate	    53 
+	com.apple.metadata:kMDItemWhereFroms	    99 
+	com.apple.metadata:kMDLabel_dso7dbk4dpra5odfqwpvry2zze	    89 
+	com.apple.quarantine	    57 
+-rw-r--r--@  1 ruediheimlicher  staff   19025 26 Nov 10:15 Lok128.png
+	com.apple.genstore.origposixname	     7 
+	com.apple.lastuseddate#PS	    16 
+	com.apple.metadata:kMDLabel_dso7dbk4dpra5odfqwpvry2zze	    89 
+	com.apple.quarantine	    22 
+-rw-r--r--@  1 ruediheimlicher  staff   57978 26 Nov 10:32 Lok128_2x.png
+	com.apple.genstore.origposixname	     7 
+	com.apple.lastuseddate#PS	    16 
+	com.apple.quarantine	    22 
+-rw-r--r--@  1 ruediheimlicher  staff    1430 26 Nov 10:17 Lok16.png
+	com.apple.genstore.origposixname	     7 
+	com.apple.lastuseddate#PS	    16 
+	com.apple.metadata:kMDLabel_dso7dbk4dpra5odfqwpvry2zze	    89 
+	com.apple.quarantine	    22 
+-rw-r--r--@  1 ruediheimlicher  502      2484 26 Nov 10:26 Lok16_2x.png
+	com.apple.genstore.origposixname	     7 
+	com.apple.lastuseddate#PS	    16 
+	com.apple.quarantine	    22 
+-rw-r--r--@  1 ruediheimlicher  staff   41331 26 Nov 10:11 Lok256.png
+	com.apple.genstore.origposixname	     7 
+	com.apple.lastuseddate#PS	    16 
+	com.apple.quarantine	    22 
+-rw-r--r--@  1 ruediheimlicher  staff  174170 26 Nov 10:29 Lok256_2x.png
+	com.apple.FinderInfo	    32 
+	com.apple.lastuseddate#PS	    16 
+	com.apple.metadata:_kMDItemUserTags	    42 
+	com.apple.metadata:kMDLabel_dso7dbk4dpra5odfqwpvry2zze	    89 
+	com.apple.quarantine	    22 
+-rw-r--r--@  1 ruediheimlicher  staff    2484 26 Nov 10:19 Lok32.png
+	com.apple.genstore.origposixname	     7 
+	com.apple.lastuseddate#PS	    16 
+	com.apple.metadata:kMDLabel_dso7dbk4dpra5odfqwpvry2zze	    89 
+	com.apple.quarantine	    22 
+-rw-r--r--@  1 ruediheimlicher  staff    6161 26 Nov 10:18 Lok32_2x.png
+	com.apple.genstore.origposixname	     7 
+	com.apple.lastuseddate#PS	    16 
+	com.apple.metadata:kMDLabel_dso7dbk4dpra5odfqwpvry2zze	    89 
+	com.apple.quarantine	    22 
+-rw-r--r--@  1 ruediheimlicher  staff  174170 26 Nov 10:15 Lok512.png
+	com.apple.FinderInfo	    32 
+	com.apple.lastuseddate#PS	    16 
+	com.apple.metadata:_kMDItemUserTags	    42 
+	com.apple.quarantine	    22 
+-rw-r--r--@  1 ruediheimlicher  staff     371 29 Sep  2019 Robot_Interface-Bridging-Header.h
+	com.apple.lastuseddate#PS	    16 
+-rw-r--r--@  1 ruediheimlicher  staff  118112 15 Aug  2019 Schnittpunkt_KreiseAB.pdf
+	com.apple.lastuseddate#PS	    16 
+	com.apple.metadata:_kMDItemUserTags	    42 
+	com.apple.metadata:kMDItemDownloadedDate	    53 
+	com.apple.metadata:kMDItemWhereFroms	   219 
+	com.apple.metadata:kMDLabel_dso7dbk4dpra5odfqwpvry2zze	    89 
+	com.apple.quarantine	    57 
+-rw-r--r--@  1 ruediheimlicher  staff    1281  6 Aug  2019 Trigo.storyboard
+	com.apple.lastuseddate#PS	    16 
+	com.apple.metadata:_kMDItemUserTags	    42 
+-rw-r--r--@  1 ruediheimlicher  staff    1121  4 Okt  2019 defines.swift
+	com.apple.lastuseddate#PS	    16 
+	com.apple.metadata:_kMDItemUserTags	    42 
+-rw-r--r--@  1 ruediheimlicher  502    108270 14 Okt 11:52 drehscheibe.jpg
+	com.apple.lastuseddate#PS	    16 
+	com.apple.metadata:kMDItemDownloadedDate	    53 
+	com.apple.metadata:kMDItemWhereFroms	   136 
+	com.apple.metadata:kMDLabel_dso7dbk4dpra5odfqwpvry2zze	    89 
+	com.apple.quarantine	    22 
+-rw-r--r--@  1 ruediheimlicher  staff    2194  3 Okt  2019 geom.swift
+	com.apple.lastuseddate#PS	    16 
+	com.apple.metadata:_kMDItemUserTags	    42 
+-rw-r--r--@  1 ruediheimlicher  staff   15669 17 Sep  2019 hid.c
+	com.apple.lastuseddate#PS	    16 
+	com.apple.metadata:kMDLabel_dso7dbk4dpra5odfqwpvry2zze	    89 
+-rw-r--r--@  1 ruediheimlicher  staff     469  4 Jan  2019 hid.h
+	com.apple.lastuseddate#PS	    16 
+	com.apple.metadata:kMDLabel_dso7dbk4dpra5odfqwpvry2zze	    89 
+-rw-r--r--@  1 ruediheimlicher  staff    2891 15 Aug  2019 kreisschnittpunkt.c
+	com.apple.lastuseddate#PS	    16 
+-rw-r--r--@  1 ruediheimlicher  staff     548 15 Aug  2019 kreisschnittpunkt.h
+	com.apple.lastuseddate#PS	    16 
+	com.apple.metadata:_kMDItemUserTags	    42 
+	com.apple.metadata:kMDLabel_dso7dbk4dpra5odfqwpvry2zze	    89 
+-rw-r--r--@  1 ruediheimlicher  502      1669  8 Sep 11:41 lok.png
+	com.apple.lastuseddate#PS	    16 
+	com.apple.metadata:kMDItemDownloadedDate	    53 
+	com.apple.metadata:kMDItemWhereFroms	  2300 
+	com.apple.quarantine	    21 
+-rw-r--r--@  1 ruediheimlicher  staff    5587  8 Sep 12:32 lok_inv.png
+	com.apple.lastuseddate#PS	    16 
+	com.apple.metadata:kMDItemDownloadedDate	    53 
+	com.apple.metadata:kMDItemWhereFroms	  2300 
+	com.apple.metadata:kMDLabel_dso7dbk4dpra5odfqwpvry2zze	    89 
+	com.apple.quarantine	    22 
+-rw-r--r--@  1 ruediheimlicher  staff    7532 24 Sep  2019 notok.png
+	com.apple.lastuseddate#PS	    16 
+	com.apple.metadata:kMDItemDownloadedDate	    53 
+	com.apple.metadata:kMDItemWhereFroms	 10116 
+	com.apple.quarantine	    21 
+-rw-r--r--@  1 ruediheimlicher  staff   27733 24 Sep  2019 notok_image.png
+	com.apple.lastuseddate#PS	    16 
+	com.apple.metadata:_kMDItemUserTags	    42 
+	com.apple.metadata:kMDLabel_dso7dbk4dpra5odfqwpvry2zze	    89 
+	com.apple.quarantine	    22 
+-rw-r--r--@  1 ruediheimlicher  staff    1816 24 Sep  2019 ok.png
+	com.apple.lastuseddate#PS	    16 
+	com.apple.metadata:kMDItemDownloadedDate	    53 
+	com.apple.metadata:kMDItemWhereFroms	  2496 
+	com.apple.quarantine	    21 
+-rw-r--r--@  1 ruediheimlicher  staff   26345 24 Sep  2019 ok_image.png
+	com.apple.lastuseddate#PS	    16 
+	com.apple.metadata:_kMDItemUserTags	    42 
+	com.apple.quarantine	    22 
+-rw-r--r--@  1 ruediheimlicher  staff   26730  8 Nov 19:40 rBasis.swift
+	com.apple.lastuseddate#PS	    16 
+	com.apple.metadata:kMDLabel_dso7dbk4dpra5odfqwpvry2zze	    89 
+-rw-r--r--@  1 ruediheimlicher  staff    1092  6 Aug  2019 rBasis.xib
+	com.apple.TextEncoding	    15 
+	com.apple.lastuseddate#PS	    16 
+-rw-r--r--@  1 ruediheimlicher  staff   14095 29 Sep  2019 rDrehknopfView.swift
+	com.apple.lastuseddate#PS	    16 
+	com.apple.metadata:_kMDItemUserTags	    42 
+-rw-r--r--@  1 ruediheimlicher  staff    7559 29 Sep  2019 rJoystickView.swift
+	com.apple.lastuseddate#PS	    16 
+	com.apple.metadata:_kMDItemUserTags	    42 
+	com.apple.metadata:kMDLabel_dso7dbk4dpra5odfqwpvry2zze	    89 
+-rw-r--r--@  1 ruediheimlicher  staff   59932 20 Nov 21:00 rRobot.swift
+	com.apple.lastuseddate#PS	    16 
+	com.apple.metadata:kMDLabel_dso7dbk4dpra5odfqwpvry2zze	    89 
+-rw-r--r--@  1 ruediheimlicher  staff    1092 12 Sep  2019 rRobot.xib
+	com.apple.TextEncoding	    15 
+	com.apple.lastuseddate#PS	    16 
+-rw-r--r--@  1 ruediheimlicher  staff    5483 29 Sep  2019 rRobotarm.swift
+	com.apple.lastuseddate#PS	    16 
+-rw-r--r--@  1 ruediheimlicher  staff   32232  6 Sep 09:25 rTrigo.swift
+	com.apple.lastuseddate#PS	    16 
+	com.apple.metadata:kMDLabel_dso7dbk4dpra5odfqwpvry2zze	    89 
+-rw-r--r--@  1 ruediheimlicher  staff    1092  6 Aug  2019 rTrigo.xib
+	com.apple.TextEncoding	    15 
+	com.apple.lastuseddate#PS	    16 
+-rw-r--r--@  1 ruediheimlicher  staff   45093  8 Nov 19:21 rViewController.swift
+	com.apple.lastuseddate#PS	    16 
+	com.apple.metadata:kMDLabel_dso7dbk4dpra5odfqwpvry2zze	    89 
+-rw-r--r--@  1 ruediheimlicher  staff   12215  8 Nov 17:57 usb.swift
+	com.apple.lastuseddate#PS	    16 
+-rw-r--r--@  1 ruediheimlicher  staff    4928 10 Aug  2019 zeiger.jpg
+	com.apple.lastuseddate#PS	    16 
+	com.apple.metadata:kMDItemDownloadedDate	    53 
+	com.apple.metadata:kMDItemWhereFroms	   103 
+	com.apple.metadata:kMDLabel_dso7dbk4dpra5odfqwpvry2zze	    89 
+	com.apple.quarantine	    22 
+
+./Robot_Interface/Base.lproj:
+total 584
+drwxr-xr-x   3 ruediheimlicher  staff      96 25 Nov 21:04 .
+drwxr-xr-x  46 ruediheimlicher  staff    1472 26 Nov 10:32 ..
+-rw-r--r--@  1 ruediheimlicher  staff  295610 25 Nov 21:04 Main.storyboard
+	com.apple.lastuseddate#PS	    16 
+
+./Robot_Interface/Images.xcassets:
+total 16
+drwxr-xr-x   4 ruediheimlicher  staff   128 26 Nov 10:27 .
+drwxr-xr-x  46 ruediheimlicher  staff  1472 26 Nov 10:32 ..
+-rw-r--r--@  1 ruediheimlicher  staff  6148 23 Aug  2019 .DS_Store
+	com.apple.FinderInfo	  32 
+drwxr-xr-x  12 ruediheimlicher  staff   384 26 Nov 10:27 AppIcon.appiconset
+
+./Robot_Interface/Images.xcassets/AppIcon.appiconset:
+total 984
+drwxr-xr-x  12 ruediheimlicher  staff     384 26 Nov 10:27 .
+drwxr-xr-x   4 ruediheimlicher  staff     128 26 Nov 10:27 ..
+-rw-r--r--   1 ruediheimlicher  staff    1206 26 Nov 10:27 Contents.json
+-rw-r--r--   1 ruediheimlicher  staff   57978 26 Nov 10:13 Lok.png
+-rw-r--r--   1 ruediheimlicher  staff   19025 26 Nov 10:24 Lok128.png
+-rw-r--r--   1 ruediheimlicher  staff   41331 26 Nov 10:24 Lok128_2x.png
+-rw-r--r--   1 ruediheimlicher  staff    1430 26 Nov 10:27 Lok16.png
+-rw-r--r--   1 ruediheimlicher  staff  174170 26 Nov 10:24 Lok256_2x.png
+-rw-r--r--   1 ruediheimlicher  staff    2484 26 Nov 10:24 Lok32.png
+-rw-r--r--   1 ruediheimlicher  staff    6161 26 Nov 10:24 Lok32_2x.png
+-rw-r--r--   1 ruediheimlicher  staff  174170 26 Nov 10:24 Lok512.png
+-rw-r--r--   1 ruediheimlicher  staff    1537 26 Nov 10:27 robot32-1.jpg
