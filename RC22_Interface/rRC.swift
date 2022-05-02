@@ -1620,17 +1620,17 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
    
       
    
-      else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"dispatchnummer") )
+      else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"dispatchkanal") )
       {
          guard let result = tableView.makeView(withIdentifier: tableColumn!.identifier, owner: self) as? NSTableCellView else 
          {
-            print("dispatchnummer ist nil")
+            print("dispatkanal ist nil")
             return nil 
             
          }
 
          //let result = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "dispatchnummer") , owner: self) as? NSTableCellView
-         let nummer = Int(DispatchArray[0][row]["dispatchnummer"] ?? 0)
+         let nummer = Int(DispatchArray[0][row]["dispatchkanal"] ?? 0)
          let wert:Int = nummer
          //print("dispatchnummer nummer: \(nummer)")
          result.textField?.intValue = Int32(nummer) 
@@ -2004,13 +2004,14 @@ func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColu
          }
          let nummer = Int(DispatchArray[0][row]["dispatchkanal"] ?? 0)
          let wert:Int = nummer
-         //print("dispatchkanal kanal: \(nummer)")
+         print("dispatchkanal kanal: \(nummer)")
          
          result.textField?.intValue = Int32(nummer) 
  
          
          return result
       }
+      
       else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"dispatchnummer") )
       {
          guard let result = tableView.makeView(withIdentifier: tableColumn!.identifier, owner: self) as? NSTableCellView else 
@@ -2023,7 +2024,7 @@ func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColu
          //let result = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "dispatchnummer") , owner: self) as? NSTableCellView
          let nummer = Int(DispatchArray[0][row]["dispatchnummer"] ?? 0)
          let wert:Int = nummer
-         //print("dispatchnummer nummer: \(nummer)")
+         print("dispatchnummer nummer: \(nummer)")
          result.textField?.intValue = Int32(nummer) 
          
          return result

@@ -999,7 +999,7 @@
                                                                         <tableViewGridLines key="gridStyleMask" vertical="YES" dashed="YES"/>
                                                                         <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                                         <tableColumns>
-                                                                            <tableColumn identifier="dispatchnummer" width="36" minWidth="10" maxWidth="3.4028234663852886e+38" id="R1r-YR-h94">
+                                                                            <tableColumn identifier="dispatchkanal" editable="NO" width="36" minWidth="10" maxWidth="3.4028234663852886e+38" id="R1r-YR-h94">
                                                                                 <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="center" title="Kan">
                                                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1457,7 +1457,7 @@
                                                                                 <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                                 <prototypeCellViews>
                                                                                     <tableCellView id="eUL-z8-peN">
-                                                                                        <rect key="frame" x="1" y="1" width="44" height="17"/>
+                                                                                        <rect key="frame" x="11" y="1" width="44" height="17"/>
                                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                         <subviews>
                                                                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8T7-dq-WPy">
@@ -1497,7 +1497,7 @@
                                                                                 <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                                 <prototypeCellViews>
                                                                                     <tableCellView identifier="mixartpopup" id="n8c-LY-vXF" customClass="rPopUpZelle" customModule="RC22_Interface" customModuleProvider="target">
-                                                                                        <rect key="frame" x="48" y="1" width="67" height="20"/>
+                                                                                        <rect key="frame" x="58" y="1" width="67" height="20"/>
                                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                         <subviews>
                                                                                             <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MXK-r4-HwF">
@@ -1547,7 +1547,7 @@
                                                                                 <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                                 <prototypeCellViews>
                                                                                     <tableCellView identifier="mixkanalapopup" id="Yxj-LS-3Rx" customClass="rPopUpZelle" customModule="RC22_Interface" customModuleProvider="target">
-                                                                                        <rect key="frame" x="118" y="1" width="53" height="20"/>
+                                                                                        <rect key="frame" x="128" y="1" width="53" height="20"/>
                                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                         <subviews>
                                                                                             <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Mc5-mA-XED">
@@ -1600,7 +1600,7 @@
                                                                                 <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                                 <prototypeCellViews>
                                                                                     <tableCellView identifier="mixkanalbpopup" id="AjP-lw-pyQ" customClass="rPopUpZelle" customModule="RC22_Interface" customModuleProvider="target">
-                                                                                        <rect key="frame" x="174" y="1" width="52" height="20"/>
+                                                                                        <rect key="frame" x="184" y="1" width="52" height="20"/>
                                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                         <subviews>
                                                                                             <popUpButton verticalHuggingPriority="750" id="xMK-Cq-S5f">
@@ -1641,7 +1641,7 @@
                                                                                 <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                                 <prototypeCellViews>
                                                                                     <tableCellView identifier="mixzeileimage" id="X8H-wC-2Rc" customClass="rPopUpZelle" customModule="RC22_Interface" customModuleProvider="target">
-                                                                                        <rect key="frame" x="229" y="1" width="49" height="20"/>
+                                                                                        <rect key="frame" x="238" y="1" width="49" height="20"/>
                                                                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES"/>
                                                                                         <subviews>
                                                                                             <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lPQ-an-Wb9">
