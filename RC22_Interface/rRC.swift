@@ -269,6 +269,16 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
             dispatchdic["dispatchlevelb"]  = 4-dispatchindex & 0x03
             dispatchdic["dispatchexpoa"]  = 4-dispatchindex & 0x03
             dispatchdic["dispatchexpob"]  = dispatchindex & 0x03
+            
+            dispatchdic["dispatchlevela"]  = 0
+            dispatchdic["dispatchlevelb"]  = 0
+            dispatchdic["dispatchexpoa"]  = 0
+            dispatchdic["dispatchexpob"]  = 0
+            
+            
+            
+            
+            
             //dispatchdic["dispatchmix"]  = 1
             //dispatchdic["dispatchmixkanal"]  = dispatchindex
             dispatchdic["dispatchmodelnummer"]  = model
@@ -2183,18 +2193,18 @@ func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColu
   @IBOutlet         weak var         Pot4_SliderInt:NSSlider!
   @IBOutlet         weak var         Pot5_SliderInt:NSSlider!
 
-   @IBOutlet   weak var     Halt_Taste:NSButton!
+   @IBOutlet   weak var             Halt_Taste:NSButton!
 
-   @IBOutlet  weak var      Write_1_Byte_Taste:NSButton!
-   @IBOutlet weak var        Read_1_Byte_Taste:NSButton!
-   @IBOutlet weak var        Write_Part_Taste:NSButton!
-   @IBOutlet weak var        Read_Part_Taste:NSButton!
+   @IBOutlet  weak var              Write_1_Byte_Taste:NSButton!
+   @IBOutlet weak var               Read_1_Byte_Taste:NSButton!
+   @IBOutlet weak var               Write_Part_Taste:NSButton!
+   @IBOutlet weak var               Read_Part_Taste:NSButton!
    
-   @IBOutlet weak var        StufeFeld:NSTextField!
-   @IBOutlet weak var        PartnummerFeld:NSTextField!
+   @IBOutlet weak var               StufeFeld:NSTextField!
+   @IBOutlet weak var               PartnummerFeld:NSTextField!
    
-   @IBOutlet weak var        PPMFeldA:NSTextField!
-   @IBOutlet weak var        PPMFeldB:NSTextField!
+   @IBOutlet weak var               PPMFeldA:NSTextField!
+   @IBOutlet weak var               PPMFeldB:NSTextField!
    
   // @IBOutlet weak var   USB_OK_Feld:NSImageView!
    
