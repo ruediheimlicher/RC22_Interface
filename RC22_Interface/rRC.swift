@@ -985,6 +985,9 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
            sendbuffer[pos + kanal] = tempbuffer
            print("funktion&device kanal: \(kanal) tempbuffer: \(tempbuffer)")
         }// level
+        
+        
+        
       
     //    let a = decodeUSBSettings(sendbuffer)
         if (usbstatus > 0)

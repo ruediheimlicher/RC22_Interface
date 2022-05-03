@@ -9,8 +9,8 @@
 import Foundation
 
 
-let columnfunktion = 1
-let columndevice = 2
+let columnfunktion = 2
+let columndevice = 1
 let columnon = 3
 let columnrichtung = 4
 let columnlevela = 5
