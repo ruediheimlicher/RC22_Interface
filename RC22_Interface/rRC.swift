@@ -234,7 +234,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
             var mixingdic = [String:UInt8]()
             mixingdic["mixnummer"] = mixingindex
             mixingdic["mixonimage"] = 0
-            mixingdic["mixart"] = 2
+            mixingdic["mixart"] = 1
             mixingdic["mixkanala"] = 0x00
             mixingdic["mixkanalb"] = 0x01
             mixingdic["mixing"] = 0 // verwendet als Mix xy
@@ -245,7 +245,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          MixingSettingArray[2]["mixart"] = 0x00
          MixingSettingArray[3]["mixart"] = 0x00
          
-         MixingSettingArray[0]["mixonimage"] = 1
+  //       MixingSettingArray[0]["mixonimage"] = 1 // mixing 0
          
          MixingArray.append(MixingSettingArray)
          
@@ -915,6 +915,20 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
   
   }// report_sendSettingChannels
    
+   @IBAction func report_saveSettings(_ sender: NSButton) 
+  {
+     
+     print("report_saveSettings ")
+
+  }
+   
+   @IBAction func report_loadSettings(_ sender: NSButton) 
+  {
+     
+     print("report_loadSettings ")
+
+  }
+
    
    @IBAction func report_sendSettings(_ sender: NSButton) 
   {
@@ -1144,6 +1158,8 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
       } // for modelindex
       return data
    } // readSettingMixingArray
+   
+   
  
    var     default_DeviceArray:[String] = ["Pitch_L_H","Pitch_L_V","Pitch_R_H","Pitch_R_V","Schieber_L","Schieber_R","Schalter","leer"]
    var     default_FunktionArray:[String] = ["Seite","Hoehe","Quer","Motor","Quer L","Quer R","Lande","Aux"]
@@ -2198,6 +2214,9 @@ func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColu
   @IBOutlet         weak var         Pot5_SliderInt:NSSlider!
 
    @IBOutlet   weak var             Halt_Taste:NSButton!
+   
+   @IBOutlet   weak var             saveSettings_Taste:NSButton!
+   @IBOutlet   weak var             loadSettings_Taste:NSButton!
 
    @IBOutlet  weak var              Write_1_Byte_Taste:NSButton!
    @IBOutlet weak var               Read_1_Byte_Taste:NSButton!
