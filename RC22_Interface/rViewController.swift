@@ -958,6 +958,8 @@ class rViewController: NSViewController, NSWindowDelegate
       let nc = NotificationCenter.default
       var userinformation:[String : Any]
      // print("USBOpen usbstatus vor check: \(usbstatus) hidstatus: \(hidstatus) present: \(present)")
+  
+    /*  
       if (usbstatus > 0) // already open
       {
          print("USB-Device ist schon da")
@@ -969,6 +971,8 @@ class rViewController: NSViewController, NSWindowDelegate
          return
 
       }
+     */
+      
       let erfolg = teensy.USBOpen()
       usbstatus = Int(erfolg)
       globalusbstatus = Int(erfolg)
@@ -998,8 +1002,8 @@ class rViewController: NSViewController, NSWindowDelegate
          manufactorer.stringValue = manufactorername
          
          //manufactorer.stringValue = "Manufactorer: " + teensy.manufactorer()!
-         Start_Knopf.isEnabled = true
-         Send_Knopf.isEnabled = true
+ //        Start_Knopf.isEnabled = true
+ //        Send_Knopf.isEnabled = true
          
          userinformation = ["message":"usb", "usbstatus": 1,"manufactorer": manufactorername] as [String : Any]
          nc.post(name:Notification.Name(rawValue:"usb_status"),
@@ -1036,9 +1040,9 @@ class rViewController: NSViewController, NSWindowDelegate
          {
             print("Taste USB_OK ist nil")
          }*/ 
-         Start_Knopf.isEnabled = false
-         Stop_Knopf.isEnabled = false
-         Send_Knopf.isEnabled = false
+//         Start_Knopf.isEnabled = false
+//         Stop_Knopf.isEnabled = false
+//         Send_Knopf.isEnabled = false
          return
       }
       //print("antwort: \(teensy.status())")

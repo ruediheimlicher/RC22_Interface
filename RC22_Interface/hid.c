@@ -553,7 +553,7 @@ static void attach_callback(void *context, IOReturn r, void *hid_mgr, IOHIDDevic
    h->ref = dev;
 	h->open = 1;
 	add_hid(h);
-   hid_usbstatus=1;
+   //hid_usbstatus=1;
 
    /*
    r = rawhid_open(1, 0x16C0, 0x0480, 0xFFAB, 0x0200);

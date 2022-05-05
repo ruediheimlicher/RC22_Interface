@@ -51,7 +51,11 @@ open class usb_teensy: NSObject
    {
       var r:Int32 = 0
       
-      if (hid_usbstatus > 0)
+      let status = rawhid_status()
+      print("func usb_teensy.USBOpen status: \(status)")
+
+     // if (hid_usbstatus > 0)
+      if (status > 0)
       {
          print("func usb_teensy.USBOpen USB schon offen")
          let alert = NSAlert()
