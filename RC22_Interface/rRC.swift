@@ -574,7 +574,25 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
         }
         write(settingarray, toFile: "RC_Daten/settings_\(block).txt")
      }
+      
+     // mixing
      
+     for block in 0..<MixingArray[settingblock].count
+     {
+        var mixingarray = [String]()
+        //print("block: \(block)")
+        for (key, value ) in MixingArray[settingblock][block]
+        {
+        //print("\(block): \(block[blockzeile])")
+        
+        let zeilenstring = "\(key)=\(value)"
+           
+           print(zeilenstring)
+        mixingarray.append(zeilenstring)
+        }
+        write(mixingarray, toFile: "RC_Daten/mixing_\(block).txt")
+     }
+
      
      //write(settingarray, toFile: "RC_Daten/settings.txt")
  
@@ -621,7 +639,6 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       
       for servozeile in 0..<DispatchArray[settingblock].count
       {
-         
          let filename = "RC_Daten/settings_\(servozeile).txt"
          //let testfilename = "RC_Daten/test.txt"
          guard let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
@@ -634,14 +651,9 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
             return
          }
          // Read from file
-         
-     //    let savedArray = NSArray(contentsOf: fileUrl) //as! [String]
-         
+          
          let saveString = String(describing: savedArray)
          //      print("saveString: \(saveString) ")
-         
-         
-         
          let stringarray = saveString.components(separatedBy: "\n")
          //print("stringarray: \(stringarray) ")
          //for element in stringarray
@@ -653,7 +665,6 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
             
             if element.contains("=")
             {
-               //let elementarray = element.components(separatedBy: "\n")
                //print("vor \(index):\(element)")
                element = element.replacingOccurrences(of: ",", with: "")
                element = element.replacingOccurrences(of: "\"", with: "")
@@ -671,16 +682,63 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
                //print("data: \(data["dispatchexpob"])")
                
                DispatchArray[settingblock][servozeile].updateValue(val ?? 0, forKey:key)
-               
-               
-               
-               index += 1
+                index += 1
             }
          }
       } // for DispatchArray
-      
-       
       DispatchTable.reloadData()
+      
+     // mixing
+      for servozeile in 0..<MixingArray[settingblock].count
+      {
+         let filename = "RC_Daten/mixing_\(servozeile).txt"
+         guard let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
+            fatalError("No Document directory found")
+         }
+         let fileUrl = dir.appendingPathComponent(filename)
+         
+         guard let savedArray = NSArray(contentsOfFile: fileUrl.path) else {
+            Swift.print("Unable to get array from path")
+            return
+         }
+         // Read from file
+          
+         let saveString = String(describing: savedArray)
+         //      print("saveString: \(saveString) ")
+         let stringarray = saveString.components(separatedBy: "\n")
+         //print("stringarray: \(stringarray) ")
+         //for element in stringarray
+         //print("\tstringarray von servo: \(servozeile) ")
+         var index = 0
+         for zeile in 0..<stringarray.count
+         {
+            var element = stringarray[zeile]
+            
+            if element.contains("=")
+            {
+               //print("vor \(index):\(element)")
+               element = element.replacingOccurrences(of: ",", with: "")
+               element = element.replacingOccurrences(of: "\"", with: "")
+               element = element.replacingOccurrences(of: " ", with: "")
+               //print("nach \(index):\(element)")
+               let elementarray = element.components(separatedBy: "=")
+               //print("key: *\(elementarray[0])* val:\(elementarray[1])")
+               let key = String(elementarray[0])
+               
+               let val = UInt8(elementarray[1])
+               
+               let data = MixingArray[settingblock][servozeile]
+               let tempdic = [key: val]
+               
+               //print("data: \(data["dispatchexpob"])")
+               
+               MixingArray[settingblock][servozeile].updateValue(val ?? 0, forKey:key)
+                index += 1
+            }
+         }
+      }
+      MixingTable.reloadData()
+      
       print("end report_loadSettings")
    }
 
@@ -2178,7 +2236,7 @@ func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColu
          }
          let nummer = Int(DispatchArray[0][row]["dispatchkanal"] ?? 0)
          let wert:Int = nummer
-         print("dispatchkanal kanal: \(nummer)")
+         //print("dispatchkanal kanal: \(nummer)")
          
          result.textField?.intValue = Int32(nummer) 
  
