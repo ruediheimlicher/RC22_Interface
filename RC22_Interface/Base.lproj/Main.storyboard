@@ -823,6 +823,17 @@
                                     <action selector="report_start_read_USB:" target="iCZ-BZ-PL6" id="hsc-EV-4OQ"/>
                                 </connections>
                             </button>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="T9u-m0-WNt">
+                                <rect key="frame" x="32" y="158" width="126" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="save Settings" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="fhf-XY-gXp">
+                                    <behavior key="behavior" pushIn="YES" changeContents="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="report_saveSettings:" target="iCZ-BZ-PL6" id="kdU-ce-Y2b"/>
+                                </connections>
+                            </button>
                             <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="R8O-ER-S4c">
                                 <rect key="frame" x="171" y="274" width="43" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -1012,7 +1023,7 @@
                                                                                 <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                                 <prototypeCellViews>
                                                                                     <tableCellView id="A9m-6J-RS5">
-                                                                                        <rect key="frame" x="2" y="0.0" width="40" height="20"/>
+                                                                                        <rect key="frame" x="12" y="0.0" width="40" height="20"/>
                                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                         <subviews>
                                                                                             <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="N7C-87-gFj">
@@ -1044,7 +1055,7 @@
                                                                                 <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                                 <prototypeCellViews>
                                                                                     <tableCellView identifier="devicepopup" id="Ig2-VA-Own" customClass="rPopUpZelle" customModule="RC22_Interface" customModuleProvider="target">
-                                                                                        <rect key="frame" x="47" y="0.0" width="93" height="20"/>
+                                                                                        <rect key="frame" x="57" y="0.0" width="93" height="20"/>
                                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                         <subviews>
                                                                                             <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dmU-c8-yIF">
@@ -1085,7 +1096,7 @@
                                                                                 <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                                 <prototypeCellViews>
                                                                                     <tableCellView identifier="funktionpopup" id="zS9-PK-ej3" customClass="rPopUpZelle" customModule="RC22_Interface" customModuleProvider="target">
-                                                                                        <rect key="frame" x="145" y="0.0" width="70" height="20"/>
+                                                                                        <rect key="frame" x="155" y="0.0" width="70" height="20"/>
                                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                         <subviews>
                                                                                             <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5Wy-9d-ntr">
@@ -1126,7 +1137,7 @@
                                                                                 <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                                 <prototypeCellViews>
                                                                                     <tableCellView identifier="onimagebutton" id="BJ8-Tz-FW1" customClass="rPopUpZelle" customModule="RC22_Interface" customModuleProvider="target">
-                                                                                        <rect key="frame" x="220" y="0.0" width="56" height="20"/>
+                                                                                        <rect key="frame" x="230" y="0.0" width="56" height="20"/>
                                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                         <subviews>
                                                                                             <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Zwd-uF-04C">
@@ -1160,7 +1171,7 @@
                                                                                 <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                                 <prototypeCellViews>
                                                                                     <tableCellView identifier="richtungimage" id="KWi-Pi-Jpb" customClass="rPopUpZelle" customModule="RC22_Interface" customModuleProvider="target">
-                                                                                        <rect key="frame" x="281" y="0.0" width="67" height="19"/>
+                                                                                        <rect key="frame" x="291" y="0.0" width="67" height="19"/>
                                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                         <subviews>
                                                                                             <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="q12-4f-ANh">
@@ -1194,7 +1205,7 @@
                                                                                 <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                                 <prototypeCellViews>
                                                                                     <tableCellView identifier="levelpopupa" id="xR7-vc-6lw" customClass="rPopUpZelle" customModule="RC22_Interface" customModuleProvider="target">
-                                                                                        <rect key="frame" x="353" y="0.0" width="56" height="20"/>
+                                                                                        <rect key="frame" x="363" y="0.0" width="56" height="20"/>
                                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                         <subviews>
                                                                                             <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fhD-mL-Ol6">
@@ -1235,7 +1246,7 @@
                                                                                 <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                                 <prototypeCellViews>
                                                                                     <tableCellView identifier="levelpopupb" id="XmB-sn-y89" customClass="rPopUpZelle" customModule="RC22_Interface" customModuleProvider="target">
-                                                                                        <rect key="frame" x="414" y="0.0" width="56" height="20"/>
+                                                                                        <rect key="frame" x="424" y="0.0" width="56" height="20"/>
                                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                         <subviews>
                                                                                             <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6cr-4X-a2x">
@@ -1276,7 +1287,7 @@
                                                                                 <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                                 <prototypeCellViews>
                                                                                     <tableCellView identifier="expopopupa" id="PDN-qS-os4" customClass="rPopUpZelle" customModule="RC22_Interface" customModuleProvider="target">
-                                                                                        <rect key="frame" x="475" y="0.0" width="56" height="20"/>
+                                                                                        <rect key="frame" x="485" y="0.0" width="56" height="20"/>
                                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                         <subviews>
                                                                                             <popUpButton identifier="levelpopup" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0uB-1b-2fr">
@@ -1317,7 +1328,7 @@
                                                                                 <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                                 <prototypeCellViews>
                                                                                     <tableCellView identifier="expopopupb" id="1Fr-hh-sxC" customClass="rPopUpZelle" customModule="RC22_Interface" customModuleProvider="target">
-                                                                                        <rect key="frame" x="536" y="0.0" width="73" height="20"/>
+                                                                                        <rect key="frame" x="546" y="0.0" width="73" height="20"/>
                                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                         <subviews>
                                                                                             <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dAh-Cj-j8D">
@@ -1682,6 +1693,24 @@
                                                                 <autoresizingMask key="autoresizingMask"/>
                                                             </tableHeaderView>
                                                         </scrollView>
+                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2YV-tQ-WIg">
+                                                            <rect key="frame" x="528" y="419" width="61" height="17"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Modell:" id="5ni-Wa-ipv">
+                                                                <font key="font" metaFont="systemMedium" size="14"/>
+                                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                            </textFieldCell>
+                                                        </textField>
+                                                        <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="y1K-7w-QwO">
+                                                            <rect key="frame" x="608" y="411" width="29" height="30"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="center" drawsBackground="YES" id="3CH-He-MHb">
+                                                                <font key="font" metaFont="system" size="18"/>
+                                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                            </textFieldCell>
+                                                        </textField>
                                                     </subviews>
                                                 </customView>
                                             </subviews>
@@ -1895,6 +1924,17 @@
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uhF-EE-KNp">
+                                <rect key="frame" x="30" y="113" width="126" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="load Settings" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="18E-uU-NCy">
+                                    <behavior key="behavior" pushIn="YES" changeContents="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="report_loadSettings:" target="iCZ-BZ-PL6" id="JWb-fq-saQ"/>
+                                </connections>
+                            </button>
                         </subviews>
                     </view>
                     <connections>
@@ -1918,7 +1958,10 @@
                         <outlet property="Start_Knopf" destination="sou-NF-haS" id="CCW-fL-hxl"/>
                         <outlet property="USB_DataFeld" destination="tpw-yV-jNF" id="bYl-FX-Imy"/>
                         <outlet property="USB_OK_Feld" destination="dez-wQ-8Sy" id="Vx1-3z-eNY"/>
+                        <outlet property="loadSettings_Taste" destination="uhF-EE-KNp" id="DNO-Lp-jWu"/>
+                        <outlet property="modelFeld" destination="y1K-7w-QwO" id="LVv-Wd-51y"/>
                         <outlet property="modelSeg" destination="ZK0-3X-vdB" id="tHC-D5-Yg1"/>
+                        <outlet property="saveSettings_Taste" destination="T9u-m0-WNt" id="hxf-Ay-Ohh"/>
                         <outlet property="sendSettingsButton" destination="ruo-yI-Zb7" id="AMR-BB-WnQ"/>
                     </connections>
                 </viewController>
@@ -1963,7 +2006,7 @@
                                 </textFieldCell>
                             </textField>
                             <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ldH-Ml-PIp">
-                                <rect key="frame" x="196" y="241" width="19" height="29"/>
+                                <rect key="frame" x="196" y="240" width="19" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <stepperCell key="cell" continuous="YES" alignment="left" minValue="4" maxValue="24" doubleValue="5" id="t2r-cW-bPw"/>
                                 <connections>
@@ -1971,7 +2014,7 @@
                                 </connections>
                             </stepper>
                             <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GNi-s9-VMX">
-                                <rect key="frame" x="195" y="200" width="19" height="29"/>
+                                <rect key="frame" x="195" y="199" width="19" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <stepperCell key="cell" continuous="YES" alignment="left" minValue="8" maxValue="32" doubleValue="18" id="wi3-ew-5BS"/>
                                 <connections>
@@ -2023,7 +2066,7 @@
                                 </textFieldCell>
                             </textField>
                             <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="l0Q-7d-yPn">
-                                <rect key="frame" x="981" y="410" width="19" height="29"/>
+                                <rect key="frame" x="981" y="409" width="19" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <stepperCell key="cell" continuous="YES" alignment="left" minValue="-180" doubleValue="-90" id="gig-s7-4xP"/>
                                 <connections>
@@ -2040,7 +2083,7 @@
                                 </textFieldCell>
                             </textField>
                             <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KNc-E3-dV5">
-                                <rect key="frame" x="807" y="411" width="19" height="29"/>
+                                <rect key="frame" x="807" y="410" width="19" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <stepperCell key="cell" continuous="YES" alignment="left" increment="-1" maxValue="180" doubleValue="90" id="QY9-P1-NbT"/>
                                 <connections>
@@ -2647,7 +2690,7 @@
                                 </connections>
                             </button>
                             <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qKY-w1-Fth">
-                                <rect key="frame" x="484" y="120" width="19" height="29"/>
+                                <rect key="frame" x="484" y="119" width="19" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <stepperCell key="cell" continuous="YES" alignment="left" minValue="1" maxValue="14" doubleValue="4" id="THP-zg-vMN"/>
                                 <connections>
@@ -2655,7 +2698,7 @@
                                 </connections>
                             </stepper>
                             <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JIC-Z0-EiA">
-                                <rect key="frame" x="297" y="120" width="19" height="29"/>
+                                <rect key="frame" x="297" y="119" width="19" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <stepperCell key="cell" continuous="YES" alignment="left" minValue="1" maxValue="6" doubleValue="1" id="NiO-Wj-pFs"/>
                                 <connections>

@@ -7,10 +7,11 @@
 //
 import Cocoa
 import Darwin
+import Foundation
 
 let SET_RC:UInt8 = 0xA2
 
-class rPopUpZelle:NSTableCellView, NSMenuDelegate,NSTableViewDataSource
+class rPopUpZelle:NSTableCellView, NSMenuDelegate,NSTableViewDataSource,NSTabViewDelegate
 {
    @IBOutlet weak var PopUp:NSPopUpButton?
    @IBOutlet weak var ImageButton:NSButton?
@@ -165,9 +166,10 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       print ("RC viewDidAppear selectedDevice: \(selectedDevice)")
   
       SettingTab.drawsBackground = true
+      SettingTab.delegate = self
       //SettingTab.wantsLayer = true
       //SettingTab.layer?.backgroundColor = NSColor.blue.cgColor
-
+      
       MixingTable.dataSource = self
       MixingTable.delegate = self
  
@@ -182,7 +184,8 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       DispatchTable.tableColumns.forEach { (column) in column.headerCell.attributedStringValue = NSAttributedString(string: column.title, attributes: [NSAttributedStringKey.font: NSFont.boldSystemFont(ofSize: 11)])
          // Optional: you can change title color also jsut by adding NSForegroundColorAttributeName
      }
-      
+   //   modelSeg.addTarget(self, action: #selector(indexChanged(_:)), for: .valueChanged)
+
       
       for model:UInt8 in 0..<UInt8(ANZAHLMODELLE)
       { 
@@ -322,7 +325,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          z += 1
       }
        */
-      
+      modelFeld.integerValue = modelSeg.indexOfSelectedItem
       print("end viewDidAppear")  
    } // end viewDidAppear
 
@@ -371,6 +374,20 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
        print("end viewDidLoad")
    
    } // end viewDidLoad
+   
+   
+   
+   /*
+   @objc func indexChanged(_ sender: NSSegmentedControl) {
+       if segmentedControl.selectedSegmentIndex == 0 {
+           print("Select 0")
+       } else if segmentedControl.selectedSegmentIndex == 1 {
+           print("Select 1")
+       } else if segmentedControl.selectedSegmentIndex == 2 {
+           print("Select 2")
+       }
+   }
+   */
    // MARK: newDataAktion
    @objc  func newRCDataAktion(_ notification:Notification) 
    {
@@ -498,11 +515,12 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          //print("dic: \(dic ?? ["a":[123]])\n")
       } // if code
    }
+  
    
    @IBAction func report_Model(_ sender: NSSegmentedControl) 
   {
    print("report_Model model: \(sender.indexOfSelectedItem)")
-     //modelFeld.integerValue = sender.indexOfSelectedItem
+   modelFeld.integerValue = sender.indexOfSelectedItem
   }
    
     @IBAction func report_artPop(_ sender: NSPopUpButton) 
@@ -515,19 +533,156 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       }
    }
    
+   // https://stackoverflow.com/questions/56613372/code-to-read-and-write-array-into-text-file-in-xcode-10-2
+   func write(_ array: [Any], toFile fileName: String){
+       guard let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
+           fatalError("No Document directory found")
+       }
+       let fileUrl = dir.appendingPathComponent(fileName)
+       (array as NSArray).write(to: fileUrl, atomically: true)
+   }
+   
+   func read(_ fromFile: String) -> [[String]]? {
+       guard let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
+           fatalError("No Document directory found")
+       }
+       let fileUrl = dir.appendingPathComponent(fromFile)
+       if let temp = NSArray(contentsOf: fileUrl){
+          print(temp);
+         return temp as? [[String]]
+       }
+       return nil
+   }
+   
    @IBAction func report_saveSettings(_ sender: NSButton) 
   {
-     
      print("report_saveSettings ")
-
+     
+     var settingblock = modelSeg.indexOfSelectedItem
+     for block in 0..<DispatchArray[settingblock].count
+     {
+        var settingarray = [String]()
+        //print("block: \(block)")
+        for (key, value ) in DispatchArray[settingblock][block]
+        {
+        //print("\(block): \(block[blockzeile])")
+        
+        let zeilenstring = "\(key)=\(value)"
+           
+           print(zeilenstring)
+        settingarray.append(zeilenstring)
+        }
+        write(settingarray, toFile: "RC_Daten/settings_\(block).txt")
+     }
+     
+     
+     //write(settingarray, toFile: "RC_Daten/settings.txt")
+ 
   }
    
-   @IBAction func report_loadSettings(_ sender: NSButton) 
-  {
-     
-     print("report_loadSettings ")
+   func convertToDictionary(text: String) -> [String: Any]? {
+       if let data = text.data(using: .utf8) {
+           do {
+               return try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+           } catch {
+               print(error.localizedDescription)
+           }
+       }
+       return nil
+   }
+   
+   func getSettingPlist(withName name: String) -> [String]?
+   {
+      let filename = "RC_Daten/settings0.plist"
+      guard let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
+          fatalError("No Document directory found")
+      }
+      let fileUrl = dir.appendingPathComponent(filename)
+      
+      
 
-  }
+   
+      if let  xml = FileManager.default.contents(atPath: fileUrl.path)
+   {
+       print("  getSettingPlist xml: \(xml)")
+   return (try? PropertyListSerialization.propertyList(from: xml, options: .mutableContainersAndLeaves, format: nil)) as? [String]
+   }
+
+   return nil
+   }
+
+
+    @IBAction func report_loadSettings(_ sender: NSButton) 
+   {
+      var settingblock = modelSeg.indexOfSelectedItem
+      var            tempDispatchArray = [[[String:UInt8]]]()
+      //print("report_loadSettings DispatchArray[settingblock]count: \(DispatchArray[settingblock][0].count)")
+      
+      
+      for servozeile in 0..<DispatchArray[settingblock].count
+      {
+         
+         let filename = "RC_Daten/settings_\(servozeile).txt"
+         //let testfilename = "RC_Daten/test.txt"
+         guard let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
+            fatalError("No Document directory found")
+         }
+         let fileUrl = dir.appendingPathComponent(filename)
+         
+         guard let savedArray = NSArray(contentsOfFile: fileUrl.path) else {
+            Swift.print("Unable to get array from path")
+            return
+         }
+         // Read from file
+         
+     //    let savedArray = NSArray(contentsOf: fileUrl) //as! [String]
+         
+         let saveString = String(describing: savedArray)
+         //      print("saveString: \(saveString) ")
+         
+         
+         
+         let stringarray = saveString.components(separatedBy: "\n")
+         //print("stringarray: \(stringarray) ")
+         //for element in stringarray
+         //print("\tstringarray von servo: \(servozeile) ")
+         var index = 0
+         for zeile in 0..<stringarray.count
+         {
+            var element = stringarray[zeile]
+            
+            if element.contains("=")
+            {
+               //let elementarray = element.components(separatedBy: "\n")
+               //print("vor \(index):\(element)")
+               element = element.replacingOccurrences(of: ",", with: "")
+               element = element.replacingOccurrences(of: "\"", with: "")
+               element = element.replacingOccurrences(of: " ", with: "")
+               //print("nach \(index):\(element)")
+               let elementarray = element.components(separatedBy: "=")
+               //print("key: *\(elementarray[0])* val:\(elementarray[1])")
+               let key = String(elementarray[0])
+               
+               let val = UInt8(elementarray[1])
+               
+               let data = DispatchArray[settingblock][servozeile]
+               let tempdic = [key: val]
+               
+               //print("data: \(data["dispatchexpob"])")
+               
+               DispatchArray[settingblock][servozeile].updateValue(val ?? 0, forKey:key)
+               
+               
+               
+               index += 1
+            }
+         }
+      } // for DispatchArray
+      
+       
+      DispatchTable.reloadData()
+      print("end report_loadSettings")
+   }
 
 
 
@@ -2106,6 +2261,10 @@ func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColu
       print("tableViewSelectionDidChange")
    }
    
+   func tabView(_ tabView: NSTabView, didSelect tabViewItem: NSTabViewItem?)
+   {
+      print("tableViewSelectionDidChange")
+   }
    
       // MARK: Variablen
    var                     dumpCounter:Int = 0
