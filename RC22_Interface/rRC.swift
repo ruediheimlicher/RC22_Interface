@@ -679,8 +679,6 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
                let data = DispatchArray[settingblock][servozeile]
                let tempdic = [key: val]
                
-               //print("data: \(data["dispatchexpob"])")
-               
                DispatchArray[settingblock][servozeile].updateValue(val ?? 0, forKey:key)
                 index += 1
             }
@@ -707,8 +705,6 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          //      print("saveString: \(saveString) ")
          let stringarray = saveString.components(separatedBy: "\n")
          //print("stringarray: \(stringarray) ")
-         //for element in stringarray
-         //print("\tstringarray von servo: \(servozeile) ")
          var index = 0
          for zeile in 0..<stringarray.count
          {
@@ -716,11 +712,9 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
             
             if element.contains("=")
             {
-               //print("vor \(index):\(element)")
                element = element.replacingOccurrences(of: ",", with: "")
                element = element.replacingOccurrences(of: "\"", with: "")
                element = element.replacingOccurrences(of: " ", with: "")
-               //print("nach \(index):\(element)")
                let elementarray = element.components(separatedBy: "=")
                //print("key: *\(elementarray[0])* val:\(elementarray[1])")
                let key = String(elementarray[0])
@@ -730,7 +724,6 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
                let data = MixingArray[settingblock][servozeile]
                let tempdic = [key: val]
                
-               //print("data: \(data["dispatchexpob"])")
                
                MixingArray[settingblock][servozeile].updateValue(val ?? 0, forKey:key)
                 index += 1
@@ -1444,14 +1437,30 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
            
             
          case mixingcolumnkanala:
+            print("mixkanala")
             MixingArray[0][zeile]["mixkanala"]  = UInt8(itemindex)
             MixingTable.reloadData()
-            print("mixkanala")
+            
             
          case mixingcolumnkanalb:
+            print("mixkanalb")  
             MixingArray[0][zeile]["mixkanalb"]  = UInt8(itemindex)
             MixingTable.reloadData()
-            print("mixkanalb")  
+            
+            
+         case mixingcolumndeviceh:
+            for k in 0..<default_DeviceArray.count{
+               print("k: \(k) text: \(default_DeviceArray[k])")
+            }
+            print("mixdeviceh kolonne: \(kolonne) itemindex: \(itemindex) title:  \(default_DeviceArray[itemindex]) ") 
+            
+            
+         case mixingcolumndevicev:
+            
+            print("mixdevicev kolonne: \(kolonne) itemindex: \(itemindex) title:  \(default_DeviceArray[itemindex]) ") 
+            
+           
+            
          default: break
          }// switch
          
@@ -1750,14 +1759,14 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
          result.PopUp?.removeAllItems()
          result.PopUp?.addItems(withTitles: default_DeviceArray)
          result.PopUp?.selectItem(at: wert)
-  //       let popupCell = result.PopUp?.cell as! NSPopUpButtonCell
-  //       popupCell.arrowPosition = NSPopUpButton.ArrowPosition.noArrow
+         //       let popupCell = result.PopUp?.cell as! NSPopUpButtonCell
+         //       popupCell.arrowPosition = NSPopUpButton.ArrowPosition.noArrow
          
          return result
-
-        
+         
+         
       }
-
+      
       
       else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"dispatchlevela") )
       {
@@ -1779,9 +1788,9 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
          result.PopUp?.addItems(withTitles: default_LevelArray)
          result.PopUp?.selectItem(at: wert)
          return result
-
-         }
-
+         
+      }
+      
       else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"dispatchlevelb") )
       {
          let popident = NSUserInterfaceItemIdentifier(rawValue:"levelpopupb")
@@ -1802,8 +1811,8 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
          result.PopUp?.addItems(withTitles: default_LevelArray)
          result.PopUp?.selectItem(at: wert)
          return result
-
-         }
+         
+      }
       else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"dispatchexpoa") )
       {
          let popident = NSUserInterfaceItemIdentifier(rawValue:"expopopupa")
@@ -1824,8 +1833,8 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
          result.PopUp?.addItems(withTitles: default_ExpoArray)
          result.PopUp?.selectItem(at: wert)
          return result
-
-         }
+         
+      }
       
       else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"dispatchexpob") )
       {
@@ -1847,11 +1856,11 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
          result.PopUp?.addItems(withTitles: default_ExpoArray)
          result.PopUp?.selectItem(at: wert)
          return result
-
-         }
-   
+         
+      }
       
-   
+      
+      
       else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"dispatchkanal") )
       {
          guard let result = tableView.makeView(withIdentifier: tableColumn!.identifier, owner: self) as? NSTableCellView else 
@@ -1860,7 +1869,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
             return nil 
             
          }
-
+         
          //let result = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "dispatchnummer") , owner: self) as? NSTableCellView
          let nummer = Int(DispatchArray[0][row]["dispatchkanal"] ?? 0)
          let wert:Int = nummer
@@ -1869,7 +1878,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
          
          return result
       }
-  
+      
       else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"dispatchfunktion") )
       {
          let popident = NSUserInterfaceItemIdentifier(rawValue:"funktionpopup")
@@ -1889,11 +1898,11 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
          result.PopUp?.removeAllItems()
          result.PopUp?.addItems(withTitles: default_FunktionArray)
          result.PopUp?.selectItem(at: wert)
-      //   let popupCell = result.PopUp?.cell as! NSPopUpButtonCell
-       //  popupCell.arrowPosition = NSPopUpButton.ArrowPosition.noArrow
+         //   let popupCell = result.PopUp?.cell as! NSPopUpButtonCell
+         //  popupCell.arrowPosition = NSPopUpButton.ArrowPosition.noArrow
          return result
       } // funktion
-
+      
       else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"dispatchonimage") )
       {
          let onident = NSUserInterfaceItemIdentifier(rawValue:"onimagebutton")
@@ -1910,9 +1919,9 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
          //https://stackoverflow.com/questions/37100846/osx-swift-add-image-into-nstableview
          // Image muss mit TableCellView verlinkt sein!!! S. Screenshot TableView Image
          return result
-
+         
       } // onimage
-  // Kanal
+      // Kanal
       if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"kanalnummer") )
       {
          guard let result = tableView.makeView(withIdentifier: tableColumn!.identifier, owner: self) as? NSTableCellView else 
@@ -1926,7 +1935,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
          result.textField?.integerValue = wert
          return result
       } // kanalnummer
-     //default_ArtArray
+      //default_ArtArray
       else if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"art") )
       {
          guard let result = tableView.makeView(withIdentifier: tableColumn!.identifier, owner: self) as? NSTableCellView else 
@@ -1935,7 +1944,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
             return nil 
             
          }
-        var wert = Int(KanalArray[0][row]["art"] ?? 0)
+         var wert = Int(KanalArray[0][row]["art"] ?? 0)
          if wert > default_ArtArray.count - 1
          {
             wert = 3
@@ -1954,7 +1963,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
             return nil 
          }
          var wert = Int(DispatchArray[0][row]["dispatchrichtung"] ?? 0)
- 
+         
          result.poptag = row
          result.tablezeile = row
          //result.tablekolonne = tableView.column(for: result)
@@ -1965,11 +1974,11 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
          {
             pfeilrichtung = 1
          }
-
+         
          result.ImageButton?.image = default_RichtungArray[pfeilrichtung][wert]
-          return result
+         return result
       }//dispatchrichtung
-
+      
       // MARK: Level A
       else if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"levela") )
       {
@@ -1978,7 +1987,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
             print("kanal levela ist nil")
             return nil 
          }
-        var wert = Int(KanalArray[0][row]["levela"] ?? 0)
+         var wert = Int(KanalArray[0][row]["levela"] ?? 0)
          if wert > default_LevelArray.count - 1
          {
             wert = 4
@@ -1994,7 +2003,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
             print("kanal levelb ist nil")
             return nil 
          }
-        var wert = Int(KanalArray[0][row]["levelb"] ?? 0)
+         var wert = Int(KanalArray[0][row]["levelb"] ?? 0)
          if wert > default_LevelArray.count - 1
          {
             wert = 4
@@ -2010,7 +2019,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
             print("kanal expoa ist nil")
             return nil 
          }
-        var wert = Int(KanalArray[0][row]["expoa"] ?? 0)
+         var wert = Int(KanalArray[0][row]["expoa"] ?? 0)
          if wert > default_LevelArray.count - 1
          {
             wert = 4
@@ -2026,7 +2035,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
             print("kanal expoa ist nil")
             return nil 
          }
-        var wert = Int(KanalArray[0][row]["expob"] ?? 0)
+         var wert = Int(KanalArray[0][row]["expob"] ?? 0)
          if wert > default_LevelArray.count - 1
          {
             wert = 4
@@ -2038,13 +2047,11 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
       
       else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"kanalonimage") )
       {
-         
          guard let result = tableView.makeView(withIdentifier: tableColumn!.identifier, owner: self) as? NSTableCellView else 
          {
             print("kanalon ist nil")
             return nil 
          }
-         
          let nummer = Int(KanalArray[0][row]["kanalonimage"] ?? 0)
          let wert:Int = nummer
          //print("kanal on row: \(row) wert: \(wert)")
@@ -2053,9 +2060,9 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
          result.imageView?.image = default_ONArray[wert]
          
          return result
-
+         
       } // onimage
-
+      
       // MARK: Mixing     
       // Mixing
       
@@ -2072,7 +2079,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
          result.textField?.integerValue = wert
          return result
       } // kanalnummer
-
+      
       else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"mixonimage") )
       {
          
@@ -2090,9 +2097,9 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
          result.imageView?.image = default_ONArray[wert]
          
          return result
-
+         
       } // onimage
-
+      
       else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"mixzeileonimage") )
       {
          let imageident = NSUserInterfaceItemIdentifier(rawValue:"mixzeileimage")
@@ -2104,18 +2111,15 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
          //print("mixzeileonimage ist ok")
          let nummer = Int(MixingArray[0][row]["mixonimage"] ?? 0)
          let wert:Int = nummer
-         print("mixzeile  on row: \(row) wert: \(wert)")
+         //print("mixzeile  on row: \(row) wert: \(wert)")
          //https://stackoverflow.com/questions/37100846/osx-swift-add-image-into-nstableview
          let bild:NSImage = default_ONArray[wert]
          //result.imageView?.image = default_ONArray[wert]
          result.ImageButton?.image = default_ONArray[wert]
          
          return result
-
+         
       } // onimage
-
-      
-      
       // mixkanala
       else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"mixkanala") )
       {
@@ -2136,9 +2140,10 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
          result.PopUp?.removeAllItems()
          result.PopUp?.addItems(withTitles: default_KanalArray)
          result.PopUp?.selectItem(at: wert)
+         
          return result
-
-         }
+         
+      }
       // mixkanalb
       else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"mixkanalb") )
       {
@@ -2160,8 +2165,8 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
          result.PopUp?.addItems(withTitles: default_KanalArray)
          result.PopUp?.selectItem(at: wert)
          return result
-
-         }  
+         
+      }  
       
       else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"mixart") )
       {
@@ -2183,10 +2188,59 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
          result.PopUp?.addItems(withTitles: default_MixingArtArray)
          result.PopUp?.selectItem(at: wert)
          return result
+         
+      }  
+      // device H
+      else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"mixdeviceh") )
+      {
+         guard let result = tableView.makeView(withIdentifier: tableColumn!.identifier, owner: self) as? rPopUpZelle else 
+         {
+            print("mixdeviceh ist nil")
+            return nil 
+         }
+         
+         var wert = Int(MixingArray[0][row]["mixkanala"] ?? 0)
+        
+         if wert > default_DeviceArray.count - 1
+         {
+            wert = 7
+         }
+         result.poptag = row
+         result.tablezeile = row
+         result.tablekolonne = tableView.column(for: result)
+         result.PopUp?.removeAllItems()
+         result.PopUp?.addItems(withTitles: default_DeviceArray)
+         result.PopUp?.selectItem(at: wert)
+         return result
+         
+      }  
 
-         }  
+      // device V
+      else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"mixdevicev") )
+      {
+         guard let result = tableView.makeView(withIdentifier: tableColumn!.identifier, owner: self) as? rPopUpZelle else 
+         {
+            print("mixdevicev ist nil")
+            return nil 
+         }
+         
+         var wert = Int(MixingArray[0][row]["mixkanalb"] ?? 0)
+ //        print("mixdevicev row: \(row) wert: \(wert)")
+         if wert > default_DeviceArray.count - 1
+         {
+            wert = 7
+         }
+         result.poptag = row
+         result.tablezeile = row
+         result.tablekolonne = tableView.column(for: result)
+         result.PopUp?.removeAllItems()
+         result.PopUp?.addItems(withTitles: default_DeviceArray)
+         result.PopUp?.selectItem(at: wert)
+         return result
+         
+      }  
       
- 
+      
       
       return nil
    }

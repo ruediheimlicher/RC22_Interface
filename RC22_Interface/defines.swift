@@ -25,6 +25,9 @@ let mixingcolumnkanala = 2
 let mixingcolumnkanalb = 3
 let mixingcolumnon = 4
 
+let mixingcolumndeviceh = 5
+let mixingcolumndevicev = 6
+
 
 let GOTO_0:UInt8  =  0xA7
 let SET_RING:UInt8  =  0xA3
