@@ -240,6 +240,10 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
             mixingdic["mixart"] = 1
             mixingdic["mixkanala"] = 0x00
             mixingdic["mixkanalb"] = 0x01
+            
+            mixingdic["mixdeviceh"] = 0x00
+            mixingdic["mixdevicev"] = 0x01
+            
             mixingdic["mixing"] = 0 // verwendet als Mix xy
             MixingSettingArray.append(mixingdic)
          }
@@ -326,6 +330,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       }
        */
       modelFeld.integerValue = modelSeg.indexOfSelectedItem
+      curr_model = modelSeg.indexOfSelectedItem
       print("end viewDidAppear")  
    } // end viewDidAppear
 
@@ -1401,12 +1406,12 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
       switch tabletag
       {
       case 4: // Kanal
-         DispatchArray[0][zeile]["dispatchkanal"]  = UInt8(itemindex)
+         DispatchArray[curr_model][zeile]["dispatchkanal"]  = UInt8(itemindex)
          DispatchTable.reloadData()
          /*
-          for ident in 0..<DispatchArray[0].count-1
+          for ident in 0..<DispatchArray[curr_model].count-1
           {
-          printArray(DispatchArray[0],index: ident)
+          printArray(DispatchArray[curr_model],index: ident)
           }
           */
          
@@ -1449,16 +1454,13 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
             
             
          case mixingcolumndeviceh:
-            for k in 0..<default_DeviceArray.count{
-               print("k: \(k) text: \(default_DeviceArray[k])")
-            }
             print("mixdeviceh kolonne: \(kolonne) itemindex: \(itemindex) title:  \(default_DeviceArray[itemindex]) ") 
-            
+            MixingArray[0][zeile]["mixdeviceh"]  = UInt8(itemindex)
             
          case mixingcolumndevicev:
             
             print("mixdevicev kolonne: \(kolonne) itemindex: \(itemindex) title:  \(default_DeviceArray[itemindex]) ") 
-            
+            MixingArray[0][zeile]["mixdevicev"]  = UInt8(itemindex)
            
             
          default: break
@@ -1471,46 +1473,46 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
          switch kolonne
          {
          case columnfunktion: // funktion
-            DispatchArray[0][zeile]["dispatchfunktion"]  = UInt8(itemindex)
+            DispatchArray[curr_model][zeile]["dispatchfunktion"]  = UInt8(itemindex)
             DispatchTable.reloadData()
             print("dispatchfunktion")
             
          case columndevice: // device(Steuerelement)
-            DispatchArray[0][zeile]["dispatchdevice"]  = UInt8(itemindex)
+            DispatchArray[curr_model][zeile]["dispatchdevice"]  = UInt8(itemindex)
             DispatchTable.reloadData()
             print("dispatchdevice")
             
          case columnon: // onimage
             let onwert = UInt8(DispatchArray[0][zeile]["dispatchonimage"] ?? 0)
             
-            DispatchArray[0][zeile]["dispatchonimage"]  = 1 - onwert
+            DispatchArray[curr_model][zeile]["dispatchonimage"]  = 1 - onwert
             DispatchTable.reloadData()
             print("dispatchonimage")
             
          case columnlevela:
-            DispatchArray[0][zeile]["dispatchlevela"]  = UInt8(itemindex)
+            DispatchArray[curr_model][zeile]["dispatchlevela"]  = UInt8(itemindex)
             DispatchTable.reloadData()
             print("dispatchlevela")
             
          case columnlevelb:
-            DispatchArray[0][zeile]["dispatchlevelb"]  = UInt8(itemindex)
+            DispatchArray[curr_model][zeile]["dispatchlevelb"]  = UInt8(itemindex)
             DispatchTable.reloadData()
             print("dispatchlevelb")
             
          case columnexpoa:
-            DispatchArray[0][zeile]["dispatchexpoa"]  = UInt8(itemindex)
+            DispatchArray[curr_model][zeile]["dispatchexpoa"]  = UInt8(itemindex)
             DispatchTable.reloadData()
             print("columnexpoa")
             
          case columnexpob:
-            DispatchArray[0][zeile]["dispatchexpob"]  = UInt8(itemindex)
+            DispatchArray[curr_model][zeile]["dispatchexpob"]  = UInt8(itemindex)
             DispatchTable.reloadData()
             print("columnexpob")
             
          case columnrichtung:
-            let richtungwert = UInt8(DispatchArray[0][zeile]["dispatchrichtung"] ?? 0)
+            let richtungwert = UInt8(DispatchArray[curr_model][zeile]["dispatchrichtung"] ?? 0)
             
-            DispatchArray[0][zeile]["dispatchrichtung"]  = 1-richtungwert
+            DispatchArray[curr_model][zeile]["dispatchrichtung"]  = 1-richtungwert
             DispatchTable.reloadData()
             print("columnrichtung")
             
@@ -1556,15 +1558,15 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
          clickeddispacharrayrow = Int(zeile)
          if (kolonne == columnon) // ON
          {
-            let wert = UInt8(DispatchArray[0][zeile]["dispatchonimage"] ?? 0 )
-            DispatchArray[0][zeile]["dispatchonimage"]  = 1 - wert
+            let wert = UInt8(DispatchArray[curr_model][zeile]["dispatchonimage"] ?? 0 )
+            DispatchArray[curr_model][zeile]["dispatchonimage"]  = 1 - wert
             tableView.reloadData()
             tableView.deselectRow(kolonne)
          }
          if (kolonne == columnrichtung)
          {
-            let wert = UInt8(DispatchArray[0][zeile]["dispatchrichtung"] ?? 0 )
-            DispatchArray[0][zeile]["dispatchrichtung"]  = 1 - wert
+            let wert = UInt8(DispatchArray[curr_model][zeile]["dispatchrichtung"] ?? 0 )
+            DispatchArray[curr_model][zeile]["dispatchrichtung"]  = 1 - wert
             tableView.reloadData()
             tableView.deselectRow(kolonne)
          }
@@ -1601,14 +1603,14 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
          clickeddispacharrayrow = Int(zeile)
          if (kolonne == columnon) // ON
          {
-            let wert = UInt8(DispatchArray[0][zeile]["dispatchonimage"] ?? 0 )
-            DispatchArray[0][zeile]["dispatchonimage"]  = 1 - wert
+            let wert = UInt8(DispatchArray[curr_model][zeile]["dispatchonimage"] ?? 0 )
+            DispatchArray[curr_model][zeile]["dispatchonimage"]  = 1 - wert
             tableView.reloadData()
             tableView.deselectRow(kolonne)
          }
          if (kolonne == columnrichtung)
          {
-            let wert = UInt8(DispatchArray[0][zeile]["dispatchrichtung"] ?? 0 )
+            let wert = UInt8(DispatchArray[curr_model][zeile]["dispatchrichtung"] ?? 0 )
             DispatchArray[0][zeile]["dispatchrichtung"]  = 1 - wert
             tableView.reloadData()
             tableView.deselectRow(kolonne)
@@ -1706,7 +1708,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
       case 6:// Dispatch
          //print("numberOfRowsInTableView: dispatch count: \(DispatchArray.count)")
          
-         return DispatchArray[0].count
+         return DispatchArray[curr_model].count
          
       case 7:// Funktion
          //print("numberOfRowsInTableView: funktion")
@@ -1748,7 +1750,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
             return nil 
          }
          
-         var wert = Int(DispatchArray[0][row]["dispatchdevice"] ?? 0)
+         var wert = Int(DispatchArray[curr_model][row]["dispatchdevice"] ?? 0)
          if wert > default_DeviceArray.count - 1
          {
             wert = 4
@@ -1776,7 +1778,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
             print("dispatchlevela ist nil")
             return nil 
          }
-         var wert = Int(DispatchArray[0][row]["dispatchlevela"] ?? 0)
+         var wert = Int(DispatchArray[curr_model][row]["dispatchlevela"] ?? 0)
          if wert > default_LevelArray.count - 1
          {
             wert = 4
@@ -1799,7 +1801,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
             print("dispatchlevelb ist nil")
             return nil 
          }
-         var wert = Int(DispatchArray[0][row]["dispatchlevelb"] ?? 0)
+         var wert = Int(DispatchArray[curr_model][row]["dispatchlevelb"] ?? 0)
          if wert > default_LevelArray.count - 1
          {
             wert = 4
@@ -1821,7 +1823,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
             print("dispatchexpoa ist nil")
             return nil 
          }
-         var wert = Int(DispatchArray[0][row]["dispatchexpoa"] ?? 0)
+         var wert = Int(DispatchArray[curr_model][row]["dispatchexpoa"] ?? 0)
          if wert > default_ExpoArray.count - 1
          {
             wert = 4
@@ -1844,7 +1846,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
             print("dispatchexpob ist nil")
             return nil 
          }
-         var wert = Int(DispatchArray[0][row]["dispatchexpob"] ?? 0)
+         var wert = Int(DispatchArray[curr_model][row]["dispatchexpob"] ?? 0)
          if wert > default_ExpoArray.count - 1
          {
             wert = 4
@@ -1871,7 +1873,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
          }
          
          //let result = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "dispatchnummer") , owner: self) as? NSTableCellView
-         let nummer = Int(DispatchArray[0][row]["dispatchkanal"] ?? 0)
+         let nummer = Int(DispatchArray[curr_model][row]["dispatchkanal"] ?? 0)
          let wert:Int = nummer
          //print("dispatchnummer nummer: \(nummer)")
          result.textField?.intValue = Int32(nummer) 
@@ -1887,7 +1889,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
             print("dispatchfunktion ist nil")
             return nil 
          }
-         var wert = Int(DispatchArray[0][row]["dispatchfunktion"] ?? 0)
+         var wert = Int(DispatchArray[curr_model][row]["dispatchfunktion"] ?? 0)
          if wert > default_FunktionArray.count - 1
          {
             wert = 4
@@ -1911,7 +1913,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
             print("richtungident ist nil")
             return nil 
          }
-         var wert = Int(DispatchArray[0][row]["dispatchonimage"] ?? 0)
+         var wert = Int(DispatchArray[curr_model][row]["dispatchonimage"] ?? 0)
          result.poptag = row
          result.tablezeile = row
          result.ImageButton?.image = default_ONArray[wert]
@@ -1962,14 +1964,14 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
             print("richtungident ist nil")
             return nil 
          }
-         var wert = Int(DispatchArray[0][row]["dispatchrichtung"] ?? 0)
+         var wert = Int(DispatchArray[curr_model][row]["dispatchrichtung"] ?? 0)
          
          result.poptag = row
          result.tablezeile = row
          //result.tablekolonne = tableView.column(for: result)
          var pfeilrichtung = 0
          // index von funktion checken
-         let funktionindex = Int(DispatchArray[0][row]["dispatchfunktion"] ?? 0)
+         let funktionindex = Int(DispatchArray[curr_model][row]["dispatchfunktion"] ?? 0)
          if funktionindex == 1 // Hoehe
          {
             pfeilrichtung = 1
@@ -2272,7 +2274,7 @@ func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColu
             
          }
          */
-         let nummer = Int(DispatchArray[0][row]["dispatchdevice"] ?? 0)
+         let nummer = Int(DispatchArray[curr_model][row]["dispatchdevice"] ?? 0)
          let wert:Int = nummer
          //print("dispatchdevice device: \(nummer)")
          //result.textField?.intValue = Int32(nummer) 
@@ -2288,7 +2290,7 @@ func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColu
             return nil 
             
          }
-         let nummer = Int(DispatchArray[0][row]["dispatchkanal"] ?? 0)
+         let nummer = Int(DispatchArray[curr_model][row]["dispatchkanal"] ?? 0)
          let wert:Int = nummer
          //print("dispatchkanal kanal: \(nummer)")
          
@@ -2308,7 +2310,7 @@ func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColu
          }
 
          //let result = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "dispatchnummer") , owner: self) as? NSTableCellView
-         let nummer = Int(DispatchArray[0][row]["dispatchnummer"] ?? 0)
+         let nummer = Int(DispatchArray[curr_model][row]["dispatchnummer"] ?? 0)
          let wert:Int = nummer
          print("dispatchnummer nummer: \(nummer)")
          result.textField?.intValue = Int32(nummer) 
@@ -2433,6 +2435,7 @@ func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColu
    
    var data: [[String: String]] = [[:]]
    
+   var            curr_model = 0
    
     
 // MARK: outlets
