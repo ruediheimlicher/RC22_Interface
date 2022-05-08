@@ -281,7 +281,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
             dispatchdic["dispatchlevelb"]  = 0
             dispatchdic["dispatchexpoa"]  = 0
             dispatchdic["dispatchexpob"]  = 0
-            
+ 
             
             
             
@@ -2201,7 +2201,8 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
             return nil 
          }
          
-         var wert = Int(MixingArray[curr_model][row]["mixkanala"] ?? 0)
+         //var wert = Int(MixingArray[curr_model][row]["mixkanala"] ?? 0)
+         var wert = Int(MixingArray[curr_model][row]["mixdeviceh"] ?? 0)
         
          if wert > default_DeviceArray.count - 1
          {
@@ -2226,7 +2227,9 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
             return nil 
          }
          
-         var wert = Int(MixingArray[curr_model][row]["mixkanalb"] ?? 0)
+
+  //       var wert = Int(MixingArray[curr_model][row]["mixkanalb"] ?? 0)
+         var wert = Int(MixingArray[curr_model][row]["mixdevicev"] ?? 0)
  //        print("mixdevicev row: \(row) wert: \(wert)")
          if wert > default_DeviceArray.count - 1
          {
