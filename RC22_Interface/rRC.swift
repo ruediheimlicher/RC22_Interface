@@ -282,6 +282,9 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
             dispatchdic["dispatchexpoa"]  = 0
             dispatchdic["dispatchexpob"]  = 0
  
+            dispatchdic["dispatchmix1on"]  = 0 // kanal wird fuer Mix verwendet // 
+            dispatchdic["dispatchmix2on"]  = 0 // kanal wird fuer Mix verwendet // 
+
             
             
             
@@ -818,6 +821,9 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       let dispatchkanal = UInt8(kanal)
     
       let dispatchonimage = (kanaldata[0] & 0x08) >> 3 // Bit 3
+      
+      
+      
       let dispatchrichtung = (kanaldata[0] & 0x80) >> 7 // Bit 7
       let dispatchlevela = (kanaldata[1] & 0x07) 
       let dispatchlevelb = (kanaldata[1] & 0x70) >> 4 
@@ -825,6 +831,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       let dispatchexpob = (kanaldata[2] & 0x70) >> 4 
       let dispatchdevice =  kanaldata[3] & 0x70  >> 4 
       let dispatchfunktion = (kanaldata[3] & 0x07)
+      let dispatchmixon = (kanaldata[3] & 0x80) >> 7 // Bit 7, mixon
       /*
       print("dispatchkanal: \(dispatchkanal)")
       print("dispatchonimage: \(dispatchonimage)")
@@ -1511,10 +1518,23 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
             
          case columnrichtung:
             let richtungwert = UInt8(DispatchArray[curr_model][zeile]["dispatchrichtung"] ?? 0)
-            
             DispatchArray[curr_model][zeile]["dispatchrichtung"]  = 1-richtungwert
             DispatchTable.reloadData()
             print("columnrichtung")
+
+         case columnmix1on: // mix1on
+            let onwert = UInt8(DispatchArray[0][zeile]["dispatchmix1on"] ?? 0)
+            
+            DispatchArray[curr_model][zeile]["dispatchmix1on"]  = 1 - onwert
+            DispatchTable.reloadData()
+            print("dispatchmix1on")
+
+         case columnmix2on: // mix2on
+            let onwert = UInt8(DispatchArray[0][zeile]["dispatchmix2on"] ?? 0)
+            
+            DispatchArray[curr_model][zeile]["dispatchmix2on"]  = 1 - onwert
+            DispatchTable.reloadData()
+            print("dispatchmix2on")
             
             
          default: break
@@ -1923,6 +1943,50 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
          return result
          
       } // onimage
+      
+      else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"dispatchmix1on") )
+      {
+         //let onident = NSUserInterfaceItemIdentifier(rawValue:"onimagebutton")
+         guard let result = tableView.makeView(withIdentifier: tableColumn!.identifier, owner: self) as? rPopUpZelle else 
+         {
+            print("dispatchmix1on ist nil")
+            return nil 
+         }
+         var wert = Int(DispatchArray[curr_model][row]["dispatchmix1on"] ?? 0)
+         result.poptag = row
+         result.tablezeile = row
+         result.ImageButton?.image = default_ONArray[wert]
+         //print("dispatchnummer mixon: \(wert)")
+         //https://stackoverflow.com/questions/37100846/osx-swift-add-image-into-nstableview
+         // Image muss mit TableCellView verlinkt sein!!! S. Screenshot TableView Image
+         return result
+         
+      } // onimage
+
+      
+      else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"dispatchmix2on") )
+      {
+         //let onident = NSUserInterfaceItemIdentifier(rawValue:"onimagebutton")
+         guard let result = tableView.makeView(withIdentifier: tableColumn!.identifier, owner: self) as? rPopUpZelle else 
+         {
+            print("dispatchmix2on ist nil")
+            return nil 
+         }
+         var wert = Int(DispatchArray[curr_model][row]["dispatchmix2on"] ?? 0)
+         result.poptag = row
+         result.tablezeile = row
+         result.ImageButton?.image = default_ONArray[wert]
+         //print("dispatchnummer mixon: \(wert)")
+         //https://stackoverflow.com/questions/37100846/osx-swift-add-image-into-nstableview
+         // Image muss mit TableCellView verlinkt sein!!! S. Screenshot TableView Image
+         return result
+         
+      } // onimage
+
+      
+      
+      
+      
       // Kanal
       if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"kanalnummer") )
       {
@@ -2064,6 +2128,11 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
          return result
          
       } // onimage
+
+      
+      
+      
+      
       
       // MARK: Mixing     
       // Mixing
