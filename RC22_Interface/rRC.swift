@@ -1429,38 +1429,38 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
          switch kolonne
          {
          case mixingcolumnon:
-            let onwert = UInt8(MixingArray[0][zeile]["mixonimage"] ?? 0)
+            let onwert = UInt8(MixingArray[curr_model][zeile]["mixonimage"] ?? 0)
             
-            MixingArray[0][zeile]["mixonimage"]  = 1 - onwert
+            MixingArray[curr_model][zeile]["mixonimage"]  = 1 - onwert
             MixingTable.reloadData()
             print("mixonimage")
  
          case mixingcolumnart:
-            MixingArray[0][zeile]["mixart"]  = UInt8(itemindex)
+            MixingArray[curr_model][zeile]["mixart"]  = UInt8(itemindex)
             MixingTable.reloadData()
             print("mixart")
            
             
          case mixingcolumnkanala:
             print("mixkanala")
-            MixingArray[0][zeile]["mixkanala"]  = UInt8(itemindex)
+            MixingArray[curr_model][zeile]["mixkanala"]  = UInt8(itemindex)
             MixingTable.reloadData()
             
             
          case mixingcolumnkanalb:
             print("mixkanalb")  
-            MixingArray[0][zeile]["mixkanalb"]  = UInt8(itemindex)
+            MixingArray[curr_model][zeile]["mixkanalb"]  = UInt8(itemindex)
             MixingTable.reloadData()
             
             
          case mixingcolumndeviceh:
             print("mixdeviceh kolonne: \(kolonne) itemindex: \(itemindex) title:  \(default_DeviceArray[itemindex]) ") 
-            MixingArray[0][zeile]["mixdeviceh"]  = UInt8(itemindex)
+            MixingArray[curr_model][zeile]["mixdeviceh"]  = UInt8(itemindex)
             
          case mixingcolumndevicev:
             
             print("mixdevicev kolonne: \(kolonne) itemindex: \(itemindex) title:  \(default_DeviceArray[itemindex]) ") 
-            MixingArray[0][zeile]["mixdevicev"]  = UInt8(itemindex)
+            MixingArray[curr_model][zeile]["mixdevicev"]  = UInt8(itemindex)
            
             
          default: break
@@ -1576,8 +1576,8 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
          if (kolonne == mixingcolumnon) // ON
          {
             
-            let wert = UInt8(MixingArray[0][zeile]["mixonimage"] ?? 0 )
-            MixingArray[0][zeile]["mixonimage"]  = 1 - wert
+            let wert = UInt8(MixingArray[curr_model][zeile]["mixonimage"] ?? 0 )
+            MixingArray[curr_model][zeile]["mixonimage"]  = 1 - wert
             tableView.reloadData()
             tableView.deselectRow(kolonne)
          }
@@ -1695,8 +1695,8 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
          //print("numberOfRowsInTableView: mixing")
          if (MixingArray.count > 0)
          {
-            //print("numberOfRowsInTableView: mixing count \(MixingArray[0].count)")
-            return MixingArray[0].count
+            //print("numberOfRowsInTableView: mixing count \(MixingArray[curr_model].count)")
+            return MixingArray[curr_model].count
          }
          else
          {
@@ -2076,7 +2076,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
             return nil 
             
          }
-         let wert = Int(MixingArray[0][row]["mixnummer"] ?? 0)
+         let wert = Int(MixingArray[curr_model][row]["mixnummer"] ?? 0)
          //print("kanalnummer wert: \(wert)")
          result.textField?.integerValue = wert
          return result
@@ -2091,7 +2091,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
             return nil 
          }
          print("mixonimage ist ok")
-         let nummer = Int(MixingArray[0][row]["mixonimage"] ?? 0)
+         let nummer = Int(MixingArray[curr_model][row]["mixonimage"] ?? 0)
          let wert:Int = nummer
          print("mixing on row: \(row) wert: \(wert)")
          //https://stackoverflow.com/questions/37100846/osx-swift-add-image-into-nstableview
@@ -2111,7 +2111,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
             return nil 
          }
          //print("mixzeileonimage ist ok")
-         let nummer = Int(MixingArray[0][row]["mixonimage"] ?? 0)
+         let nummer = Int(MixingArray[curr_model][row]["mixonimage"] ?? 0)
          let wert:Int = nummer
          //print("mixzeile  on row: \(row) wert: \(wert)")
          //https://stackoverflow.com/questions/37100846/osx-swift-add-image-into-nstableview
@@ -2131,7 +2131,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
             print("mixkanalapopup ist nil")
             return nil 
          }
-         var wert = Int(MixingArray[0][row]["mixkanala"] ?? 0)
+         var wert = Int(MixingArray[curr_model][row]["mixkanala"] ?? 0)
          if wert > default_KanalArray.count - 1
          {
             wert = 7
@@ -2155,7 +2155,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
             print("mixkanalbpopup ist nil")
             return nil 
          }
-         var wert = Int(MixingArray[0][row]["mixkanalb"] ?? 0)
+         var wert = Int(MixingArray[curr_model][row]["mixkanalb"] ?? 0)
          if wert > default_KanalArray.count - 1
          {
             wert = 7
@@ -2178,7 +2178,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
             print("mixartpopup ist nil")
             return nil 
          }
-         var wert = Int(MixingArray[0][row]["mixart"] ?? 0)
+         var wert = Int(MixingArray[curr_model][row]["mixart"] ?? 0)
          if wert > default_MixingArtArray.count - 1
          {
             wert = 7
@@ -2201,7 +2201,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
             return nil 
          }
          
-         var wert = Int(MixingArray[0][row]["mixkanala"] ?? 0)
+         var wert = Int(MixingArray[curr_model][row]["mixkanala"] ?? 0)
         
          if wert > default_DeviceArray.count - 1
          {
@@ -2226,7 +2226,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
             return nil 
          }
          
-         var wert = Int(MixingArray[0][row]["mixkanalb"] ?? 0)
+         var wert = Int(MixingArray[curr_model][row]["mixkanalb"] ?? 0)
  //        print("mixdevicev row: \(row) wert: \(wert)")
          if wert > default_DeviceArray.count - 1
          {
