@@ -831,7 +831,9 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       let dispatchexpob = (kanaldata[2] & 0x70) >> 4 
       let dispatchdevice =  kanaldata[3] & 0x70  >> 4 
       let dispatchfunktion = (kanaldata[3] & 0x07)
-      let dispatchmixon = (kanaldata[3] & 0x80) >> 7 // Bit 7, mixon
+      let dispatchmix1on = (kanaldata[3] & 0x80) >> 7 // Bit 7, mix1on
+      let dispatchmix2on = (kanaldata[3] & 0x08) >> 3 // Bit 4, mix2on
+
       /*
       print("dispatchkanal: \(dispatchkanal)")
       print("dispatchonimage: \(dispatchonimage)")
@@ -852,6 +854,10 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       DispatchArray[(model)][(kanal)]["dispatchdevice"] = kanaldata[3] & 0x70 >> 4                     
       DispatchArray[(model)][(kanal)]["dispatchfunktion"]  = (kanaldata[3] & 0x07) >> 4
    
+      DispatchArray[(model)][(kanal)]["dispatchmix1on"]  = (kanaldata[3] & 0x08) >> 3
+      DispatchArray[(model)][(kanal)]["dispatchmix2on"]  = (kanaldata[3] & 0x80) >> 7
+
+      
       DispatchTable.reloadData()
    }   
    
@@ -941,6 +947,8 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          let dispatchexpob = (kanaldata[2] & 0x70) >> 4 
          let dispatchdevice =  kanaldata[3] & 0x70  >> 4 
          let dispatchfunktion = (kanaldata[3] & 0x07)
+         
+         
          /*
          print("dispatchkanal: \(dispatchkanal)")
          print("dispatchonimage: \(dispatchonimage)")
@@ -960,6 +968,10 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          DispatchArray[(model)][(kanalindex)]["dispatchexpob"]  = (kanaldata[2] & 0x70) >> 4 
          DispatchArray[(model)][(kanalindex)]["dispatchdevice"] = kanaldata[3] & 0x70 >> 4                     
          DispatchArray[(model)][(kanalindex)]["dispatchfunktion"]  = (kanaldata[3] & 0x07) 
+         
+         DispatchArray[(model)][(kanalindex)]["dispatchmix1on"]  = (kanaldata[3] & 0x08) >> 3
+         DispatchArray[(model)][(kanalindex)]["dispatchmix2on"]  = (kanaldata[3] & 0x80) >> 7
+
       }
       DispatchTable.reloadData()
       
@@ -1025,6 +1037,10 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       DispatchArray[(model)][(kanal)]["dispatchdevice"] = kanaldata[3] & 0x70 >> 4                     
       DispatchArray[(model)][(kanal)]["dispatchfunktion"]  = (kanaldata[3] & 0x07) 
    
+      DispatchArray[(model)][(kanal)]["dispatchmix1on"]  = (kanaldata[3] & 0x08) >> 3
+      DispatchArray[(model)][(kanal)]["dispatchmix2on"]  = (kanaldata[3] & 0x80) >> 7
+      
+      
       DispatchTable.reloadData()
    }
    
@@ -1077,6 +1093,12 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
    
    @IBAction func report_sendSettingChannels(_ sender: NSButton)  // USB-Daten von aktuellem modell
   {
+     let mix1on = DispatchArray[0][0]["dispatchmix1on"]
+     let mix2on = DispatchArray[0][0]["dispatchmix2on"]
+     
+     print("report_sendSettings DispatchArray: \(DispatchArray[0][0])")
+     //print("report_sendSettings: \(DispatchArray[curr_model])"),
+   //print("report_sendSettings mixingarray:);
      let mixingarray = readSettingMixingArray() //  [[uint8]]
      //print("report_sendSettings mixingarray: \(mixingarray)")
  
@@ -1322,6 +1344,16 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
             tempbuffer = 0
             tempbuffer |= (DispatchArray[modelindex][kanal]["dispatchfunktion"] ?? 0) & 0x07
             tempbuffer |= ((DispatchArray[modelindex][kanal]["dispatchdevice"] ?? 0) & 0x07) << 4
+            if (DispatchArray[modelindex][kanal]["dispatchmix1on"] == 1)
+            {
+               tempbuffer |= 1<<3 // 
+            }
+            if (DispatchArray[modelindex][kanal]["dispatchmix2on"] == 1)
+            {
+               tempbuffer |= 1<<7 // 
+            }
+           
+            
             kanaldata.append(tempbuffer)
            
             
