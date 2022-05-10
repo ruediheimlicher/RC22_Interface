@@ -283,6 +283,8 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
             dispatchdic["dispatchexpob"]  = 0
  
             dispatchdic["dispatchmix1on"]  = 0 // kanal wird fuer Mix verwendet // 
+            dispatchdic["dispatchmix1pos"]  = dispatchindex // position im Impulspaket
+            
             dispatchdic["dispatchmix2on"]  = 0 // kanal wird fuer Mix verwendet // 
 
             
@@ -1106,7 +1108,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
      let kanaldataarray = readSettingKanalArray() // [[uint8]]
      teensy.write_byteArray[0] = 0xF4
      //for modelindex in 0..<ANZAHLMODELLE
-     
+     sendokfeld.backgroundColor = NSColor.red
      for modelindex in 0..<1 // teensy.write_byteArray fuer ein Model aufbauen
      {
         var pos:Int = 0
@@ -1151,6 +1153,10 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
         if (usbstatus > 0)
         {
            let senderfolg = teensy.send_USB()
+           if senderfolg == 0x40
+           {
+              sendokfeld.backgroundColor = NSColor.green
+           }
            usbcounter += 1
            print("model: \(modelindex) usbcounter: \(usbcounter) report_sendSettingChannels senderfolg: \(senderfolg)")
         }
@@ -1174,7 +1180,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
    
    @IBAction func report_sendSettings(_ sender: NSButton) 
   {
-     
+     sendokfeld.backgroundColor = NSColor.red
      print("report_sendSettings ")
      let kanaldataarray = readSettingKanalArray()
      
@@ -1249,6 +1255,10 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
         if (usbstatus > 0)
         {
            let senderfolg = teensy.send_USB()
+           if senderfolg == 0x40
+           {
+              sendokfeld.backgroundColor = NSColor.green
+           }
            print("report_sendSettings senderfolg: \(senderfolg)")
         }
 
@@ -1509,6 +1519,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
          
       case 6: // Dispatch
          print("case 6 dispatch kolonne: \(kolonne)")
+         sendokfeld.backgroundColor = NSColor.red
          switch kolonne
          {
          case columnfunktion: // funktion
@@ -1561,6 +1572,40 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
             DispatchTable.reloadData()
             print("dispatchmix1on")
 
+         case columnmix1pos:
+            print("zeile: \(zeile) columnmix1pos old: \n\(DispatchArray[curr_model][zeile])")
+            let oldpos = DispatchArray[curr_model][zeile]["dispatchmix1pos"] // bisherige einstellung
+           
+            let oldzeile = zeile 
+            print("columnmix1pos oldpos: \(oldpos) itemindex: \(itemindex) oldzeile: \(oldzeile)")
+            var passt = 0xFF
+            for k in 0..<8
+            {
+               let temppos = DispatchArray[curr_model][k]["dispatchmix1pos"]
+               let tempkanal = DispatchArray[curr_model][k]["dispatchkanal"]
+               let tempnummer = DispatchArray[curr_model][k]["dispatchnummer"]
+               print("k: \(k) temppos: \(temppos) tempkanal: \(tempkanal)tempnummer: \(tempnummer)")
+               if (temppos ?? 0xFF == itemindex)
+               {
+                  passt = itemindex
+               }
+            }
+            if passt < 0xFF // pos in  zeile passt ersetzen
+            {
+               let oldpasstpos = DispatchArray[curr_model][passt]["dispatchmix1pos"]
+               print("oldpasstpos: \(oldpasstpos)")
+               DispatchArray[curr_model][passt]["dispatchmix1pos"] = oldpos
+               DispatchArray[curr_model][zeile]["dispatchmix1pos"]  = UInt8(itemindex)
+            }
+            print("passt: \(passt)")
+    //        DispatchArray[curr_model][zeile]["dispatchmix1pos"]  = UInt8(itemindex)
+            
+    //        DispatchArray[curr_model][itemindex]["dispatchmix1pos"]  = UInt8(oldpos ?? 7)
+            
+            
+            DispatchTable.reloadData()
+            print("columnmix1pos")
+
          case columnmix2on: // mix2on
             let onwert = UInt8(DispatchArray[0][zeile]["dispatchmix2on"] ?? 0)
             
@@ -1584,6 +1629,16 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
   }
    
    // MARK: Actions
+   
+   @IBAction func report_resetPos(_ sender: NSButton)
+   {
+      print("report_resetPos");
+      for k in 0..<8
+      {
+         DispatchArray[curr_model][k]["dispatchmix1pos"] = UInt8(k)
+      }
+      DispatchTable.reloadData()
+   }
    
    @IBAction func report_TableView(_ sender: NSTableView)
    {
@@ -1924,7 +1979,6 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
             
          }
          
-         //let result = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "dispatchnummer") , owner: self) as? NSTableCellView
          let nummer = Int(DispatchArray[curr_model][row]["dispatchkanal"] ?? 0)
          let wert:Int = nummer
          //print("dispatchnummer nummer: \(nummer)")
@@ -2013,7 +2067,31 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
          // Image muss mit TableCellView verlinkt sein!!! S. Screenshot TableView Image
          return result
          
-      } // onimage
+      } // dispatchmix2on
+      
+      else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"dispatchmix1pos") )
+      {
+         guard let result = tableView.makeView(withIdentifier: tableColumn!.identifier, owner: self) as? rPopUpZelle else 
+         {
+            print("dispatchmix1pos ist nil")
+            return nil 
+            
+         }
+         
+         let nummer = Int(DispatchArray[curr_model][row]["dispatchmix1pos"] ?? 0)
+       
+         // let wert:Int = nummer
+         
+         result.poptag = row
+         result.tablezeile = row
+         result.tablekolonne = tableView.column(for: result)
+         result.PopUp?.removeAllItems()
+         result.PopUp?.addItems(withTitles: default_KanalArray)
+         result.PopUp?.selectItem(at: nummer)
+         
+         return result
+      }
+
 
       
       
@@ -2034,6 +2112,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
          return result
       } // kanalnummer
       //default_ArtArray
+      
       else if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"art") )
       {
          guard let result = tableView.makeView(withIdentifier: tableColumn!.identifier, owner: self) as? NSTableCellView else 
@@ -2050,7 +2129,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
          //print("kanalnummer wert: \(wert)")
          result.textField?.stringValue = default_ArtArray[wert]
          return result
-      } // kanalnummer
+      } // art
       
       else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"dispatchrichtung") )
       {
@@ -2159,7 +2238,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
          
          return result
          
-      } // onimage
+      } // kanalonimage
 
       
       
@@ -2413,7 +2492,6 @@ func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColu
             
          }
 
-         //let result = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "dispatchnummer") , owner: self) as? NSTableCellView
          let nummer = Int(DispatchArray[curr_model][row]["dispatchnummer"] ?? 0)
          let wert:Int = nummer
          print("dispatchnummer nummer: \(nummer)")
@@ -2556,12 +2634,18 @@ func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColu
 
    @IBOutlet      weak var       modelFeld:NSTextField! 
    
+   @IBOutlet      weak var       sendokfeld:NSTextField! 
+   @IBOutlet      weak var       getokfeld:NSTextField! 
+   
+   
    @IBOutlet      weak var        AdressPop:NSPopUpButton!
    @IBOutlet        weak var      modelSeg:NSSegmentedControl!
    
    
   @IBOutlet        weak var          readUSB:NSButton!
    @IBOutlet        weak var          sendSettingsTaste:NSButton!
+   
+   @IBOutlet        weak var          resetPosTaste:NSButton!
   
    @IBOutlet   weak var             saveSettings_Taste:NSButton!
    @IBOutlet   weak var             loadSettings_Taste:NSButton!

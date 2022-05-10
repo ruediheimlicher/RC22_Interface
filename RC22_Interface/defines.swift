@@ -18,7 +18,8 @@ let columnlevelb = 6
 let columnexpoa = 7
 let columnexpob = 8
 let columnmix1on = 9
-let columnmix2on = 10
+let columnmix1pos = 10
+let columnmix2on = 11
 
 // mixing
 let mixingcolumnnummer = 0
