@@ -177,10 +177,13 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       default_ONArray = [notokimage, okimage]
       default_RichtungArray = [[pfeillinksimage, pfeilrechtsimage],[pfeilupimage, pfeildownimage]]
       // https://stackoverflow.com/questions/43510646/how-to-change-font-size-of-nstableheadercell
+      
+      /*
+       // TableHeader for mixingtable
       MixingTable.tableColumns.forEach { (column) in
          column.headerCell.attributedStringValue = NSAttributedString(string: column.title, attributes: [NSAttributedStringKey.font: NSFont.boldSystemFont(ofSize: 11)])
       }      
-
+*/
       DispatchTable.tableColumns.forEach { (column) in column.headerCell.attributedStringValue = NSAttributedString(string: column.title, attributes: [NSAttributedStringKey.font: NSFont.boldSystemFont(ofSize: 11)])
          // Optional: you can change title color also jsut by adding NSForegroundColorAttributeName
      }
@@ -307,7 +310,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       DispatchTable.delegate = self
       
       
-      MixingTable.reloadData()
+//      MixingTable.reloadData()
       DispatchTable.reloadData()
       
       
@@ -513,7 +516,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
             }
             // [[24, 16], [96, 16], [128, 16], [255, 255]]
             print("F7 modelindex: \(modelindex)  \n teensymixingarray: \(teensymixingarray[modelindex ])")
-            importMixingData(teensymixingarray[modelindex], model: 0)
+ //           importMixingData(teensymixingarray[modelindex], model: 0)
             
             
             break
@@ -695,7 +698,8 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          }
       } // for DispatchArray
       DispatchTable.reloadData()
-      
+
+/*      
      // mixing
       for servozeile in 0..<MixingArray[settingblock].count
       {
@@ -741,7 +745,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          }
       }
       MixingTable.reloadData()
-      
+   */   
       print("end report_loadSettings")
    }
 
