@@ -173,12 +173,14 @@ class rJoystickView: NSView
    
    override func mouseDragged(with theEvent: NSEvent) 
    {
-      Swift.print("mouseDragged")
+      Swift.print("JoystickView mouseDragged")
       let location = theEvent.locationInWindow
       //Swift.print(location)
       var lokalpunkt = convert(theEvent.locationInWindow, from: nil)
       var userinformation:[String : Any]
       Swift.print(lokalpunkt)
+      //lokalpunkt.x -= mittelpunkt.x
+      //lokalpunkt.y -= mittelpunkt.y
       if (lokalpunkt.x >= self.bounds.size.width)
       {
          lokalpunkt.x = self.bounds.size.width
@@ -198,7 +200,7 @@ class rJoystickView: NSView
       }     
       
       weg.line(to: lokalpunkt)
-      
+      print("mousedragged ident: \(self.identifier)")
       needsDisplay = true
       userinformation = ["message":"mousedown", "punkt": lokalpunkt, "index": weg.elementCount, "first": -1] as [String : Any]
       userinformation["ident"] = self.identifier
