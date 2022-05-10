@@ -1324,6 +1324,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
             var kanaldata = [UInt8]()
             // status
             var tempbuffer = UInt8(modelindex)
+            
             if (DispatchArray[modelindex][kanal]["dispatchonimage"] == 1)
             {
                tempbuffer |= 1<<3 // ON
