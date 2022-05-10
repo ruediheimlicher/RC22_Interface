@@ -96,8 +96,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1497"
             endingLineNumber = "1497"
-            landmarkName = "readSettingKanalArray()"
-            landmarkType = "7">
+            landmarkName = "rRC"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -208,8 +208,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1564"
             endingLineNumber = "1564"
-            landmarkName = "rRC"
-            landmarkType = "3">
+            landmarkName = "readSettingKanalArray()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

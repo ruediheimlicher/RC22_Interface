@@ -35,6 +35,8 @@ class rJoystickView: NSView
       achsen.move(to: NSMakePoint(mittex, 0)) // start point
       achsen.line(to: NSMakePoint(mittex, h)) // destination
       achsen.lineWidth = 1  // hair line
+      
+      weg.move(to: mittelpunkt)
       //achsen.stroke()  // draw line(s) in color
       if let joystickident = self.identifier
       {
@@ -141,14 +143,15 @@ class rJoystickView: NSView
          kreuz.line(to: lokalpunkt)
       
          // zurueck zu localpunkt
-         weg.move(to: lokalpunkt)
-         
+      //   weg.move(to: lokalpunkt)
+         weg.line(to: lokalpunkt)
          userinformation = ["message":"mousedown", "punkt": lokalpunkt, "index": weg.elementCount, "first": 1, "ident" :identstring] as [String : Any]
          //userinformation["ident"] = self.identifier
       }
       else
       {
          weg.line(to: lokalpunkt)
+         
          
          userinformation = ["message":"mousedown", "punkt": lokalpunkt, "index": weg.elementCount, "first": 0, "ident" :identstring] as [String : Any]
          //userinformation["ident"] = self.identifier
