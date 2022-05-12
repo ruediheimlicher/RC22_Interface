@@ -339,6 +339,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
        */
       modelFeld.integerValue = modelSeg.indexOfSelectedItem
       curr_model = modelSeg.indexOfSelectedItem
+      loadSettings()
       print("end viewDidAppear")  
    } // end viewDidAppear
 
@@ -824,63 +825,70 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
    return nil
    }
 
+   func loadSettings()
+  {
+     var settingblock = modelSeg.indexOfSelectedItem
+     var            tempDispatchArray = [[[String:UInt8]]]()
+     //print("report_loadSettings DispatchArray[settingblock]count: \(DispatchArray[settingblock][0].count)")
+     
+     
+     for servozeile in 0..<DispatchArray[settingblock].count
+     {
+        let filename = "RC_Daten/settings_\(servozeile).txt"
+        //let testfilename = "RC_Daten/test.txt"
+        guard let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
+           fatalError("No Document directory found")
+        }
+        let fileUrl = dir.appendingPathComponent(filename)
+        
+        guard let savedArray = NSArray(contentsOfFile: fileUrl.path) else {
+           Swift.print("Unable to get array from path")
+           return
+        }
+        // Read from file
+         
+        let saveString = String(describing: savedArray)
+        //      print("saveString: \(saveString) ")
+        let stringarray = saveString.components(separatedBy: "\n")
+        //print("stringarray: \(stringarray) ")
+        //for element in stringarray
+        //print("\tstringarray von servo: \(servozeile) ")
+        var index = 0
+        for zeile in 0..<stringarray.count
+        {
+           var element = stringarray[zeile]
+           
+           if element.contains("=")
+           {
+              //print("vor \(index):\(element)")
+              element = element.replacingOccurrences(of: ",", with: "")
+              element = element.replacingOccurrences(of: "\"", with: "")
+              element = element.replacingOccurrences(of: " ", with: "")
+              //print("nach \(index):\(element)")
+              let elementarray = element.components(separatedBy: "=")
+              //print("key: *\(elementarray[0])* val:\(elementarray[1])")
+              let key = String(elementarray[0])
+              
+              let val = UInt8(elementarray[1])
+              
+              let data = DispatchArray[settingblock][servozeile]
+              let tempdic = [key: val]
+              
+              DispatchArray[settingblock][servozeile].updateValue(val ?? 0, forKey:key)
+               index += 1
+           }
+        }
+     } // for DispatchArray
+     DispatchTable.reloadData()
+
+     print("end report_loadSettings")
+  }
 
     @IBAction func report_loadSettings(_ sender: NSButton) 
    {
-      var settingblock = modelSeg.indexOfSelectedItem
-      var            tempDispatchArray = [[[String:UInt8]]]()
-      //print("report_loadSettings DispatchArray[settingblock]count: \(DispatchArray[settingblock][0].count)")
+      loadSettings()
+      return
       
-      
-      for servozeile in 0..<DispatchArray[settingblock].count
-      {
-         let filename = "RC_Daten/settings_\(servozeile).txt"
-         //let testfilename = "RC_Daten/test.txt"
-         guard let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
-            fatalError("No Document directory found")
-         }
-         let fileUrl = dir.appendingPathComponent(filename)
-         
-         guard let savedArray = NSArray(contentsOfFile: fileUrl.path) else {
-            Swift.print("Unable to get array from path")
-            return
-         }
-         // Read from file
-          
-         let saveString = String(describing: savedArray)
-         //      print("saveString: \(saveString) ")
-         let stringarray = saveString.components(separatedBy: "\n")
-         //print("stringarray: \(stringarray) ")
-         //for element in stringarray
-         //print("\tstringarray von servo: \(servozeile) ")
-         var index = 0
-         for zeile in 0..<stringarray.count
-         {
-            var element = stringarray[zeile]
-            
-            if element.contains("=")
-            {
-               //print("vor \(index):\(element)")
-               element = element.replacingOccurrences(of: ",", with: "")
-               element = element.replacingOccurrences(of: "\"", with: "")
-               element = element.replacingOccurrences(of: " ", with: "")
-               //print("nach \(index):\(element)")
-               let elementarray = element.components(separatedBy: "=")
-               //print("key: *\(elementarray[0])* val:\(elementarray[1])")
-               let key = String(elementarray[0])
-               
-               let val = UInt8(elementarray[1])
-               
-               let data = DispatchArray[settingblock][servozeile]
-               let tempdic = [key: val]
-               
-               DispatchArray[settingblock][servozeile].updateValue(val ?? 0, forKey:key)
-                index += 1
-            }
-         }
-      } // for DispatchArray
-      DispatchTable.reloadData()
-
 /*      
      // mixing
       for servozeile in 0..<MixingArray[settingblock].count
@@ -1284,7 +1292,17 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
      let mix1on = DispatchArray[0][0]["dispatchmix1on"]
      let mix2on = DispatchArray[0][0]["dispatchmix2on"]
      
-     print("report_sendSettings DispatchArray: \(DispatchArray[0][0])")
+     //print("report_sendSettingChannels DispatchArray \n0: \(DispatchArray[0][0]) \n1: \(DispatchArray[0][1])")
+     for k in 0..<2
+     {
+        let kanal = DispatchArray[0][k]["dispatchkanal"]!
+        let nummer = DispatchArray[0][k]["dispatchnummer"]!
+        let device = DispatchArray[0][k]["dispatchdevice"]!
+        let funktion = DispatchArray[0][k]["dispatchfunktion"]!
+        let pos = DispatchArray[0][k]["dispatchmix1pos"]!
+        
+        print("\(k) kanal: \(kanal) nummer: \(nummer) device: \(device) funktion: \(funktion) pos: \(pos)")
+     }
      //print("report_sendSettings: \(DispatchArray[curr_model])"),
    //print("report_sendSettings mixingarray:);
      let mixingarray = readSettingMixingArray() //  [[uint8]]
@@ -1303,10 +1321,10 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          pro model
          32 bytes
          > 4 bytes pro kanal
-            status   (model, ON, Kanal, RI)
+            status   (model, ON, Kanal, RI) // 220510: Kkanal zu impulsposition
             level    (levela, levelb)
             expo     (expoa, expob)
-            device   /(fkt, device)
+            device   /(fkt,mix0on device, mix1on)
          */
         for kanal in 0..<8
         {
@@ -1509,15 +1527,22 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
          {
             var kanaldata = [UInt8]()
             // status
-            var tempbuffer = UInt8(modelindex)
+            var tempbuffer = UInt8(modelindex) // bit 0,1,2
             
+            let impulsposition = UInt8(DispatchArray[modelindex][kanal]["dispatchmix1pos"] ?? 0xFF)
+            
+            if (modelindex == 0)
+            {
+               print("readSettingKanalArray kanal: \(kanal) impulsposition: \(impulsposition)")
+            }
             if (DispatchArray[modelindex][kanal]["dispatchonimage"] == 1)
             {
                tempbuffer |= 1<<3 // ON
             }
 
-            //tempbuffer |= ((DispatchArray[modelindex][kanal]["kanal"] ?? 0) & 0x07) << 4
-            tempbuffer |=  (UInt8(kanal) & 0x07)<<4
+    //        tempbuffer |=  (UInt8(kanal) & 0x07)<<4 // bit 4,5,6
+            
+            tempbuffer |=  (UInt8(impulsposition ?? UInt8(kanal)) & 0x07)<<4
             
             if (DispatchArray[modelindex][kanal]["dispatchrichtung"] == 1)
             {
@@ -1761,14 +1786,15 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
             print("columnrichtung")
 
          case columnmix1on: // mix1on
+            print("dispatchmix1on")
             let onwert = UInt8(DispatchArray[0][zeile]["dispatchmix1on"] ?? 0)
             
             DispatchArray[curr_model][zeile]["dispatchmix1on"]  = 1 - onwert
             DispatchTable.reloadData()
-            print("dispatchmix1on")
+           
 
          case columnmix1pos:
-            print("zeile: \(zeile) columnmix1pos old: \n\(DispatchArray[curr_model][zeile])")
+            print("tablePopAktion columnmix1pos zeile: \(zeile) columnmix1pos old: \n\(DispatchArray[curr_model][zeile])")
             let oldpos = DispatchArray[curr_model][zeile]["dispatchmix1pos"] // bisherige einstellung
            
             let oldzeile = zeile 
@@ -1776,11 +1802,14 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
             var passt = 0xFF
             for k in 0..<8
             {
-               let temppos = DispatchArray[curr_model][k]["dispatchmix1pos"]
-               let tempkanal = DispatchArray[curr_model][k]["dispatchkanal"]
-               let tempnummer = DispatchArray[curr_model][k]["dispatchnummer"]
-               print("k: \(k) temppos: \(temppos) tempkanal: \(tempkanal)tempnummer: \(tempnummer)")
-               if (temppos ?? 0xFF == itemindex)
+               let tempmix1 = DispatchArray[curr_model][k]["dispatchmix1on"]!
+               let temppos = DispatchArray[curr_model][k]["dispatchmix1pos"]!
+               let tempkanal = DispatchArray[curr_model][k]["dispatchkanal"]!
+               let tempnummer = DispatchArray[curr_model][k]["dispatchnummer"]!
+               print("k: \(k) temppos: \(temppos) tempkanal: \(tempkanal) tempnummer: \(tempnummer) tempmix1: \(tempmix1)")
+               
+               
+               if (temppos == itemindex)
                {
                   passt = itemindex
                }
@@ -1791,6 +1820,22 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
                print("oldpasstpos: \(oldpasstpos)")
                DispatchArray[curr_model][passt]["dispatchmix1pos"] = oldpos
                DispatchArray[curr_model][zeile]["dispatchmix1pos"]  = UInt8(itemindex)
+               
+               //DispatchArray[curr_model][zeile]["dispatchkanal"]  = UInt8(itemindex)
+               print("nach passt\n");
+               for k in 0..<8
+               {
+                  let temppos = DispatchArray[curr_model][k]["dispatchmix1pos"]!
+                  let tempkanal = DispatchArray[curr_model][k]["dispatchkanal"]!
+                  let tempnummer = DispatchArray[curr_model][k]["dispatchnummer"]!
+                  print("k: \(k) temppos: \(temppos) tempkanal: \(tempkanal) tempnummer: \(tempnummer)")
+                  if (temppos ?? 0xFF == itemindex)
+                  {
+                     passt = itemindex
+                  }
+               }
+
+               
             }
             print("passt: \(passt)")
     //        DispatchArray[curr_model][zeile]["dispatchmix1pos"]  = UInt8(itemindex)
