@@ -129,6 +129,9 @@ class rJoystickView: NSView
       // https://stackoverflow.com/questions/47738822/simple-drawing-with-mouse-on-cocoa-swift
       //clearWeg()
       var userinformation:[String : Any]
+      
+     knopf(anPfad: weg)
+      
       if kreuz.isEmpty
       {
          kreuz.move(to: lokalpunkt)
@@ -162,6 +165,17 @@ class rJoystickView: NSView
               object: nil,
               userInfo: userinformation)
       needsDisplay = true   
+   }
+   
+   func knopf(anPfad knopfpfad:NSBezierPath)
+   {
+      let pos = knopfpfad.elementCount
+      var knopfpunkt = knopfpfad.currentPoint
+      Swift.print("knopfpunkt: \(knopfpunkt)")
+      
+      var knopfrect:CGRect = NSMakeRect(knopfpunkt.x-2, knopfpunkt.y-2, 3, 3)
+      knopfpfad.appendOval(in:knopfrect)
+      weg.move(to: knopfpunkt)
    }
    
    override func rightMouseDown(with theEvent: NSEvent) 

@@ -1654,7 +1654,8 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
    var default_ONArray:[NSImage] = [NSImage]()//[okimage, notokimage]
    
    var default_MixingArtArray = ["--","V-Mix","Butterfly"]
-   
+
+   // MARK: Actions   
    @objc func usbstatusAktion(_ notification:Notification) 
   {
      let info = notification.userInfo
@@ -1814,6 +1815,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
                   passt = itemindex
                }
             }
+            passt = 0xFF
             if passt < 0xFF // pos in  zeile passt ersetzen
             {
                let oldpasstpos = DispatchArray[curr_model][passt]["dispatchmix1pos"]
@@ -1868,7 +1870,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
      NSApplication.shared.terminate(self)
   }
    
-   // MARK: Actions
+  
    
    @IBAction func report_resetPos(_ sender: NSButton)
    {
@@ -2309,6 +2311,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
          
       } // dispatchmix2on
       
+      // MARK: dispatchmix1pos
       else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"dispatchmix1pos") )
       {
          guard let result = tableView.makeView(withIdentifier: tableColumn!.identifier, owner: self) as? rPopUpZelle else 
@@ -2326,7 +2329,9 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
          result.tablezeile = row
          result.tablekolonne = tableView.column(for: result)
          result.PopUp?.removeAllItems()
+         
          result.PopUp?.addItems(withTitles: default_KanalArray)
+//         result.PopUp?.addItem(withTitle: "-")
          result.PopUp?.selectItem(at: nummer)
          
          return result
