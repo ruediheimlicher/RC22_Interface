@@ -43,6 +43,8 @@ let END_WEG:UInt8  =  0xA8
 
 let DREHKNOPF:UInt8 = 0xAA
 
+let KNOPF = 0xF0
+
 let ACHSE0_START:UInt16 = 0x7FF // Startwert low
 let ACHSE0_MAX:UInt16 = 0xFFF // Startwert high
 let FAKTOR0:Float = 1.6

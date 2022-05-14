@@ -13,6 +13,7 @@ class rJoystickView: NSView
    var weg: NSBezierPath = NSBezierPath()
    var kreuz: NSBezierPath = NSBezierPath()
    var achsen: NSBezierPath = NSBezierPath()
+   var knopf: NSBezierPath = NSBezierPath()
    var mittelpunkt:NSPoint = NSZeroPoint
    var winkel:CGFloat = 0
    var hyp:CGFloat = 0
@@ -37,6 +38,7 @@ class rJoystickView: NSView
       achsen.lineWidth = 1  // hair line
       
       weg.move(to: mittelpunkt)
+      setknopf(anPunkt: mittelpunkt)
       //achsen.stroke()  // draw line(s) in color
       if let joystickident = self.identifier
       {
@@ -86,12 +88,42 @@ class rJoystickView: NSView
       NSColor.blue.set() // choose color
       achsen.stroke() 
       NSColor.red.set() // choose color
-      kreuz.stroke()
+      //kreuz.stroke()
       NSColor.green.set() // choose color
       
-      weg.lineWidth = 2
+      weg.lineWidth = 1
+      
       weg.stroke()  // draw line(s) in color
+      
+      NSColor.red.set() // choose color
+      knopf.fill()
    }
+   
+   override func mouseUp(with theEvent: NSEvent) 
+   {
+      
+      super.mouseUp(with: theEvent)
+      let location = theEvent.locationInWindow
+      //    Swift.print(location)
+      let lokalpunkt = convert(theEvent.locationInWindow, from: nil)
+      weg.line(to: mittelpunkt)
+      knopf.removeAllPoints()
+      
+      setknopf(anPunkt: mittelpunkt)
+      needsDisplay = true
+      var userinformation:[String : Any]
+      userinformation = ["message":"mousedown", "punkt": mittelpunkt, "index": weg.elementCount, "first": -1] as [String : Any]
+      userinformation["ident"] = self.identifier
+      
+      let nc = NotificationCenter.default
+      nc.post(name:Notification.Name(rawValue:"joystick"),
+              object: nil,
+              userInfo: userinformation)
+
+      
+      
+   }
+   
    
    override func mouseDown(with theEvent: NSEvent) 
    {
@@ -130,7 +162,7 @@ class rJoystickView: NSView
       //clearWeg()
       var userinformation:[String : Any]
       
-     knopf(anPfad: weg)
+ //    knopf(anPfad: weg)
       
       if kreuz.isEmpty
       {
@@ -153,6 +185,8 @@ class rJoystickView: NSView
       }
       else
       {
+         //setknopf(anPfad: weg)
+         
          weg.line(to: lokalpunkt)
          
          
@@ -167,15 +201,18 @@ class rJoystickView: NSView
       needsDisplay = true   
    }
    
-   func knopf(anPfad knopfpfad:NSBezierPath)
+
+   func setknopf(anPunkt knopfpunkt:NSPoint)
    {
-      let pos = knopfpfad.elementCount
-      var knopfpunkt = knopfpfad.currentPoint
-      Swift.print("knopfpunkt: \(knopfpunkt)")
+     
+      knopf.removeAllPoints()
+      //Swift.print("knopfpunkt: \(knopfpunkt)")
       
-      var knopfrect:CGRect = NSMakeRect(knopfpunkt.x-2, knopfpunkt.y-2, 3, 3)
-      knopfpfad.appendOval(in:knopfrect)
-      weg.move(to: knopfpunkt)
+      var knopfrect:CGRect = NSMakeRect(knopfpunkt.x-6, knopfpunkt.y-6, 12, 12)
+      knopf.move(to: knopfpunkt) 
+     knopf.appendOval(in:knopfrect)
+      
+      
    }
    
    override func rightMouseDown(with theEvent: NSEvent) 
@@ -190,12 +227,12 @@ class rJoystickView: NSView
    
    override func mouseDragged(with theEvent: NSEvent) 
    {
-      Swift.print("JoystickView mouseDragged")
+      //Swift.print("JoystickView mouseDragged")
       let location = theEvent.locationInWindow
       //Swift.print(location)
       var lokalpunkt = convert(theEvent.locationInWindow, from: nil)
       var userinformation:[String : Any]
-      Swift.print(lokalpunkt)
+      //Swift.print(lokalpunkt)
       //lokalpunkt.x -= mittelpunkt.x
       //lokalpunkt.y -= mittelpunkt.y
       if (lokalpunkt.x >= self.bounds.size.width)
@@ -217,7 +254,12 @@ class rJoystickView: NSView
       }     
       
       weg.line(to: lokalpunkt)
-      print("mousedragged ident: \(self.identifier)")
+      
+      var knopfrect:CGRect = NSMakeRect(lokalpunkt.x-2, lokalpunkt.y-2, 3, 3)
+ //     weg.appendOval(in:knopfrect)
+      setknopf(anPunkt: lokalpunkt)
+      
+      //print("mousedragged ident: \(self.identifier)")
       needsDisplay = true
       userinformation = ["message":"mousedown", "punkt": lokalpunkt, "index": weg.elementCount, "first": -1] as [String : Any]
       userinformation["ident"] = self.identifier
@@ -234,8 +276,21 @@ class rJoystickView: NSView
    {
       weg.removeAllPoints()
       kreuz.removeAllPoints()
-      needsDisplay = true
+      knopf.removeAllPoints()
       
+      setknopf(anPunkt: mittelpunkt)
+      needsDisplay = true
+   }
+   
+   func setwegstartpunkt(startpunkt:CGPoint)
+   {
+      weg.move(to: startpunkt)
+      
+   }
+   
+   func getmittelpunkt()->CGPoint
+   {
+      return mittelpunkt
    }
    /*
     override func rotate(byDegrees angle: CGFloat) 

@@ -1363,7 +1363,7 @@
                                                                                     </tableCellView>
                                                                                 </prototypeCellViews>
                                                                             </tableColumn>
-                                                                            <tableColumn identifier="dispatchmix1pos" width="41" minWidth="10" maxWidth="3.4028234663852886e+38" headerToolTip="dispatchmix1pos" id="uBm-eG-gXl">
+                                                                            <tableColumn identifier="dispatchmix1pos" width="57" minWidth="10" maxWidth="3.4028234663852886e+38" headerToolTip="dispatchmix1pos" id="uBm-eG-gXl">
                                                                                 <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Pos">
                                                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1376,11 +1376,11 @@
                                                                                 <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                                 <prototypeCellViews>
                                                                                     <tableCellView id="dlt-ui-Yoy" customClass="rPopUpZelle" customModule="RC22_Interface" customModuleProvider="target">
-                                                                                        <rect key="frame" x="611" y="0.0" width="41" height="20"/>
+                                                                                        <rect key="frame" x="611" y="0.0" width="57" height="21"/>
                                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                         <subviews>
                                                                                             <popUpButton toolTip="Position im Impulspaket" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="o2o-KL-CHc">
-                                                                                                <rect key="frame" x="-6" y="-5" width="50" height="25"/>
+                                                                                                <rect key="frame" x="2" y="-4" width="37" height="25"/>
                                                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                                                 <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" arrowPosition="noArrow" selectedItem="jrb-f8-F6C" id="VTN-2o-KeW">
                                                                                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
@@ -1397,14 +1397,23 @@
                                                                                                     <action selector="popupAction:" target="dlt-ui-Yoy" id="yXk-AT-MWY"/>
                                                                                                 </connections>
                                                                                             </popUpButton>
+                                                                                            <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ons-Kx-cvu">
+                                                                                                <rect key="frame" x="42" y="3" width="12" height="13"/>
+                                                                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                                                                <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="ok" imagePosition="only" alignment="center" alternateImage="notok" controlSize="small" state="on" imageScaling="proportionallyUpOrDown" inset="2" id="Blh-5P-s08">
+                                                                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                                                    <font key="font" metaFont="smallSystem"/>
+                                                                                                </buttonCell>
+                                                                                            </button>
                                                                                         </subviews>
                                                                                         <connections>
+                                                                                            <outlet property="ImageButton" destination="Ons-Kx-cvu" id="RGL-1o-KdM"/>
                                                                                             <outlet property="PopUp" destination="o2o-KL-CHc" id="bbi-uv-7eu"/>
                                                                                         </connections>
                                                                                     </tableCellView>
                                                                                 </prototypeCellViews>
                                                                             </tableColumn>
-                                                                            <tableColumn identifier="dispatchmix2on" width="28" minWidth="10" maxWidth="3.4028234663852886e+38" id="o6u-QI-Wja">
+                                                                            <tableColumn identifier="dispatchmix2on" width="10" minWidth="10" maxWidth="3.4028234663852886e+38" id="o6u-QI-Wja">
                                                                                 <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Mix 2">
                                                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1417,7 +1426,7 @@
                                                                                 <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                                 <prototypeCellViews>
                                                                                     <tableCellView id="HOk-eu-S0l" customClass="rPopUpZelle" customModule="RC22_Interface" customModuleProvider="target">
-                                                                                        <rect key="frame" x="657" y="0.0" width="31" height="18"/>
+                                                                                        <rect key="frame" x="673" y="0.0" width="13" height="18"/>
                                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                         <subviews>
                                                                                             <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3gR-aC-ugE">
@@ -1552,9 +1561,49 @@
                                                             </connections>
                                                         </button>
                                                         <customView identifier="6000" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3gX-is-5Bj" customClass="rJoystickView" customModule="RC22_Interface" customModuleProvider="target">
-                                                            <rect key="frame" x="39" y="20" width="174" height="161"/>
+                                                            <rect key="frame" x="30" y="31" width="160" height="149"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                         </customView>
+                                                        <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cmh-0f-d4X">
+                                                            <rect key="frame" x="200" y="95" width="96" height="19"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                            <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="brU-Xd-goZ">
+                                                                <font key="font" metaFont="smallSystem"/>
+                                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                            </textFieldCell>
+                                                        </textField>
+                                                        <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wIo-Ln-Lv3">
+                                                            <rect key="frame" x="62" y="7" width="96" height="19"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                            <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="LkD-az-l28">
+                                                                <font key="font" metaFont="smallSystem"/>
+                                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                            </textFieldCell>
+                                                        </textField>
+                                                        <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pVx-ds-erS">
+                                                            <rect key="frame" x="206" y="41" width="81" height="27"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                            <buttonCell key="cell" type="push" title="clear Weg" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="yMJ-Yf-Q8C">
+                                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                <font key="font" metaFont="smallSystem"/>
+                                                            </buttonCell>
+                                                            <connections>
+                                                                <action selector="report_clear_Weg:" target="iCZ-BZ-PL6" id="8uB-7b-le4"/>
+                                                            </connections>
+                                                        </button>
+                                                        <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UDz-jc-t9t">
+                                                            <rect key="frame" x="216" y="13" width="62" height="27"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                            <buttonCell key="cell" type="push" title="toggle" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Joa-ug-IHe">
+                                                                <behavior key="behavior" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
+                                                                <font key="font" metaFont="smallSystem"/>
+                                                            </buttonCell>
+                                                            <connections>
+                                                                <action selector="report_setExtern:" target="iCZ-BZ-PL6" id="dbA-vn-wf6"/>
+                                                            </connections>
+                                                        </button>
                                                     </subviews>
                                                 </customView>
                                             </subviews>
@@ -1788,10 +1837,11 @@
                         <outlet property="Halt_Taste" destination="Hv8-E7-xad" id="JBj-Eo-lBm"/>
                         <outlet property="Joystickfeld" destination="3gX-is-5Bj" id="u9g-45-JGv"/>
                         <outlet property="Pot0_DataFeld" destination="Fc0-Kg-Uu0" id="cbw-qz-eKB"/>
+                        <outlet property="Pot0_Feld" destination="wIo-Ln-Lv3" id="tQM-qC-lJz"/>
                         <outlet property="Pot0_Level" destination="nHW-PS-0tU" id="plT-dg-nja"/>
                         <outlet property="Pot0_SliderInt" destination="KAi-OE-9xc" id="kjJ-bE-nYX"/>
                         <outlet property="Pot1_DataFeld" destination="BsN-JQ-7Ja" id="Uh0-3g-3QH"/>
-                        <outlet property="Pot1_Feld" destination="BsN-JQ-7Ja" id="Hbp-8B-DUU"/>
+                        <outlet property="Pot1_Feld" destination="cmh-0f-d4X" id="jz3-a8-AGm"/>
                         <outlet property="Pot1_Level" destination="X95-yf-EmR" id="SXs-U0-6sJ"/>
                         <outlet property="Pot1_Slider" destination="d15-dT-sUd" id="Gkz-LS-VWx"/>
                         <outlet property="Pot1_SliderInt" destination="d15-dT-sUd" id="NgE-xB-sGa"/>
@@ -2737,6 +2787,8 @@
         <image name="RC22_128" width="25.180328369140625" height="25.180328369140625"/>
         <image name="local" width="740" height="740"/>
         <image name="lok_inv" width="121" height="121"/>
+        <image name="notok" width="225" height="225"/>
+        <image name="ok" width="123" height="123"/>
         <image name="usb" width="159" height="159"/>
     </resources>
 </document>

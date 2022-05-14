@@ -144,7 +144,7 @@ let USB_DATENBREITE = 64
 
 let ADCOFFSET  = 48
 
-
+let SENDKANALBREITE = 2
 
 class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableViewDelegate,NSComboBoxDataSource,NSComboBoxDelegate
 {
@@ -259,7 +259,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          
          MixingArray.append(MixingSettingArray)
          
-         
+   // MARK: Dispatchdic      
          var   DispatchSettingArray = [[String:UInt8]]()
          for dispatchindex:UInt8 in 0..<8
          {
@@ -287,7 +287,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
  
             dispatchdic["dispatchmix1on"]  = 0 // kanal wird fuer Mix verwendet // 
             dispatchdic["dispatchmix1pos"]  = dispatchindex // position im Impulspaket
-            
+            dispatchdic["dispatchpos1ok"] = 1               // Kontrolle, ob eine pos doppelt vorkommt
             dispatchdic["dispatchmix2on"]  = 0 // kanal wird fuer Mix verwendet // 
 
             
@@ -341,6 +341,13 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       curr_model = modelSeg.indexOfSelectedItem
       loadSettings()
       print("end viewDidAppear")  
+      
+      Joystickfeld.setwegstartpunkt(startpunkt: Joystickfeld.getmittelpunkt())
+      let x = String(format: "%.2f", 2000.0)
+      Pot0_Feld.stringValue = x
+      let y = String(format: "%.2f", 2000.0)
+      Pot1_Feld.stringValue = y
+
    } // end viewDidAppear
 
    override func viewDidLoad() 
@@ -375,6 +382,8 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
    
       SettingTab.selectTabViewItem(at: 0)
       
+      
+      
       //var views:[NSView] = SettingTab.selectedTabViewItem?.view?.subviews ?? [NSView]()
       /*
       var index:Int = 0
@@ -406,13 +415,13 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
    // MARK:  joystick
    @objc override func joystickAktion(_ notification:Notification) 
    {
-          print("RC joystickAktion usbstatus:\t \(usbstatus)  selectedDevice: \(selectedDevice) ident: \(String(describing: self.view.identifier))")
+          //print("RC joystickAktion usbstatus:\t \(usbstatus)  selectedDevice: \(selectedDevice) ident: \(String(describing: self.view.identifier))")
       let sel = NSUserInterfaceItemIdentifier.init(selectedDevice)
       //  if (selectedDevice == self.view.identifier)
       //var ident = ""
       if (sel == self.view.identifier)
       {
-         print("RC joystickAktion passt")
+         //print("RC joystickAktion passt")
          
          var ident = "13"
          let info = notification.userInfo 
@@ -432,16 +441,57 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          
          
          //   let ident = "aa" //info["ident"] as! String 
+         
+         let joystickfaktor:CGFloat = 12.0
          var punkt:CGPoint = info?["punkt"] as! CGPoint
+         
+  //       let xint:UInt16 = UInt16(punkt.x * joystickfaktor);
+  //       let yint:UInt16 = UInt16(punkt.y * joystickfaktor);
+
          let mittex:CGFloat = Joystickfeld.bounds.size.width / 2
          let mittey:CGFloat = Joystickfeld.bounds.size.height / 2
 
-         punkt.x -= mittex
+       
+         let mitte = 2000.0
+         punkt.x -= mittex 
+         punkt.x *= -1
          punkt.y -= mittey
-         print("RC joystickAktion:punkt; \t \(punkt)")
+         punkt.x *= -1
+    
+ //        let xint:UInt16 = UInt16(punkt.x * joystickfaktor + mitte);//
+ //        let yint:UInt16 = UInt16(punkt.y * joystickfaktor + mitte);
+
+         let xint:UInt16 = UInt16(mitte - punkt.x * joystickfaktor );
+         let yint:UInt16 = UInt16(mitte - punkt.y * joystickfaktor );
+
+   //      print("RC joystickAktion:\tpunkt x; \t \(punkt.x)\tpunkt y; \t \(punkt.y) \txint; \t \(xint)\tyint; \t \(yint)")
+         //let x = String(format: "%.2f", punkt.x * joystickfaktor + mitte)
+         let x = String(format: "%.2f", mitte - punkt.x * joystickfaktor )
+         
+         Pot0_Feld.stringValue = x
+         //let y = String(format: "%.2f", punkt.y * joystickfaktor + mitte)
+         let y = String(format: "%.2f", mitte - punkt.y * joystickfaktor)
+         Pot1_Feld.stringValue = y
+         teensy.write_byteArray[0] = 0xF1
+         
+          var sendpos = 0
+         
+         teensy.write_byteArray[USB_DATA_OFFSET + sendpos] = UInt8((xint & 0xFF00)>>8) 
+         teensy.write_byteArray[USB_DATA_OFFSET + sendpos + 1] = UInt8((xint & 0x00FF))
+         sendpos += SENDKANALBREITE
+         teensy.write_byteArray[USB_DATA_OFFSET + sendpos] = UInt8((yint & 0xFF00)>>8) 
+         teensy.write_byteArray[USB_DATA_OFFSET + sendpos + 1] = UInt8((yint & 0x00FF))
          
          
+ //        let control0:UInt16 = (UInt16(teensy.write_byteArray[USB_DATA_OFFSET]) << 8) | (UInt16(teensy.write_byteArray[USB_DATA_OFFSET + 1]))
+         //print("RC joystickAktion: xint: \(xint) usb0: \(teensy.write_byteArray[USB_DATA_OFFSET]) usb1: \(teensy.write_byteArray[USB_DATA_OFFSET + 1]) control0: \(control0)")
          
+         
+         if (usbstatus > 0)
+         {
+            let senderfolg = teensy.send_USB()
+      
+         }
          
          return;
          let wegindex:Int = info?["index"] as! Int // 
@@ -455,6 +505,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          {
             print("Drehknopf ident 2001")
             teensy.write_byteArray[0] = DREHKNOPF
+            
             let winkel = Int(punkt.x )
             print("Drehknopf winkel: \(winkel)")
          }
@@ -584,6 +635,64 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       
       
    }
+   
+   @IBAction func report_clear_Weg(_ sender: NSButton) 
+   {
+      Joystickfeld.clearWeg()
+      Joystickfeld.setwegstartpunkt(startpunkt: Joystickfeld.getmittelpunkt())
+      let x = String(format: "%.2f", 2000.0)
+      Pot0_Feld.stringValue = x
+      let y = String(format: "%.2f", 2000.0)
+      Pot1_Feld.stringValue = y
+      let xint = 2000
+      let yint = 2000
+      var sendpos = 0
+      teensy.write_byteArray[0] = 0xF1
+      teensy.write_byteArray[USB_DATA_OFFSET + sendpos] = UInt8((xint & 0xFF00)>>8) 
+      teensy.write_byteArray[USB_DATA_OFFSET + sendpos + 1] = UInt8((xint & 0x00FF))
+      sendpos += SENDKANALBREITE
+      teensy.write_byteArray[USB_DATA_OFFSET + sendpos] = UInt8((yint & 0xFF00)>>8) 
+      teensy.write_byteArray[USB_DATA_OFFSET + sendpos + 1] = UInt8((yint & 0x00FF))
+
+      if (usbstatus > 0)
+      {
+         let senderfolg = teensy.send_USB()
+   
+      }
+
+   
+   }
+   
+   @IBAction func report_setExtern(_ sender: NSButton) 
+   {
+      teensy.write_byteArray[0] = 0xF0
+      if sender.state == .on
+          {
+         teensy.write_byteArray[USB_DATA_OFFSET + 32] = 1
+         let xint = 2000
+         let yint = 2000
+         var sendpos = 0
+         teensy.write_byteArray[USB_DATA_OFFSET + sendpos] = UInt8((xint & 0xFF00)>>8) 
+         teensy.write_byteArray[USB_DATA_OFFSET + sendpos + 1] = UInt8((xint & 0x00FF))
+         sendpos += SENDKANALBREITE
+         teensy.write_byteArray[USB_DATA_OFFSET + sendpos] = UInt8((yint & 0xFF00)>>8) 
+         teensy.write_byteArray[USB_DATA_OFFSET + sendpos + 1] = UInt8((yint & 0x00FF))
+ 
+      }
+      else
+      {
+         teensy.write_byteArray[USB_DATA_OFFSET + 32] = 0
+      }
+      
+      if (usbstatus > 0)
+      {
+         let senderfolg = teensy.send_USB()
+   
+      }
+
+   }
+  
+   
    // MARK: newDataAktion
    @objc  func newRCDataAktion(_ notification:Notification) 
    {
@@ -1796,7 +1905,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
 
          case columnmix1pos:
             print("tablePopAktion columnmix1pos zeile: \(zeile) columnmix1pos old: \n\(DispatchArray[curr_model][zeile])")
-            let oldpos = DispatchArray[curr_model][zeile]["dispatchmix1pos"] // bisherige einstellung
+            let oldpos = DispatchArray[curr_model][zeile]["dispatchmix1pos"]! // bisherige einstellung an aktivierter zeile
            
             let oldzeile = zeile 
             print("columnmix1pos oldpos: \(oldpos) itemindex: \(itemindex) oldzeile: \(oldzeile)")
@@ -1807,36 +1916,94 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
                let temppos = DispatchArray[curr_model][k]["dispatchmix1pos"]!
                let tempkanal = DispatchArray[curr_model][k]["dispatchkanal"]!
                let tempnummer = DispatchArray[curr_model][k]["dispatchnummer"]!
-               print("k: \(k) temppos: \(temppos) tempkanal: \(tempkanal) tempnummer: \(tempnummer) tempmix1: \(tempmix1)")
+               //print("k: \(k) temppos: \(temppos) tempkanal: \(tempkanal) tempnummer: \(tempnummer) tempmix1: \(tempmix1)")
                
                
                if (temppos == itemindex)
                {
+                  //DispatchArray[curr_model][k]["dispatchpos1ok"]! = 0
                   passt = itemindex
+                  
+               }
+               else
+               {
+                  //DispatchArray[curr_model][k]["dispatchpos1ok"]! = 1
                }
             }
-            passt = 0xFF
+            
+           // passt = 0xFF
             if passt < 0xFF // pos in  zeile passt ersetzen
             {
-               let oldpasstpos = DispatchArray[curr_model][passt]["dispatchmix1pos"]
-               print("oldpasstpos: \(oldpasstpos)")
-               DispatchArray[curr_model][passt]["dispatchmix1pos"] = oldpos
+               let oldpasstpos = DispatchArray[curr_model][passt]["dispatchmix1pos"]!
+               print("passt: \(passt) oldpasstpos: \(oldpasstpos)")
+              DispatchArray[curr_model][passt]["dispatchmix1pos"] = oldpos
                DispatchArray[curr_model][zeile]["dispatchmix1pos"]  = UInt8(itemindex)
                
                //DispatchArray[curr_model][zeile]["dispatchkanal"]  = UInt8(itemindex)
                print("nach passt\n");
+               
+               var posindexset = IndexSet()
+               var firstpasst = 0 // erstes auftreten ueberspringen
+               
                for k in 0..<8
                {
+                  let posk = Int(DispatchArray[curr_model][k]["dispatchmix1pos"]!)
+                  
+                  if (posk == passt) //&& 
+                  {
+                     /*
+                     if (firstpasst == 0)
+                     {
+                        firstpasst = 1 // erstes Auftreten von passt
+                     }
+                     else
+                     {
+                        posindexset.insert(posk)
+                        
+                        DispatchArray[curr_model][k]["dispatchpos1ok"]! = 0
+                        
+                     }
+                      */
+                     DispatchArray[curr_model][k]["dispatchpos1ok"]! = 0
+                  }
+                  else
+                  {
+                     DispatchArray[curr_model][k]["dispatchpos1ok"]! = 1
+                  }
+                  
+               }
+               
+               print("posindexset: \(posindexset)")
+               /*
+               for k in 0..<8
+               {
+                  
+                  if (k==passt) && (firstpasst == 0)
+                  {
+                     firstpasst = 1
+                  }
+                  else
+                  {
+                     if posindexset.contains(k)
+                     {
+                        DispatchArray[curr_model][k]["dispatchpos1ok"]! = 0
+                     }  
+                     else
+                     {
+                        DispatchArray[curr_model][k]["dispatchnummer"]! = 1
+                     }
+                  }
+                  
                   let temppos = DispatchArray[curr_model][k]["dispatchmix1pos"]!
                   let tempkanal = DispatchArray[curr_model][k]["dispatchkanal"]!
                   let tempnummer = DispatchArray[curr_model][k]["dispatchnummer"]!
                   print("k: \(k) temppos: \(temppos) tempkanal: \(tempkanal) tempnummer: \(tempnummer)")
-                  if (temppos ?? 0xFF == itemindex)
+                  if (temppos == itemindex)
                   {
                      passt = itemindex
                   }
                }
-
+*/
                
             }
             print("passt: \(passt)")
@@ -1878,6 +2045,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
       for k in 0..<8
       {
          DispatchArray[curr_model][k]["dispatchmix1pos"] = UInt8(k)
+         DispatchArray[curr_model][k]["dispatchpos1ok"] = 1
       }
       DispatchTable.reloadData()
    }
@@ -2331,6 +2499,19 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
          result.PopUp?.removeAllItems()
          
          result.PopUp?.addItems(withTitles: default_KanalArray)
+         let posok = Int(DispatchArray[curr_model][row]["dispatchpos1ok"]!)
+         //print("dispatchmix1pos posok: \(posok)")
+         
+         if posok == 1
+         {
+            result.ImageButton?.image = okimage
+  //       result.ImageButton?.state = .on
+         }
+         else
+         {
+            result.ImageButton?.image = notokimage
+ //           result.ImageButton?.state = .off
+         }
 //         result.PopUp?.addItem(withTitle: "-")
          result.PopUp?.selectItem(at: nummer)
          
