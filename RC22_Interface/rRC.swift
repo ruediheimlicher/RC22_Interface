@@ -286,7 +286,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
             dispatchdic["dispatchexpob"]  = 0
  
             dispatchdic["dispatchmix1on"]  = 0 // kanal wird fuer Mix verwendet // 
-            dispatchdic["dispatchmix1pos"]  = dispatchindex // position im Impulspaket
+            dispatchdic["dispatchpos"]  = dispatchindex // position im Impulspaket
             dispatchdic["dispatchpos1ok"] = 1               // Kontrolle, ob eine pos doppelt vorkommt
             dispatchdic["dispatchmix2on"]  = 0 // kanal wird fuer Mix verwendet // 
 
@@ -1408,7 +1408,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
         let nummer = DispatchArray[0][k]["dispatchnummer"]!
         let device = DispatchArray[0][k]["dispatchdevice"]!
         let funktion = DispatchArray[0][k]["dispatchfunktion"]!
-        let pos = DispatchArray[0][k]["dispatchmix1pos"]!
+        let pos = DispatchArray[0][k]["dispatchpos"]!
         
         print("\(k) kanal: \(kanal) nummer: \(nummer) device: \(device) funktion: \(funktion) pos: \(pos)")
      }
@@ -1520,7 +1520,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
               tempbuffer |= 1<<7 // richtung
            }
 
-           var temp = 0
+           //var temp = 0
            
            sendbuffer[pos + kanal] = tempbuffer
            print("status kanal: \(kanal) tempbuffer: \(tempbuffer)")
@@ -1639,17 +1639,17 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
             var tempbuffer = UInt8(modelindex) // bit 0,1,2
             
            
-            
+            let impulsposition = UInt8(DispatchArray[modelindex][kanal]["dispatchpos"] ?? 0xFF)
             if (modelindex == 0)
             { 
-               let impulsposition = UInt8(DispatchArray[modelindex][kanal]["dispatchmix1pos"] ?? 0xFF)
+               
                print("readSettingKanalArray kanal: \(kanal) impulsposition: \(impulsposition)")
             }
             
             
             if (DispatchArray[modelindex][kanal]["dispatchonimage"] == 1)
             {
-               tempbuffer |= 1<<3                                             // ON bit 4
+               tempbuffer |= 1<<3                                             // ON bit 3
             }
            
             tempbuffer |=  (UInt8(impulsposition ?? UInt8(kanal)) & 0x07)<<4  // kanal, bit 4,5,6
@@ -1904,7 +1904,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
 
          case columnmix1pos:
             print("tablePopAktion columnmix1pos zeile: \(zeile) columnmix1pos old: \n\(DispatchArray[curr_model][zeile])")
-            let oldpos = DispatchArray[curr_model][zeile]["dispatchmix1pos"]! // bisherige einstellung an aktivierter zeile
+            let oldpos = DispatchArray[curr_model][zeile]["dispatchpos"]! // bisherige einstellung an aktivierter zeile
            
             let oldzeile = zeile 
             print("columnmix1pos oldpos: \(oldpos) itemindex: \(itemindex) oldzeile: \(oldzeile)")
@@ -1912,7 +1912,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
             for k in 0..<8
             {
                let tempmix1 = DispatchArray[curr_model][k]["dispatchmix1on"]!
-               let temppos = DispatchArray[curr_model][k]["dispatchmix1pos"]!
+               let temppos = DispatchArray[curr_model][k]["dispatchpos"]!
                let tempkanal = DispatchArray[curr_model][k]["dispatchkanal"]!
                let tempnummer = DispatchArray[curr_model][k]["dispatchnummer"]!
                //print("k: \(k) temppos: \(temppos) tempkanal: \(tempkanal) tempnummer: \(tempnummer) tempmix1: \(tempmix1)")
@@ -1933,10 +1933,10 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
            // passt = 0xFF
             if passt < 0xFF // pos in  zeile passt ersetzen
             {
-               let oldpasstpos = DispatchArray[curr_model][passt]["dispatchmix1pos"]!
+               let oldpasstpos = DispatchArray[curr_model][passt]["dispatchpos"]!
                print("passt: \(passt) oldpasstpos: \(oldpasstpos)")
-              DispatchArray[curr_model][passt]["dispatchmix1pos"] = oldpos
-               DispatchArray[curr_model][zeile]["dispatchmix1pos"]  = UInt8(itemindex)
+              DispatchArray[curr_model][passt]["dispatchpos"] = oldpos
+               DispatchArray[curr_model][zeile]["dispatchpos"]  = UInt8(itemindex)
                
                //DispatchArray[curr_model][zeile]["dispatchkanal"]  = UInt8(itemindex)
                print("nach passt\n");
@@ -1946,7 +1946,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
                
                for k in 0..<8
                {
-                  let posk = Int(DispatchArray[curr_model][k]["dispatchmix1pos"]!)
+                  let posk = Int(DispatchArray[curr_model][k]["dispatchpos"]!)
                   
                   if (posk == passt) //&& 
                   {
@@ -1993,7 +1993,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
                      }
                   }
                   
-                  let temppos = DispatchArray[curr_model][k]["dispatchmix1pos"]!
+                  let temppos = DispatchArray[curr_model][k]["dispatchpos"]!
                   let tempkanal = DispatchArray[curr_model][k]["dispatchkanal"]!
                   let tempnummer = DispatchArray[curr_model][k]["dispatchnummer"]!
                   print("k: \(k) temppos: \(temppos) tempkanal: \(tempkanal) tempnummer: \(tempnummer)")
@@ -2006,9 +2006,9 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
                
             }
             print("passt: \(passt)")
-    //        DispatchArray[curr_model][zeile]["dispatchmix1pos"]  = UInt8(itemindex)
+    //        DispatchArray[curr_model][zeile]["dispatchpos"]  = UInt8(itemindex)
             
-    //        DispatchArray[curr_model][itemindex]["dispatchmix1pos"]  = UInt8(oldpos ?? 7)
+    //        DispatchArray[curr_model][itemindex]["dispatchpos"]  = UInt8(oldpos ?? 7)
             
             
             DispatchTable.reloadData()
@@ -2043,7 +2043,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
       print("report_resetPos");
       for k in 0..<8
       {
-         DispatchArray[curr_model][k]["dispatchmix1pos"] = UInt8(k)
+         DispatchArray[curr_model][k]["dispatchpos"] = UInt8(k)
          DispatchArray[curr_model][k]["dispatchpos1ok"] = 1
       }
       DispatchTable.reloadData()
@@ -2479,7 +2479,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
       } // dispatchmix2on
       
       // MARK: dispatchmix1pos
-      else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"dispatchmix1pos") )
+      else  if (tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue:"dispatchpos") )
       {
          guard let result = tableView.makeView(withIdentifier: tableColumn!.identifier, owner: self) as? rPopUpZelle else 
          {
@@ -2488,7 +2488,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
             
          }
          
-         let nummer = Int(DispatchArray[curr_model][row]["dispatchmix1pos"] ?? 0)
+         let nummer = Int(DispatchArray[curr_model][row]["dispatchpos"] ?? 0)
        
          // let wert:Int = nummer
          
