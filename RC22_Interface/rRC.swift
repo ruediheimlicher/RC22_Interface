@@ -1128,7 +1128,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       let dispatchonimage = (kanaldata[0] & 0x08) >> 3 // Bit 3
       
       
-      
+      /*
       let dispatchrichtung = (kanaldata[0] & 0x80) >> 7 // Bit 7
       let dispatchlevela = (kanaldata[1] & 0x07) 
       let dispatchlevelb = (kanaldata[1] & 0x70) >> 4 
@@ -1139,7 +1139,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       let dispatchmix1on = (kanaldata[3] & 0x80) >> 7 // Bit 7, mix1on
       let dispatchmix2on = (kanaldata[3] & 0x08) >> 3 // Bit 4, mix2on
 
-      /*
+      
       print("dispatchkanal: \(dispatchkanal)")
       print("dispatchonimage: \(dispatchonimage)")
       print("dispatchlevela: \(dispatchlevela)")
@@ -1165,7 +1165,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       
       DispatchTable.reloadData()
    }   
-   
+   /*
    func importMixingData(_ indata:[[UInt8]],  model: Int)// daten pro mixing 
    {
       print("importMixingData")
@@ -1217,7 +1217,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       }// for mixindex
       MixingTable.reloadData()
    }
-   
+   */
    func importTableData(_ indata:[[UInt8]],  model: Int)// daten pro kanal
    {
       for kanalindex in 0..<8
@@ -1638,38 +1638,40 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
             // status
             var tempbuffer = UInt8(modelindex) // bit 0,1,2
             
-            let impulsposition = UInt8(DispatchArray[modelindex][kanal]["dispatchmix1pos"] ?? 0xFF)
+           
             
             if (modelindex == 0)
-            {
+            { 
+               let impulsposition = UInt8(DispatchArray[modelindex][kanal]["dispatchmix1pos"] ?? 0xFF)
                print("readSettingKanalArray kanal: \(kanal) impulsposition: \(impulsposition)")
             }
+            
+            
             if (DispatchArray[modelindex][kanal]["dispatchonimage"] == 1)
             {
-               tempbuffer |= 1<<3 // ON
+               tempbuffer |= 1<<3                                             // ON bit 4
             }
-
-    //        tempbuffer |=  (UInt8(kanal) & 0x07)<<4 // bit 4,5,6
-            
-            tempbuffer |=  (UInt8(impulsposition ?? UInt8(kanal)) & 0x07)<<4
+           
+            tempbuffer |=  (UInt8(impulsposition ?? UInt8(kanal)) & 0x07)<<4  // kanal, bit 4,5,6
             
             if (DispatchArray[modelindex][kanal]["dispatchrichtung"] == 1)
             {
-               tempbuffer |= 1<<7 // richtung
+               tempbuffer |= 1<<7                                             // richtung, bit 7
             }
-            kanaldata.append(tempbuffer)
+            // Byte 0: Modell 3b, ON 1b, Kanalindex 3b, RI 1b
+            kanaldata.append(tempbuffer) // byte 0
             
             // level
             tempbuffer = 0
             tempbuffer |= (DispatchArray[modelindex][kanal]["dispatchlevela"] ?? 0) & 0x07
             tempbuffer |= ((DispatchArray[modelindex][kanal]["dispatchlevelb"] ?? 0) & 0x07) << 4
-            kanaldata.append(tempbuffer)
+            kanaldata.append(tempbuffer)// byte 1
             
             // expo
             tempbuffer = 0
             tempbuffer |= (DispatchArray[modelindex][kanal]["dispatchexpoa"] ?? 0) & 0x07
             tempbuffer |= ((DispatchArray[modelindex][kanal]["dispatchexpob"] ?? 0) & 0x07) << 4
-            kanaldata.append(tempbuffer)
+            kanaldata.append(tempbuffer)// byte 2
             
             // funktion & device
             tempbuffer = 0
@@ -1683,17 +1685,14 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
             {
                tempbuffer |= 1<<7 // 
             }
+            kanaldata.append(tempbuffer)// byte 3
            
-            
-            kanaldata.append(tempbuffer)
-           
-            
-            
-
+ 
             modeldata.append(kanaldata)
          } // for kanal
          data.append(modeldata)
       }// for modell
+      
       return data
    }
    
