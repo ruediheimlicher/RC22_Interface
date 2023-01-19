@@ -434,7 +434,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          //print("RC joystickAktion i: \(i)")
          if let joystickident = info?["ident"]as? String
          {
-            print("RC joystickAktion ident da: \(joystickident)")
+            //print("RC joystickAktion ident da: \(joystickident)")
             ident = joystickident
          }
          else
@@ -461,21 +461,55 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
          punkt.x *= -1
          punkt.y -= mittey
          punkt.x *= -1
+         
+         let mix1on = DispatchArray[0][0]["dispatchmix1on"] // Mix 1
+         let mix2on = DispatchArray[0][0]["dispatchmix2on"]
+         //print("RC joystickAktion:\tmix1on; \t \(mix1on)\t mix2on; \t \(mix2on)")
     
  //        let xint:UInt16 = UInt16(punkt.x * joystickfaktor + mitte);//
  //        let yint:UInt16 = UInt16(punkt.y * joystickfaktor + mitte);
+         var xint:UInt16 = UInt16(mitte)
+         var yint:UInt16 = UInt16(mitte)
+         if mix1on == 0 // mix off
+         {
+            xint = UInt16(mitte - punkt.x * joystickfaktor ); // punktx/y: halbe Breite von Joystickfeld
+            yint = UInt16(mitte - punkt.y * joystickfaktor );
+            
+            //print("RC joystickAktion:\tpunkt x; \t \(punkt.x)\tpunkt y; \t \(punkt.y) \txint; \t \(xint)\tyint; \t \(yint)")
+            //let x = String(format: "%.2f", punkt.x * joystickfaktor + mitte)
+            let x = String(format: "%.2f", mitte - punkt.x * joystickfaktor )
+            Pot0_Feld.stringValue = x
+            
+            //let y = String(format: "%.2f", punkt.y * joystickfaktor + mitte)
+            let y = String(format: "%.2f", mitte - punkt.y * joystickfaktor)
+            Pot1_Feld.stringValue = y
+            
+         }
+         else
+         {
+            var deltax:Double = punkt.x //* joystickfaktor
+            var deltay:Double = punkt.y //* joystickfaktor
+            let rad = hypotf(Float(deltax),Float(deltay))
+            print("RC joystickAktion:\tpunkt x; \t \(punkt.x)\tpunkt y; \t \(punkt.y) \txint; \t \(xint)\tyint; \t \(yint)  rad: \(rad)")
+            let maxx = Double(Joystickfeld.bounds.size.width) / 2
+            let mixfaktorx:Double =  maxx / Double((fabsf(Float(deltax)) + fabsf(Float(deltay)))) 
+ 
+            let maxy = Double(Joystickfeld.bounds.size.height) / 2
+            let mixfaktory:Double = Double((fabsf(Float(deltax)) + fabsf(Float(deltay)))) / maxx
 
-         let xint:UInt16 = UInt16(mitte - punkt.x * joystickfaktor );
-         let yint:UInt16 = UInt16(mitte - punkt.y * joystickfaktor );
-
-   //      print("RC joystickAktion:\tpunkt x; \t \(punkt.x)\tpunkt y; \t \(punkt.y) \txint; \t \(xint)\tyint; \t \(yint)")
-         //let x = String(format: "%.2f", punkt.x * joystickfaktor + mitte)
-         let x = String(format: "%.2f", mitte - punkt.x * joystickfaktor )
-         
-         Pot0_Feld.stringValue = x
-         //let y = String(format: "%.2f", punkt.y * joystickfaktor + mitte)
-         let y = String(format: "%.2f", mitte - punkt.y * joystickfaktor)
-         Pot1_Feld.stringValue = y
+            print("RC joystickAktion:\t width: \(Joystickfeld.bounds.size.width) deltax: \(deltax) deltay: \(deltay) rad: \(rad) mixfaktorx: \(mixfaktorx)")
+            if mixfaktorx < 1
+            {
+               print("RC joystickAktion:***\t\t\t deltax: \(deltax) deltay: \(deltay)  rad: \(rad) mixfaktor: \(mixfaktorx)")
+               deltax *= mixfaktorx
+               deltay *= mixfaktorx
+               
+            }
+            
+            xint = UInt16(mitte - (deltax + deltay) * joystickfaktor ); 
+            yint = UInt16(mitte - (deltax - deltay) * joystickfaktor ); 
+            
+         }
          teensy.write_byteArray[0] = 0xF1
          
           var sendpos = 0
@@ -673,12 +707,18 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       if sender.state == .on
           {
          teensy.write_byteArray[USB_DATA_OFFSET + 32] = 1
-         let xint = 2000
+         let xint = 2000 // Mitte
          let yint = 2000
          var sendpos = 0
          teensy.write_byteArray[USB_DATA_OFFSET + sendpos] = UInt8((xint & 0xFF00)>>8) 
          teensy.write_byteArray[USB_DATA_OFFSET + sendpos + 1] = UInt8((xint & 0x00FF))
-         sendpos += SENDKANALBREITE
+         sendpos += SENDKANALBREITE // 2
+         teensy.write_byteArray[USB_DATA_OFFSET + sendpos] = UInt8((yint & 0xFF00)>>8) 
+         teensy.write_byteArray[USB_DATA_OFFSET + sendpos + 1] = UInt8((yint & 0x00FF))
+         sendpos += SENDKANALBREITE // 2
+         teensy.write_byteArray[USB_DATA_OFFSET + sendpos] = UInt8((yint & 0xFF00)>>8) 
+         teensy.write_byteArray[USB_DATA_OFFSET + sendpos + 1] = UInt8((yint & 0x00FF))
+         sendpos += SENDKANALBREITE // 2
          teensy.write_byteArray[USB_DATA_OFFSET + sendpos] = UInt8((yint & 0xFF00)>>8) 
          teensy.write_byteArray[USB_DATA_OFFSET + sendpos + 1] = UInt8((yint & 0x00FF))
  
@@ -697,7 +737,15 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
    }
   
    
-   // MARK: newDataAktion
+   
+   @IBAction func report_Pot0_Slider(_ sender: NSSlider) 
+   {
+      print("report_Pot0_Slider\(sender.integerValue)")
+      
+      
+   }
+   
+   // MARK: newDataAktion0
    @objc  func newRCDataAktion(_ notification:Notification) 
    {
        let info = notification.userInfo
@@ -1169,59 +1217,7 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
       
       DispatchTable.reloadData()
    }   
-   /*
-   func importMixingData(_ indata:[[UInt8]],  model: Int)// daten pro mixing 
-   {
-      print("importMixingData")
-      for mixindex in 0..<4
-      {
-         let mixdata:[UInt8] = indata[(mixindex)]
-         let mix0 = mixdata[0]
-         let mix1 = mixdata[1]
-         print("mixindex: \(mixindex) mix0: \(mix0)  mix1: \(mix1) ")
-         
-         /*
-          uint8_t modelindex = mix0 & 0x03; // bit 0,1
-          Serial.printf("modelindex: %d \n",modelindex);
-          uint8_t mixart = (mix0 & 0x30) >> 4; // bit 4,5
-          Serial.printf("mixart: %d \n",mixart);
-          uint8_t mixnummer = (mix0 & 0xC0) >> 6; // bit 6,7
-          Serial.printf("mixnummer: %d \n",mixnummer);
-          uint8_t mixon = (mix0 & 0x08) >> 3; // Bit 3
-          Serial.printf("mixon: %d \n",mixon);
-          */
-         let modelindex = mix0 & 0x03 // bit 0,1
-         let mixart = (mix0 & 0x30) >> 4 // bit 4,5
-         let mixnummer = (mix0 & 0xC0) >> 6 // bit 6,7
-         let mixon = (mix0 & 0x08) >> 3 // Bit 3
-         print("modelindex: \(modelindex) mixart: \(mixart)  mixnummer: \(mixnummer) mixon: \(mixon)")
-         /*
-          uint8_t mixkanala = mix1 & 0x07 ; // Bit 0-3
-          Serial.printf("mixkanala: %d \n",mixkanala);
-          uint8_t mixkanalb = (mix1 & 0x70) >> 4; // Bit 4-6
-          Serial.printf("mixkanalb: %d \n", mixkanalb);
-          */
-         let mixkanala = mix1 & 0x07  // Bit 0-3
-         let mixkanalb = (mix1 & 0x70) >> 4 // Bit 4-6
-         print("mixkanala: \(mixkanala) mixkanalb: \(mixkanalb)   ")
-         /*
-          mixingdic["mixnummer"] = mixingindex
-          mixingdic["mixonimage"] = 0
-          mixingdic["mixart"] = 2
-          mixingdic["mixkanala"] = 0x00
-          mixingdic["mixkanalb"] = 0x01
-          mixingdic["mixing"] = 0 // verwendet als Mix xy
-          */
-         MixingArray[model][mixindex]["mixnummer"] = UInt8(mixindex)
-         MixingArray[model][mixindex]["mixonimage"] = mixon
-         MixingArray[model][mixindex]["mixart"] = mixart
-         MixingArray[model][mixindex]["mixkanala"] = mixkanala
-         MixingArray[model][mixindex]["mixkanalb"] = mixkanalb
-         
-      }// for mixindex
-      MixingTable.reloadData()
-   }
-   */
+ 
    func importTableData(_ indata:[[UInt8]],  model: Int)// daten pro kanal
    {
       for kanalindex in 0..<8

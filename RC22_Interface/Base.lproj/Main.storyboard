@@ -924,6 +924,9 @@
                                 <rect key="frame" x="169" y="340" width="21" height="163"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <sliderCell key="cell" continuous="YES" alignment="left" minValue="750" maxValue="2250" doubleValue="1500" tickMarkPosition="left" sliderType="linear" id="xct-1d-bUG"/>
+                                <connections>
+                                    <action selector="report_Pot0_Slider:" target="iCZ-BZ-PL6" id="WOj-V0-7LT"/>
+                                </connections>
                             </slider>
                             <slider horizontalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="d15-dT-sUd">
                                 <rect key="frame" x="194" y="340" width="21" height="163"/>
@@ -1561,7 +1564,7 @@
                                                             </connections>
                                                         </button>
                                                         <customView identifier="6000" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3gX-is-5Bj" customClass="rJoystickView" customModule="RC22_Interface" customModuleProvider="target">
-                                                            <rect key="frame" x="30" y="31" width="160" height="149"/>
+                                                            <rect key="frame" x="30" y="31" width="160" height="160"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                         </customView>
                                                         <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cmh-0f-d4X">
@@ -1594,9 +1597,9 @@
                                                             </connections>
                                                         </button>
                                                         <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UDz-jc-t9t">
-                                                            <rect key="frame" x="216" y="13" width="62" height="27"/>
+                                                            <rect key="frame" x="206" y="13" width="81" height="27"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                            <buttonCell key="cell" type="push" title="toggle" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Joa-ug-IHe">
+                                                            <buttonCell key="cell" type="push" title="extern" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Joa-ug-IHe">
                                                                 <behavior key="behavior" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
                                                                 <font key="font" metaFont="smallSystem"/>
                                                             </buttonCell>
