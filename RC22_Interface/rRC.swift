@@ -163,6 +163,10 @@ class rRC: rViewController, NSTabViewDelegate, NSTableViewDataSource,NSTableView
    
     override func viewDidAppear() 
    {
+      
+      
+      
+      
       print ("RC viewDidAppear selectedDevice: \(selectedDevice)")
   
       SettingTab.drawsBackground = true
@@ -1849,6 +1853,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
       case 6: // Dispatch
          print("case 6 dispatch kolonne: \(kolonne)")
          sendokfeld.backgroundColor = NSColor.red
+         var posindexset = IndexSet()
          switch kolonne
          {
          case columnfunktion: // funktion
@@ -1902,114 +1907,48 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
             DispatchTable.reloadData()
            
 
-         case columnmix1pos:
-            print("tablePopAktion columnmix1pos zeile: \(zeile) columnmix1pos old: \n\(DispatchArray[curr_model][zeile])")
+         case columnpos:
+            print("tablePopAktion columnmix1pos klickzeile: \(zeile) columnmix1pos old: \n\(DispatchArray[curr_model][zeile])")
+            
             let oldpos = DispatchArray[curr_model][zeile]["dispatchpos"]! // bisherige einstellung an aktivierter zeile
            
-            let oldzeile = zeile 
-            print("columnmix1pos oldpos: \(oldpos) itemindex: \(itemindex) oldzeile: \(oldzeile)")
-            var passt = 0xFF
+            // vorhandene Indices laden
             for k in 0..<8
             {
-               let tempmix1 = DispatchArray[curr_model][k]["dispatchmix1on"]!
-               let temppos = DispatchArray[curr_model][k]["dispatchpos"]!
-               let tempkanal = DispatchArray[curr_model][k]["dispatchkanal"]!
-               let tempnummer = DispatchArray[curr_model][k]["dispatchnummer"]!
-               //print("k: \(k) temppos: \(temppos) tempkanal: \(tempkanal) tempnummer: \(tempnummer) tempmix1: \(tempmix1)")
-               
-               
-               if (temppos == itemindex)
-               {
-                  //DispatchArray[curr_model][k]["dispatchpos1ok"]! = 0
-                  passt = itemindex
-                  
-               }
-               else
-               {
-                  //DispatchArray[curr_model][k]["dispatchpos1ok"]! = 1
-               }
+               posindexset.insert(Int( DispatchArray[curr_model][k]["dispatchpos"]!))
             }
+            print("posindexset VOR: \(posindexset) ")
+            let oldzeile = zeile 
+            print("columnmix1pos oldpos: \(oldpos) itemindex: \(itemindex) oldzeile: \(oldzeile)")
             
-           // passt = 0xFF
-            if passt < 0xFF // pos in  zeile passt ersetzen
+            DispatchArray[curr_model][zeile]["dispatchpos"]  = UInt8(itemindex)
+              
+            // Indexset leeren
+            posindexset.removeAll()
+            // vorhandene Indices laden
+            for k in 0..<8
             {
-               let oldpasstpos = DispatchArray[curr_model][passt]["dispatchpos"]!
-               print("passt: \(passt) oldpasstpos: \(oldpasstpos)")
-              DispatchArray[curr_model][passt]["dispatchpos"] = oldpos
-               DispatchArray[curr_model][zeile]["dispatchpos"]  = UInt8(itemindex)
-               
-               //DispatchArray[curr_model][zeile]["dispatchkanal"]  = UInt8(itemindex)
-               print("nach passt\n");
-               
-               var posindexset = IndexSet()
-               var firstpasst = 0 // erstes auftreten ueberspringen
-               
-               for k in 0..<8
-               {
-                  let posk = Int(DispatchArray[curr_model][k]["dispatchpos"]!)
-                  
-                  if (posk == passt) //&& 
-                  {
-                     /*
-                     if (firstpasst == 0)
-                     {
-                        firstpasst = 1 // erstes Auftreten von passt
-                     }
-                     else
-                     {
-                        posindexset.insert(posk)
-                        
-                        DispatchArray[curr_model][k]["dispatchpos1ok"]! = 0
-                        
-                     }
-                      */
-                     DispatchArray[curr_model][k]["dispatchpos1ok"]! = 0
-                  }
-                  else
-                  {
-                     DispatchArray[curr_model][k]["dispatchpos1ok"]! = 1
-                  }
-                  
-               }
-               
-               print("posindexset: \(posindexset)")
-               /*
-               for k in 0..<8
-               {
-                  
-                  if (k==passt) && (firstpasst == 0)
-                  {
-                     firstpasst = 1
-                  }
-                  else
-                  {
-                     if posindexset.contains(k)
-                     {
-                        DispatchArray[curr_model][k]["dispatchpos1ok"]! = 0
-                     }  
-                     else
-                     {
-                        DispatchArray[curr_model][k]["dispatchnummer"]! = 1
-                     }
-                  }
-                  
-                  let temppos = DispatchArray[curr_model][k]["dispatchpos"]!
-                  let tempkanal = DispatchArray[curr_model][k]["dispatchkanal"]!
-                  let tempnummer = DispatchArray[curr_model][k]["dispatchnummer"]!
-                  print("k: \(k) temppos: \(temppos) tempkanal: \(tempkanal) tempnummer: \(tempnummer)")
-                  if (temppos == itemindex)
-                  {
-                     passt = itemindex
-                  }
-               }
-*/
-               
+               posindexset.insert(Int( DispatchArray[curr_model][k]["dispatchpos"]!))
             }
-            print("passt: \(passt)")
-    //        DispatchArray[curr_model][zeile]["dispatchpos"]  = UInt8(itemindex)
+            print("posindexset NACH: \(posindexset) ")
             
-    //        DispatchArray[curr_model][itemindex]["dispatchpos"]  = UInt8(oldpos ?? 7)
-            
+            //if (posindexset.contains(Int(itemindex)) ) // && (posindexset.count < 8))
+            if (posindexset.count < 8)
+            {
+               //print("itemindex schon da")
+               DispatchArray[curr_model][oldzeile]["dispatchpos1ok"]! = 0
+            }
+            else
+            {
+               for k in 0..<8
+               {
+                  DispatchArray[curr_model][k]["dispatchpos1ok"]! = 1
+               }
+
+               //print("itemindex noch nicht da")
+               //DispatchArray[curr_model][oldzeile]["dispatchpos1ok"]! = 1
+            }
+              
             
             DispatchTable.reloadData()
             print("columnmix1pos")
@@ -2483,7 +2422,7 @@ func readSettingKanalArray() -> [[[UInt8]]] // Array aus Dispatcharray: modell> 
       {
          guard let result = tableView.makeView(withIdentifier: tableColumn!.identifier, owner: self) as? rPopUpZelle else 
          {
-            print("dispatchmix1pos ist nil")
+            print("dispatchpos ist nil")
             return nil 
             
          }
